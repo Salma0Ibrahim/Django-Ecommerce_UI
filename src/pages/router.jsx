@@ -10,6 +10,8 @@ import Login from "./user/login";
 import ProductDetails from "./user/product-details";
 import Cart from "./user/cart"
 import UserProfile from "./user/user-profile"
+import Wishlist from "./user/wishlist"
+
 
 
 
@@ -38,10 +40,6 @@ const UserLayoutAuth = () => {
 };
 
 const UserLayoutUnAuth = () => {
-    if (!isAuthenticated('user')) {
-        return <Navigate to="/signup" />;
-    }
-
     return (
         <>
             <Navbar />
@@ -83,6 +81,14 @@ const router = createBrowserRouter(
         {
             element: <Order/>,
             path: '/order'
+        },
+        {
+            element: <Wishlist/>,
+            path: '/wishlist'
+        },
+        {
+            element: <UserProfile/>,
+            path: '/user-profile'
         },
     ]
 },
