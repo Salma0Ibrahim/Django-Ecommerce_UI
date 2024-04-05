@@ -6,8 +6,6 @@ import store from '../src/redux/store/store.js'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <Router>
       <App />
-    </Router>
   </Provider>
 );
