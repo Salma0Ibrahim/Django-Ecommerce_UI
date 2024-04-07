@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Category.css";
-import Input from "../../components/Input";
+import Input from "../../Input";
 
 function Category({ handleChange }) {
   const [categories, setCategories] = useState([]);

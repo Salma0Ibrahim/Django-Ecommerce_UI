@@ -2,6 +2,8 @@ import React from "react";
 import Slider from "react-slick";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./productsSlider.css";
 function Responsive() {
   var settings = {

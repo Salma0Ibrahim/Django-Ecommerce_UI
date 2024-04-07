@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "./Sidebar/Sidebar";
-import ProductsList from "./components/Products/ProductList";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import ProductsList from "../../components/Products/ProductList";
 
-function Helw() {
+function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleChange = (event) => {
@@ -23,4 +23,4 @@ function Helw() {
   );
 }
 
-export default Helw;
+export default ProductsPage;
