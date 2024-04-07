@@ -1,0 +1,21 @@
+.slick-next,
+.slick-prev {
+  z-index: 4;
+  background-color: red;
+}
+.slick-next {
+  right: 0px !important;
+}
+.slick-prev {
+  left: 0px !important;
+}
+.slick-next:hover {
+  z-index: 4;
+  background-color: red;
+  right: 0px !important;
+}
+.slick-prev:hover {
+  z-index: 4;
+  background-color: red;
+  left: 0px !important;
+}
