@@ -1,5 +1,5 @@
 .sidebar {
-  width: 85%;
+  width: 90%;
   position: sticky;
   top: 0;
   height: 100vh;
@@ -11,7 +11,7 @@
 }
 
 .logo-container {
-  margin-bottom: 4rem;
+  margin-bottom: 1rem;
 }
 
 .logo-container h1 {
@@ -50,5 +50,25 @@
 }
 
 .card-container {
-  margin-left: 18%; /* Adjusted to accommodate the sidebar width */
+  margin-left: 18%;
+}
+
+.scrollable-section {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Change scrollbar color */
+.scrollable-section::-webkit-scrollbar {
+  width: 12px;
+}
+
+.scrollable-section::-webkit-scrollbar-track {
+  background-color: #c93535;
+}
+
+/* Firefox scrollbar */
+.scrollable-section {
+  scrollbar-color: #c93535 #f1f1f1;
+  scrollbar-width: thin;
 }

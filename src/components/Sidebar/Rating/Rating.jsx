@@ -6,7 +6,8 @@ const Rating = ({ handleChange }) => {
   return (
     <>
       <div className="ml">
-        <h2 className="sidebar-title rating-title">Rating</h2>
+        <h2 className="sidebar-title rating-title">Ratings</h2>
+        <hr />
 
         <label className="sidebar-label-container">
           <input onChange={handleChange} type="radio" value="" name="rating" />
@@ -22,7 +23,7 @@ const Rating = ({ handleChange }) => {
               name="rating"
             />
             <span className="checkmark"></span>
-            {rating === 1 ? "1" : rating}
+            {rating} Star{rating !== 1 && "s"}
           </label>
         ))}
       </div>

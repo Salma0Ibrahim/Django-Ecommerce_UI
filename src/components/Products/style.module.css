@@ -18,25 +18,25 @@
   font-size: 1.5rem;
 }
 
-.icon.favorite-icon {
+.favoriteIcon {
   right: 10px;
   top: 25px;
 }
 
-.icon.eye-icon {
+.eyeIcon {
   right: 10px;
   top: 55px;
 }
 
-.icon.favorite-icon:hover {
-  color: #c93535;
+.favoriteIcon:hover {
+  color: #c93535 !important;
 }
 
-.icon.eye-icon:hover {
-  color: #c93535;
+.eyeIcon:hover {
+  color: #c93535 !important;
 }
 
-.badge-hover {
+.badgeHover {
   position: absolute;
   padding: 5px 10px;
   z-index: 1;
@@ -44,30 +44,36 @@
   transition: opacity 0.3s;
 }
 
-.favorite-badge {
+.favoriteBadge {
   top: 40px;
   right: 25px;
-  background-color: #c93535 !important;
 }
 
-.eye-badge {
+.eyeBadge {
   top: 70px;
   right: 25px;
-  background-color: #c93535 !important;
 }
 
-.icon.favorite-icon:hover + .favorite-badge,
-.icon.eye-icon:hover + .eye-badge {
+.favoriteIcon:hover + .favoriteBadge,
+.eyeIcon:hover + .eyeBadge {
   opacity: 1;
 }
 
-.card-img {
+.favoriteBadge {
+  background-color: red !important; /* Updated */
+}
+
+.eyeBadge {
+  background-color: red !important; /* Updated */
+}
+
+.cardImage {
   width: 100%;
   height: 15rem;
   object-fit: cover;
 }
 
-.card-body {
+.cardBody {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -75,13 +81,14 @@
   padding: 1rem;
 }
 
-.card-title {
+.cardTitle {
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
+  text-align: center;
 }
 
-.price-rectangle {
-  border: 1px solid #c93535;
+.priceRectangle {
+  border: 1px solid #c93535 !important;
   padding: 5px 10px;
   font-weight: bold;
   width: 150px;
@@ -90,7 +97,7 @@
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  color: #c93535;
+  color: #c93535 !important;
 }
 
 .rating {
@@ -101,17 +108,12 @@
   align-items: center;
 }
 
-.card-button {
-  margin-top: 1rem;
-  align-self: center;
+.customButton {
+  background-color: #c93535 !important;
+  border-color: #c93535 !important;
 }
 
-.custom-button {
-  background-color: #c93535;
-  border-color: #c93535;
-}
-
-.custom-button:hover {
-  background-color: #a82a2a;
-  border-color: #a82a2a;
+.customButton:hover {
+  background-color: #a82a2a !important;
+  border-color: #a82a2a !important;
 }

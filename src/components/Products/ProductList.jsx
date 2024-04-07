@@ -1,41 +1,90 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../../apis/congif";
 import ProductCard from "./ProductCard";
+import CardLoader from "../cardLoader/cardLoader";
+import Pagination from "../pagination/pagination";
 
-export default function ProductsList({ selectedCategory }) {
-  // Receive selectedCategory as prop
+export default function ProductsList({ selectedCategory, selectedRating }) {
   const [productsList, setProductsList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let params = {
+      page: currentPage,
+    };
+
     if (selectedCategory) {
-      axiosInstance
-        .get(`products/?category=${selectedCategory}`) // Fetch products based on selected category
-        .then((res) => {
-          setProductsList(res.data.results);
-          console.log(res.data.results);
-        })
-        .catch((error) => console.log(error));
-    } else {
-      axiosInstance
-        .get("products/")
-        .then((res) => setProductsList(res.data.results))
-        .catch((error) => console.log(error));
+      params = { ...params, category: selectedCategory };
     }
-  }, [selectedCategory]);
+
+    if (selectedRating) {
+      params = { ...params, rating: selectedRating };
+    }
+
+    axiosInstance
+      .get("products/", {
+        params: params,
+      })
+      .then((res) => {
+        setProductsList(res.data.results);
+        setTotalPages(Math.ceil(res.data.count / 8));
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
+  }, [selectedCategory, selectedRating, currentPage]);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <>
       <h2>Products list</h2>
       <hr />
-      <div className="row row-cols-1 row-cols-md-4 g-2">
-        {productsList.map((product) => {
-          return (
-            <div className="col mb-4">
-              <ProductCard product={product} />
+
+      {isLoading ? (
+        <div className="row row-cols-1 row-cols-md-4 g-2">
+          {[...Array(4)].map((_, index) => (
+            <div className="col mb-4" key={index}>
+              <CardLoader />
             </div>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      ) : productsList.length === 0 ? (
+        <div className="row">
+          <div className="col text-center" style={{ height: "60vh" }}>
+            <div className="d-flex justify-content-center align-items-center ">
+              <img
+                src="src/assets/product-not-found.png"
+                alt="No products found"
+                style={{ maxWidth: "50%", maxHeight: "60%" }}
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="row row-cols-1 row-cols-md-4 g-2">
+            {productsList.map((product) => (
+              <div className="col mb-4" key={product.id}>
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+          <div className="d-flex justify-content-center mt-4">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </>
+      )}
     </>
   );
 }

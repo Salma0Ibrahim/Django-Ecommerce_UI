@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
-import "./ProductCard.css";
+import styles from "./style.module.css";
 import { FaShoppingCart } from "react-icons/fa";
 import { IoPricetags } from "react-icons/io5";
 import { MdFavoriteBorder } from "react-icons/md";
 import { IoEyeOutline } from "react-icons/io5";
 
+// eslint-disable-next-line react/prop-types
 function ProductCard({ product }) {
   const [isFavoriteHovered, setIsFavoriteHovered] = useState(false);
   const [isEyeHovered, setIsEyeHovered] = useState(false);
@@ -25,49 +26,57 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className="card" style={{ width: "18rem", height: "28rem" }}>
+    <div className={styles.card}>
       <MdFavoriteBorder
-        className="icon favorite-icon"
+        className={`${styles.icon} ${styles.favoriteIcon}`}
         onMouseEnter={() => setIsFavoriteHovered(true)}
         onMouseLeave={() => setIsFavoriteHovered(false)}
       />
       {isFavoriteHovered && (
-        <Badge className="badge-hover favorite-badge" pill variant="danger">
+        <Badge
+          className={`${styles.badgeHover} ${styles.favoriteBadge}`}
+          pill
+          variant="danger"
+        >
           Add to Wishlist
         </Badge>
       )}
 
       <IoEyeOutline
-        className="icon eye-icon"
+        className={`${styles.icon} ${styles.eyeIcon}`}
         onMouseEnter={() => setIsEyeHovered(true)}
         onMouseLeave={() => setIsEyeHovered(false)}
       />
       {isEyeHovered && (
-        <Badge className="badge-hover eye-badge" pill variant="primary">
+        <Badge
+          className={`${styles.badgeHover} ${styles.eyeBadge}`}
+          pill
+          variant="primary"
+        >
           View Details
         </Badge>
       )}
 
       <Card.Img
         variant="top"
-        src="E:/ITI Labs/ecommerce/Django_Ecommerce_App/photos/products/24/03/30/Screenshot_20240204_100617_com.huawei.hwsearch_Ge2lZgl.jpg"
-        style={{ width: "100%", height: "15rem", objectFit: "cover" }}
+        src="src\assets\istockphoto-1436061606-612x612.jpg"
+        className={styles.cardImage}
       />
-      <div className="card-body text-center">
-        <Card.Title>{product.name}</Card.Title>
+      <div className={styles.cardBody}>
+        <Card.Title className={styles.cardTitle}>{product.name}</Card.Title>
 
         {/* Price rectangle */}
-        <div className="price-rectangle">
-          <IoPricetags style={{ marginRight: "0.5rem" }} />${product.price}
+        <div className={styles.priceRectangle}>
+          <IoPricetags className={styles.priceIcon} />${product.price}
         </div>
 
         {/* Rating */}
-        <div className="rating">
+        <div className={styles.rating}>
           {renderStars(product.rating)} ({product.rating})
         </div>
 
-        <Button variant="primary" className="custom-button">
-          <FaShoppingCart style={{ marginRight: "0.5rem" }} />
+        <Button variant="primary" className={styles.customButton}>
+          <FaShoppingCart className={styles.cartIcon} />
           Add to cart
         </Button>
       </div>
