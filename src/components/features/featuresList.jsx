@@ -8,13 +8,12 @@ import FeaturesCard from "./featureCard";
 
 function FeaturesList() {
   return (
-    <section className="product-thumb-slider section-padding shadow">
+    <section className="product-thumb-slider section-padding shadow mt-5">
       <div className="container">
         {" "}
         {/* Added shadow class here */}
         <div className="text-center pb-3">
-          <h3 className="mb-0 h3 fw-bold">What We Offer!</h3>
-          <p className="mb-0 text-capitalize">The purpose of lorem ipsum</p>
+          <h3 className="mb-2 h3 fw-bold">What We Offer!</h3>
         </div>
         <div className="row row-cols-1 row-cols-lg-4 g-4 justify-content-center">
           <FeaturesCard

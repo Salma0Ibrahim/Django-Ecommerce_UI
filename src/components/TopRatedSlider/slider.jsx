@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
+import { axiosInstance } from "../../apis/congif";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./productsSlider.css";
-function Responsive() {
+import TopRatedCard from "./TopRatedCard";
+
+function ProductsSlider() {
+  const [productsList, setProductsList] = useState([]);
+
+  useEffect(() => {
+    let params = {
+      order_by_rating: "desc",
+    };
+
+    axiosInstance
+      .get("products/", {
+        params: params,
+      })
+      .then((res) => {
+        setProductsList(res.data.results);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   var settings = {
     dots: true,
     infinite: false,
@@ -40,46 +60,21 @@ function Responsive() {
       },
     ],
   };
+
   return (
     <div className="slider-container">
-      <Slider {...settings}>
-        <div>
-          <Card style={{ width: "18rem" }}>
-            <Card.Img variant="top" src="holder.js/100px180" />
-            <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Text>
-                Some quick example text to build on the card title and make up
-                the bulk of the card's content.
-              </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
-            </Card.Body>
-          </Card>{" "}
-        </div>
-        <div>
-          <h3>2</h3>
-        </div>
-        <div>
-          <h3>3</h3>
-        </div>
-        <div>
-          <h3>4</h3>
-        </div>
-        <div>
-          <h3>5</h3>
-        </div>
-        <div>
-          <h3>6</h3>
-        </div>
-        <div>
-          <h3>7</h3>
-        </div>
-        <div>
-          <h3>8</h3>
-        </div>
-      </Slider>
+      <h2 className="text-center mb-4 mt-4">Top Rated Products</h2>
+      <div className="slider-wrapper">
+        <Slider {...settings} className="slider-box-shadow">
+          {productsList.map((product) => (
+            <div className="col mb-4" key={product.id}>
+              <TopRatedCard product={product} />
+            </div>
+          ))}
+        </Slider>
+      </div>
     </div>
   );
 }
 
-export default Responsive;
+export default ProductsSlider;

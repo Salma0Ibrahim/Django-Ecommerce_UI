@@ -17,13 +17,13 @@ function ProductsPage() {
   return (
     <>
       <div className="row">
-        <div className="col-md-2">
+        <div className="col-md-2 col-sm-6 col-xs-6">
           <Sidebar
             handleChangeCategory={handleChangeCategory}
             handleChangeRating={handleChangeRating}
           />
         </div>
-        <div className="col-md-10">
+        <div className="col-md-10 col-sm-6 col-xs-6">
           <ProductsList
             selectedCategory={selectedCategory}
             selectedRating={selectedRating}

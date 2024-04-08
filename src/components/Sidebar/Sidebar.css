@@ -39,9 +39,9 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 787px) {
   .sidebar {
-    width: 50%;
+    width: 100%;
   }
 
   .logo-container {
