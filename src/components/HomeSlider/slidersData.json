@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "bgColor": "bg-primary",
+        "textColor": "text-white",
+        "title1": "New Arrival",
+        "title2": "Women Fashion",
+        "discount": "Last call for upto 25%",
+        "btnText": "Shop Now",
+        "imgSrc": "https://codervent.com/shopingo/demo/shopingo_V1/assets/images/sliders/s_1.webp"
+    },
+    {
+        "id": 2,
+        "bgColor": "bg-secondary",
+        "textColor": "text-white",
+        "title1": "Latest Trending",
+        "title2": "Fashion Wear",
+        "discount": "Last call for upto 35%",
+        "btnText": "Shop Now",
+        "imgSrc": "https://codervent.com/shopingo/demo/shopingo_V1/assets/images/sliders/s_2.webp"
+    },
+    {
+        "id": 3,
+        "bgColor": "bg-info",
+        "textColor": "text-white",
+        "title1": "New Trending",
+        "title2": "Kids Fashion",
+        "discount": "Last call for upto 15%",
+        "btnText": "Shop Now",
+        "imgSrc": "https://codervent.com/shopingo/demo/shopingo_V1/assets/images/sliders/s_3.webp"
+    },
+    {
+        "id": 4,
+        "bgColor": "bg-warning",
+        "textColor": "text-dark",
+        "title1": "Latest Trending",
+        "title2": "Electronics Items",
+        "discount": "Last call for upto 45%",
+        "btnText": "Shop Now",
+        "imgSrc": "https://codervent.com/shopingo/demo/shopingo_V1/assets/images/sliders/s_4.webp"
+    },
+    {
+        "id": 5,
+        "bgColor": "bg-success",
+        "textColor": "text-white",
+        "title1": "Super Deals",
+        "title2": "Home Furniture",
+        "discount": "Last call for upto 24%",
+        "btnText": "Shop Now",
+        "imgSrc": "https://codervent.com/shopingo/demo/shopingo_V1/assets/images/sliders/s_5.webp"
+    }
+]

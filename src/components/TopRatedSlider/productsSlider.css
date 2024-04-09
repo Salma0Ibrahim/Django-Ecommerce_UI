@@ -1,0 +1,37 @@
+.slick-next,
+.slick-prev {
+  z-index: 4;
+  background-color: #c93535;
+  color: blue !important;
+}
+.slick-next {
+  right: 0px !important;
+}
+.slick-prev {
+  left: 0px !important;
+}
+.slick-next:hover {
+  z-index: 4;
+  background-color: black;
+  right: 0px !important;
+}
+.slick-prev:hover {
+  z-index: 4;
+  background-color: black;
+  left: 0px !important;
+}
+.slick-dots li.slick-active button:before {
+  color: #c93535;
+}
+.priceRectangle {
+  border: 1px solid #c93535 !important;
+  padding: 5px 10px;
+  font-weight: bold;
+  width: 150px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  color: #c93535 !important;
+}
