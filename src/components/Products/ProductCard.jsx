@@ -7,9 +7,14 @@ import { FaShoppingCart } from "react-icons/fa";
 import { IoPricetags } from "react-icons/io5";
 import { MdFavoriteBorder } from "react-icons/md";
 import { IoEyeOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 function ProductCard({ product }) {
+  const navigate = useNavigate();
+  const redirectToDetails = (id) => {
+    navigate(`/product-details/${id}`);
+  };
   const [isFavoriteHovered, setIsFavoriteHovered] = useState(false);
   const [isEyeHovered, setIsEyeHovered] = useState(false);
 
@@ -46,6 +51,7 @@ function ProductCard({ product }) {
         className={`${styles.icon} ${styles.eyeIcon}`}
         onMouseEnter={() => setIsEyeHovered(true)}
         onMouseLeave={() => setIsEyeHovered(false)}
+        onClick={() => redirectToDetails(product.id)}
       />
       {isEyeHovered && (
         <Badge
