@@ -152,7 +152,7 @@ const Cart = () => {
                                 </div>
                             ))
                         ) : (
-                            <div className="empty-cart">
+                            <div className="empty-cart" style={{marginTop:'80px'}}>
                                 <p>No products in the cart.</p>
                             </div>
                         )}

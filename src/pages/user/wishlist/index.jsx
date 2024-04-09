@@ -5,17 +5,35 @@ import axios from 'axios';
 import './wishlist.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import decodeToken from "../../../redux/action/decodeToken";
 
 const Wishlist = ({ isOpen, onClose }) => {
     const dispatch = useDispatch();
     const { wishlists } = useSelector(state => state.wishlists);
     const [wishlistProducts, setWishlistProducts] = useState([]);
+    const [customer_id, setCustomerId] = useState(null);
 
     useEffect(() => {
-        dispatch(getWishlistAction());
-    }, [dispatch]);
+        const checkToken = async () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const decodedToken = decodeToken(token);
+                const userId = decodedToken.id;
+                setCustomerId(userId);
+            } else {
+                console.log('Token does not exist');
+                // Redirect to login or handle the absence of token
+            }
+        };
+        checkToken();
+    }, []);
 
-    // Fetch product details for wishlist items
+    useEffect(() => {
+        if (customer_id) {
+            dispatch(getWishlistAction(customer_id));
+        }
+    }, [dispatch, customer_id]);
+
     useEffect(() => {
         const fetchWishlistProducts = async () => {
             const productsWithDetails = await Promise.all(
@@ -23,7 +41,7 @@ const Wishlist = ({ isOpen, onClose }) => {
                     const productResponse = await fetchProductDetails(wishlistItem.product_id);
                     return {
                         ...wishlistItem,
-                        productDetails: productResponse, // Add product details to wishlist item
+                        productDetails: productResponse,
                     };
                 })
             );
@@ -32,7 +50,6 @@ const Wishlist = ({ isOpen, onClose }) => {
         fetchWishlistProducts();
     }, [wishlists]);
 
-    // Function to fetch product details based on product_id
     const fetchProductDetails = async (productId) => {
         try {
             const response = await axios.get(`http://localhost:8000/products/${productId}/`);
@@ -46,7 +63,7 @@ const Wishlist = ({ isOpen, onClose }) => {
     return (
         <div className="wishlist">
             {isOpen && <div className="overlay" onClick={onClose}></div>}
-            <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+            <div className={`wishlistsidebar ${isOpen ? 'open' : ''}`}>
                 <div className="wishlistdiv1">
                     <div className='wishlistdiv1child1'>
                         <p className='wishlistTitle'>Shopping Wishlist</p>
@@ -62,7 +79,7 @@ const Wishlist = ({ isOpen, onClose }) => {
                             <div className="wishlistItem" key={wishlistItem.id}>
                                 {wishlistItem.productDetails && (
                                     <div className='productDetails'>
-                                        <img src="https://i.pinimg.com/564x/56/78/bd/5678bdf9361dffbb932d143b333ff3e2.jpg" alt={wishlistItem.productDetails.name} />
+                                        <img src="src\assets\istockphoto-1436061606-612x612.jpg" alt={wishlistItem.productDetails.name} />
                                         <div className='productdetails2'>
                                             <div className='productInfo'>
                                                 <p>{wishlistItem.productDetails.name}</p>
@@ -87,7 +104,7 @@ const Wishlist = ({ isOpen, onClose }) => {
                         ))
                     ) : (
                         <div className='wishlistBody'>
-                            <div className='body1'>
+                            <div className='text-center body1'>
                                 <p>No products in the wishlist.</p>
                             </div>
                         </div>
