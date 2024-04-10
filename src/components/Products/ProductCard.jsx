@@ -34,16 +34,23 @@ function ProductCard({ product }) {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       if (i <= rating) {
-        stars.push(<span key={i}>&#9733;</span>); // Full star
+        stars.push(
+          <span key={i} style={{ color: "gold", fontSize: "26px" }}>
+            &#9733;
+          </span>
+        ); // Full star
       } else {
-        stars.push(<span key={i}>&#9734;</span>); // Empty star
+        stars.push(
+          <span key={i} style={{ color: "gold", fontSize: "26px" }}>
+            &#9734;
+          </span>
+        ); // Empty star
       }
     }
     return stars;
   };
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [customer_id, setCustomerId] = useState(null);
   const [cart_id, setCartId] = useState(null);
   const [isInWishlist, setIsInWishlist] = useState(false);
@@ -104,7 +111,9 @@ function ProductCard({ product }) {
     }
 
     if (isInWishlist) {
-      const wishlistItem = wishlists.find((item) => item.product_id === productId);
+      const wishlistItem = wishlists.find(
+        (item) => item.product_id === productId
+      );
       if (wishlistItem) {
         dispatch(removeFromWishlistAction(wishlistItem.id));
       }
@@ -174,32 +183,12 @@ function ProductCard({ product }) {
         </button>
       </form>
 
-      {isFavoriteHovered && (
-        <Badge
-          className={`${styles.badgeHover} ${styles.favoriteBadge}`}
-          pill
-          variant="danger"
-        >
-          Add to Wishlist
-        </Badge>
-      )}
-
       <IoEyeOutline
         className={`${styles.icon} ${styles.eyeIcon}`}
         onMouseEnter={() => setIsEyeHovered(true)}
         onMouseLeave={() => setIsEyeHovered(false)}
         onClick={() => redirectToDetails(product.id)}
       />
-
-      {isEyeHovered && (
-        <Badge
-          className={`${styles.badgeHover} ${styles.eyeBadge}`}
-          pill
-          variant="primary"
-        >
-          View Details
-        </Badge>
-      )}
 
       <Card.Img
         variant="top"
@@ -224,7 +213,11 @@ function ProductCard({ product }) {
           onClick={() => AddCartitemSubmit(product.id)}
         >
           <FaShoppingCart className={styles.cartIcon} />
-          {isInCart ? <span>&nbsp; remove from cart</span> : <span>&nbsp; Add to cart</span>}
+          {isInCart ? (
+            <span>&nbsp; remove from cart</span>
+          ) : (
+            <span>&nbsp; Add to cart</span>
+          )}
         </Button>
       </div>
     </div>

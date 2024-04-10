@@ -1,73 +1,179 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { axiosInstance } from "../../../apis/congif";
+import { IoPricetags } from "react-icons/io5";
+import { FaShoppingCart } from "react-icons/fa";
+import decodeToken from "../../../redux/action/decodeToken";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  getCartItemsAction,
+  addcartitemAction,
+  removecartitemAction,
+} from "../../../redux/action/cartitemaction";
+
+import "./index.css";
 
 const ProductDetails = () => {
-  const [product, setProduct] = useState(null);
   const params = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const [customer_id, setCustomerId] = useState(null);
+  const [cart_id, setCartId] = useState(null);
+  const [isInCart, setIsInCart] = useState(false);
+
+  const { cartitems } = useSelector((state) => state.cartitems);
 
   useEffect(() => {
-    axiosInstance
-      .get(`/products/${params.id}/`)
-      .then((res) => {
-        setProduct(res.data);
-      })
-      .catch((err) => console.log(err));
+    const fetchData = async () => {
+      try {
+        // Fetch product details
+        const response = await axiosInstance.get(`products/${params.id}/`);
+        setProduct(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError(err);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [params.id]);
 
-  if (!product) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decodedToken = decodeToken(token);
+        const userId = decodedToken.id;
+        setCustomerId(userId);
+
+        try {
+          const response = await axios.get(
+            `http://localhost:8000/cart/searchcustomercart/${userId}/`
+          );
+          if (response.data.length > 0 && response.data[0].id) {
+            const cartId = response.data[0].id;
+            setCartId(cartId);
+            dispatch(getCartItemsAction(cartId));
+          } else {
+            const newCartResponse = await axios.post(
+              "http://localhost:8000/cart/",
+              { customer_id: userId }
+            );
+            if (newCartResponse.data && newCartResponse.data.id) {
+              const newCartId = newCartResponse.data.id;
+              setCartId(newCartId);
+              dispatch(getCartItemsAction(newCartId));
+            } else {
+              console.error(
+                "Error creating new cart: Response data or cart ID is undefined."
+              );
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching or creating cart:", error);
+        }
+      } else {
+        console.log("Token does not exist");
+        // Redirect to login or handle the absence of token
+      }
+    };
+
+    checkToken();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (cart_id !== null) {
+      const exist = cartitems.some(
+        (item) => item.product_id === product?.id && item.cart_id === cart_id
+      );
+      setIsInCart(exist);
+    }
+  }, [cartitems, product?.id, cart_id]);
+
+  const AddCartitemSubmit = (productId) => {
+    const data = {
+      id: 1,
+      product_id: productId,
+      quantity: 1,
+      cart_id: cart_id,
+    };
+
+    if (customer_id) {
+      const cartItem = cartitems.find(
+        (item) => item.product_id === productId && item.cart_id === cart_id
+      );
+      if (cartItem) {
+        dispatch(removecartitemAction(cartItem.id));
+      } else {
+        dispatch(addcartitemAction(data));
+      }
+    } else {
+      navigate("/signup");
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <section className="py-5">
-      <div
-        className="container px-4 px-lg-5 my-5"
-        style={{
-          boxShadow:
-            "0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19)",
-        }}
-      >
-        <div className="row gx-4 gx-lg-5 align-items-center">
-          <div className="col-md-6">
-            <img
-              className="card-img-top mb-5 mb-md-0"
-              src={product.image}
-              alt={product.title}
-            />
-          </div>
-          <div className="col-md-6">
-            <h1 className="display-5 fw-bolder">{product.name}</h1>
-            <div className="fs-5 mb-5">
-              <span>${product.price}</span>
+      <div className="container">
+        <div className="row gx-5">
+          <aside className="col-lg-6">
+            <div className="border rounded-4 mb-3 d-flex justify-content-center">
+              <img
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100vh",
+                  margin: "auto",
+                }}
+                className="rounded-4 fit"
+                src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/detail1/big.webp"
+                alt="Product"
+              />
             </div>
-            <div className="d-flex mb-4">
-              <div className="flex-grow-1">
-                <span className="me-2">Rating:</span>
-                <div className="rating">
-                  <span className="bi bi-star-fill"></span>
-                  <span className="bi bi-star-fill"></span>
-                  <span className="bi bi-star-fill"></span>
-                  <span className="bi bi-star-fill"></span>
-                  <span className="bi bi-star"></span>
+          </aside>
+          <main className="col-lg-6">
+            <div className="ps-lg-3">
+              <h4 className="title text-dark border-bottom pb-2 mb-4">
+                {product.name}
+              </h4>
+              <div className="d-flex flex-row my-3">
+                <div className="text-warning mb-1 me-2">
+                  <span className="ms-1 fw-bold">{product.rating} Stars</span>
                 </div>
               </div>
+              <div className="mb-4">
+                <span className="price">
+                  <IoPricetags /> ${product.price}
+                </span>
+              </div>
+              <h5>About the product:</h5>
+              <p className="mb-4">{product.description}</p>
+              <div className="row mb-4">
+                <dt className="col-1">Stock:</dt>
+                <dd className="col-11">{product.stock}</dd>
+              </div>
+              <hr />
+              <div className="d-flex justify-content-center">
+                <button
+                  className="btn btn-primary shadow-0 customButton"
+                  onClick={() => AddCartitemSubmit(product.id)}
+                  disabled={product.stock === 0}
+                >
+                  <FaShoppingCart />{" "}
+                  {isInCart ? "Remove from cart" : "Add to cart"}
+                </button>
+              </div>
             </div>
-            <div className="mb-4">
-              <span className="me-2">Stock:</span>
-              <span>{product.stock}</span>
-            </div>
-            <p className="lead">{product.description}</p>
-            <div className="d-flex">
-              <button
-                className="btn btn-outline-dark flex-shrink-0"
-                type="button"
-              >
-                <i className="bi-cart-fill me-1"></i>
-                Add to cart
-              </button>
-            </div>
-          </div>
+          </main>
         </div>
       </div>
     </section>

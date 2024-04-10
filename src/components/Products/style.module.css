@@ -86,7 +86,7 @@
 
 .cardTitle {
   font-size: 1.25rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   text-align: center;
   font-family: "Open Sans", sans-serif;
 }
@@ -100,7 +100,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
+  margin: 10px auto 0px auto;
   color: #c93535 !important;
 }
 
@@ -119,6 +119,6 @@
 }
 
 .customButton:hover {
-  background-color: #a82a2a !important;
-  border-color: #a82a2a !important;
+  background-color: black !important;
+  border-color: black !important;
 }

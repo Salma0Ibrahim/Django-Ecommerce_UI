@@ -30,6 +30,7 @@ const Navbar = () => {
   const { cartitems } = useSelector((state) => state.cartitems);
   const [cart_id, setCartId] = useState(null);
   const [customer_id, setCustomerId] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     const checkToken = async () => {
@@ -117,33 +118,63 @@ const Navbar = () => {
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </button>
           </div>
-          <div className="notificationparent">
-            <div className="notification">{cartitems.length}</div>
-            <Link to="/cart">
-              <button className="navbutton2">
-                <FontAwesomeIcon style={{ color: "black" }} icon={faCartShopping} />
-              </button>
-            </Link>
-          </div>
-          <div className="notificationparent">
-            <div className="notification">{wishlists.length}</div>
-            <button className="navbutton2" onClick={toggleSidebar}>
-              <FontAwesomeIcon style={{ color: "black" }} icon={faShieldHeart} />
-            </button>
-          </div>
-          <Dropdown alignRight>
-            <Dropdown.Toggle
-              variant="light"
-              id="dropdown-basic"
-              className="navbutton3"
-            >
-              <FontAwesomeIcon icon={faUser} />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item href="/update-profile">Update Profile</Dropdown.Item>
-              <Dropdown.Item href="/logout">Logout</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
+          {customer_id ? (
+            <>
+              <div className="notificationparent">
+                <div className="notification">{cartitems.length}</div>
+                <Link to="/cart">
+                  <button className="navbutton2">
+                    <FontAwesomeIcon
+                      style={{ color: "black" }}
+                      icon={faCartShopping}
+                    />
+                  </button>
+                </Link>
+              </div>
+              <div className="notificationparent">
+                <div className="notification">{wishlists.length}</div>
+                <button className="navbutton2" onClick={toggleSidebar}>
+                  <FontAwesomeIcon
+                    style={{ color: "black" }}
+                    icon={faShieldHeart}
+                  />
+                </button>
+              </div>
+              <Dropdown alignRight>
+                <Dropdown.Toggle
+                  variant="light"
+                  id="dropdown-basic"
+                  className="navbutton3"
+                >
+                  <FontAwesomeIcon icon={faUser} />
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item href="/update-profile">
+                    Update Profile
+                  </Dropdown.Item>
+                  <Dropdown.Item href="/logout">Logout</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <button className="navbutton2">
+                  Login
+                  <FontAwesomeIcon style={{ color: "black" }} icon={faUser} />
+                </button>
+              </Link>
+              <Link to="/signup">
+                <button className="navbutton2">
+                  Signup
+                  <FontAwesomeIcon
+                    style={{ color: "black" }}
+                    icon={faUserPlus}
+                  />
+                </button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
       <Wishlist isOpen={isSidebarOpen} onClose={toggleSidebar} />
