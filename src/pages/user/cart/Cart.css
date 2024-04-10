@@ -1,0 +1,117 @@
+/* Custom styles for the Cart component */
+
+/* Container for the entire cart component */
+.cart-container {
+    padding: 20px;
+}
+
+/* Styling for product details section */
+.product-details {
+    margin-bottom: 20px;
+}
+
+/* Styling for each cart item */
+.cart-item {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f8f9fa; /* Light gray background color */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+}
+
+/* Styling for cart item image */
+.cart-item img {
+    max-width: 100px; /* Limit image width */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 4px;
+}
+
+/* Styling for cart item name */
+.cart-item h5 {
+    margin-bottom: 5px;
+}
+
+/* Styling for cart item price */
+.cart-item .text-muted {
+    font-size: 14px;
+}
+
+/* Styling for remove button */
+.remove-button {
+    width: 100%; /* Full-width button */
+}
+
+/* Styling for empty cart message */
+.empty-cart {
+    padding: 20px;
+    text-align: center;
+    font-size: 18px;
+    color: gray;
+}
+
+/* Styling for cart summary section */
+.cart-summary {
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+}
+
+/* Styling for cart summary header */
+.summary-header {
+    border-bottom: 1px solid #ddd; /* Bottom border */
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+/* Styling for cart summary content */
+.summary-content {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.textmute,.itemname{
+    font-size: 18px;
+}
+.itemname{
+    color: #c93535;
+}
+.textmute{
+    color: rgb(143, 143, 143);
+}
+.cartbutton{
+    margin: 10px;
+    padding: 10px;
+    width: 80%;
+    text-transform: capitalize;
+    background-color: #c93535;
+    color: white;
+    font-weight: 700;
+    font-size: 20px;
+    border: 0px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.4s ease-in-out;
+}
+.cartbutton:hover{
+    background-color: black;
+}
+.cartquantity{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid  rgb(143, 143, 143);
+    padding: 5px;
+}
+.cartquantity button{
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: rgb(143, 143, 143);
+    font-size: 10px;
+}
+.carttitle{
+    font-size: 50px;
+    margin-top: 40px;
+    font-weight: bolder;
+}

@@ -1,0 +1,13 @@
+#template-mo-zay-hero-carousel {
+  background-color: #efefef;
+}
+.text-decoration-none {
+  text-decoration: none !important;
+  color: #c93535 !important;
+  font-size: 40px !important;
+}
+.text-decoration-none:hover {
+  text-decoration: none !important;
+  color: #c93535;
+  font-size: 40px !important;
+}

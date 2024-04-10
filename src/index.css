@@ -1,20 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 :root {
   --main-color: #c93535;
   --secondary-color: #fff;
   --font-main-color: #000;
-  --font-secondary-color-one: #7A7A7A;
-  --font-secondary-color-two: #54595F;
-  --main-font-family: "Open Sans", sans-serif;  
+  --font-secondary-color-one: #7a7a7a;
+  --font-secondary-color-two: #54595f;
+  --main-font-family: "Open Sans", sans-serif;
   --secondary-font-family: "Montserrat", sans-serif;
 }
-
 
 h1,
 h2,
@@ -22,25 +20,22 @@ h3,
 h4,
 h5,
 h6,
-p{
-    color: var(--font-main-color);
-    font-family: var(--main-font-family);
+p {
+  color: var(--font-main-color);
+  font-family: var(--main-font-family);
 }
 
-
-img{
+img {
   display: inline-block;
   width: 100%;
 }
 
-a,ul,li{
+a,
+ul,
+li {
   text-decoration: none;
 }
-
-
-
 
 a:hover {
   color: var(--font-main-color);
 }
-

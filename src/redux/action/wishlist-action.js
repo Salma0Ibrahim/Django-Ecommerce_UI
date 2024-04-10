@@ -1,9 +1,9 @@
 import { GET_WISHLIST , ADD_TO_WISHLIST , REMOVE_FROM_WISHLIST } from "../constant/wishlist-constant";
 import axios from "axios";
 
-export const getWishlistAction = () => async dispatch => {
+export const getWishlistAction = (customerId) => async dispatch => {
     try {
-        const response = await axios.get('http://localhost:8000/wishlist/')
+        const response = await axios.get(`http://localhost:8000/cart/searchcustomerwishlists/${customerId}/`)
         dispatch({type:GET_WISHLIST , payload : response.data})
     } catch (error) {
         console.log("get wishlist error : " , error)
