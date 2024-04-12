@@ -1,28 +1,34 @@
-import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
-
-import Home from "./user/home";
-import Navbar from "../components/navbar";
-import Footer from "../components/footer";
-import Signup from "./user/signup";
-import Order from "./user/order";
-import Login from "./user/login";
-import ProductDetails from "./user/product-details";
-import Cart from "./user/cart";
-import UserProfile from "./user/user-profile";
-import Wishlist from "./user/wishlist";
-import ProductsPage from "./user/product/products";
+import React from 'react';
+import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
+import Home from './user/home';
+import Product from './user/product';
+import Navbar from '../components/navbar';
+import Footer from '../components/footer';
+import Signup from './user/signup';
+import Order from './user/order';
+import Login from './user/login';
+import ProductDetails from './user/product-details';
+import Cart from './user/cart';
+import UserProfile from './user/user-profile';
+import Wishlist from './user/wishlist';
+import { jwtDecode } from 'jwt-decode';
 
 const isAuthenticated = (role) => {
-  // if(role === 'user'){
-  //     //! will get cookie and decode it and check if it is admin or
-  // }
-
-  return true;
+  if (role === 'user') {
+    if (localStorage.getItem('jwt') === null) return false;
+    const decoded = jwtDecode(localStorage.getItem('jwt'));
+    if (decoded?.is_superuser === false) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 };
 
 const UserLayoutAuth = () => {
-  if (!isAuthenticated("user")) {
-    return <Navigate to="/signup" />;
+  console.log(isAuthenticated('user'));
+  if (!isAuthenticated('user')) {
+    return <Navigate to="/login" />;
   }
 
   return (
@@ -57,8 +63,8 @@ const router = createBrowserRouter([
     element: <UserLayoutAuth />,
     children: [
       {
-        element: <ProductsPage />,
-        path: "/products",
+        element: <Product />,
+        path: '/products',
       },
       {
         element: <ProductDetails />,
@@ -67,19 +73,19 @@ const router = createBrowserRouter([
 
       {
         element: <Cart />,
-        path: "/cart",
+        path: '/cart',
       },
       {
         element: <Order />,
-        path: "/order",
+        path: '/order',
       },
       {
         element: <Wishlist />,
-        path: "/wishlist",
+        path: '/wishlist',
       },
       {
         element: <UserProfile />,
-        path: "/user-profile",
+        path: '/user-profile',
       },
     ],
   },
@@ -89,11 +95,11 @@ const router = createBrowserRouter([
     children: [
       {
         element: <Home />,
-        path: "/",
+        path: '/',
       },
       {
         element: <Home />,
-        path: "/home",
+        path: '/home',
       },
     ],
   },
@@ -103,12 +109,12 @@ const router = createBrowserRouter([
     children: [
       {
         element: <Signup />,
-        path: "/signup",
+        path: '/signup',
       },
 
       {
         element: <Login />,
-        path: "/login",
+        path: '/login',
       },
     ],
   },

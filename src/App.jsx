@@ -10,14 +10,13 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import OrderDetails from "./components/Receipt/Receipt";
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <> 
       <RouterProvider router={router} />
       {/* <OrderDetails /> */}
     </>
-  );
+  )
 }
 
 export default App;
