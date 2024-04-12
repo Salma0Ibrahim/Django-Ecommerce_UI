@@ -9,7 +9,7 @@ import {
 const INITIAL_STATE = {
   shipments: [],
   loading: false,
-  error: null, // Initialize error as null instead of an empty string
+  error: null,
 };
 
 const shipment = createSlice({
@@ -69,9 +69,9 @@ const shipment = createSlice({
         );
         if (index !== -1) {
           state.shipments = [
-            ...state.shipments.slice(0, index), // Copy the shipments before the updated one
-            updatedShipment, // Insert the updated shipment
-            ...state.shipments.slice(index + 1), // Copy the shipments after the updated one
+            ...state.shipments.slice(0, index),
+            updatedShipment,
+            ...state.shipments.slice(index + 1),
           ];
         }
       })

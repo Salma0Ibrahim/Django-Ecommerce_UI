@@ -1,29 +1,45 @@
-import { GET_WISHLIST , ADD_TO_WISHLIST , REMOVE_FROM_WISHLIST } from "../constant/wishlist-constant";
-import axios from "axios";
+import {
+  GET_WISHLIST,
+  ADD_TO_WISHLIST,
+  REMOVE_FROM_WISHLIST,
+} from "../constant/wishlist-constant";
+import {
+  getWishlist,
+  addToWishlist,
+  removeFromWishlist,
+} from "../apis/wishlist-apis";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getWishlistAction = (customerId) => async dispatch => {
+export const getWishlistAction = createAsyncThunk(
+  GET_WISHLIST,
+  async (customerId) => {
     try {
-        const response = await axios.get(`http://localhost:8000/cart/searchcustomerwishlists/${customerId}/`)
-        dispatch({type:GET_WISHLIST , payload : response.data})
+      const response = await getWishlist(customerId);
+      return response;
     } catch (error) {
-        console.log("get wishlist error : " , error)
+      console.log(error);
     }
-}
+  }
+);
 
-export const addToWishlistAction = (formdata) => async dispatch => {
+export const addToWishlistAction = createAsyncThunk(
+  ADD_TO_WISHLIST,
+  async (formdata) => {
     try {
-        const response = await axios.post('http://localhost:8000/wishlist/',formdata)
-        dispatch({type:ADD_TO_WISHLIST , payload : response.data})
+      const response = await addToWishlist(formdata);
+      return response.data;
     } catch (error) {
-        console.log("add to wishlist error is = ",error)
+      console.log(error);
     }
-}
+  }
+);
 
-export const removeFromWishlistAction = wishlistId => async dispatch => {
+export const removeFromWishlistAction = createAsyncThunk(REMOVE_FROM_WISHLIST, async (wishlistId) => {
     try {
-        await axios.delete(`http://localhost:8000/wishlist/${wishlistId}/`);
-        dispatch({ type: REMOVE_FROM_WISHLIST, payload: wishlistId });
+        await removeFromWishlist(wishlistId)
+        return wishlistId;
     } catch (error) {
-        console.log("delete from wishlist error is = ", error);
+        console.log(error);
     }
-}
+})
+

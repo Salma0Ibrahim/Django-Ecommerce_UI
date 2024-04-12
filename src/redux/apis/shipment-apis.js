@@ -1,7 +1,7 @@
 import axiosInstance from '../../apis/config';
 
 export const getShipments = () => {
-  return axiosInstance.get('/shipment/');
+  return axiosInstance.get(`/shipment/`);
 }
 
 export const addShipment = (data) => {

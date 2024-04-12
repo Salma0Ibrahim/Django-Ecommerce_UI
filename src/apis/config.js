@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // decode the logged in user
-const token = localStorage.getItem('jwt')
+const token = localStorage.getItem('token')
 function parseJwt(token) {
   if (!token) {
     return;
@@ -29,6 +29,7 @@ console.log(user.id)
 const axiosInstance = axios.create({
   baseURL: "http://127.0.0.1:8000",
   headers: {
+    Authorization :`Bearer ${token}`,
     "Content-Type": "application/json",
     // withCredentials: true,
     // Authorization: `jwt=${getToken()};`
@@ -40,7 +41,9 @@ axiosInstance.interceptors.request.use(
     // if (token) {
     //   config.headers.Authorization = `${token}`;
     // }
+    
     config.data = {...config.data, user:user.id}
+    console.log("123",config.data)
     return config;
   },
   (error) => {

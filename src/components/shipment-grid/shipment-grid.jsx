@@ -32,6 +32,7 @@ export default function DataTable() {
 
   useEffect(() => {
     dispatch(fetchShipment());
+    console.log(shipments);
   }, [dispatch]);
 
   const handleDelete = (id) => {
