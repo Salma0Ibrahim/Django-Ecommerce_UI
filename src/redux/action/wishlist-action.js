@@ -2,13 +2,13 @@ import {
   GET_WISHLIST,
   ADD_TO_WISHLIST,
   REMOVE_FROM_WISHLIST,
-} from "../constant/wishlist-constant";
+} from '../constant/wishlist-constant';
 import {
   getWishlist,
   addToWishlist,
   removeFromWishlist,
-} from "../apis/wishlist-apis";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+} from '../apis/wishlist-apis';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getWishlistAction = createAsyncThunk(
   GET_WISHLIST,
@@ -19,7 +19,7 @@ export const getWishlistAction = createAsyncThunk(
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const addToWishlistAction = createAsyncThunk(
@@ -31,15 +31,17 @@ export const addToWishlistAction = createAsyncThunk(
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
-export const removeFromWishlistAction = createAsyncThunk(REMOVE_FROM_WISHLIST, async (wishlistId) => {
+export const removeFromWishlistAction = createAsyncThunk(
+  REMOVE_FROM_WISHLIST,
+  async (wishlistId) => {
     try {
-        await removeFromWishlist(wishlistId)
-        return wishlistId;
+      await removeFromWishlist(wishlistId);
+      return wishlistId;
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-})
-
+  },
+);

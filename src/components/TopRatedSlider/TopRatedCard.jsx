@@ -10,13 +10,13 @@ function StarRating({ rating }) {
       stars.push(
         <span key={i} style={{ color: "gold", fontSize: "24px" }}>
           ★
-        </span>
+        </span>,
       );
     } else {
       stars.push(
         <span key={i} style={{ color: "gray", fontSize: "24px" }}>
           ★
-        </span>
+        </span>,
       );
     }
   }

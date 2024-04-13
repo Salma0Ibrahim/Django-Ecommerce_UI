@@ -2,12 +2,8 @@ import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from './store/index.js';
-import ReactDOM from "react-dom";
-import React from "react";
-import App from "./App.jsx";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Provider } from "react-redux";
+import store from './redux/index.js';
+import React from 'react';
 // import store from "../src/redux/store/store.js";
 import store from '../src/redux/index.js'
 import "bootstrap/dist/css/bootstrap.min.css";

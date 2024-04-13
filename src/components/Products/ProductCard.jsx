@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Badge from "react-bootstrap/Badge";
-import styles from "./style.module.css";
-import { FaShoppingCart } from "react-icons/fa";
-import { IoPricetags } from "react-icons/io5";
-import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
-import { IoEyeOutline } from "react-icons/io5";
-import decodeToken from "../../redux/action/decodeToken";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Badge from 'react-bootstrap/Badge';
+import styles from './style.module.css';
+import { FaShoppingCart } from 'react-icons/fa';
+import { IoPricetags } from 'react-icons/io5';
+import { MdFavoriteBorder, MdFavorite } from 'react-icons/md';
+import { IoEyeOutline } from 'react-icons/io5';
+import decodeToken from '../../redux/action/decodeToken';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   addToWishlistAction,
   getWishlistAction,
   removeFromWishlistAction,
-} from "../../redux/action/wishlist-action";
-import { useNavigate } from "react-router-dom";
+} from '../../redux/action/wishlist-action';
+import { useNavigate } from 'react-router-dom';
 import {
   getCartItemsAction,
   addcartitemAction,
@@ -60,7 +60,7 @@ function ProductCard({ product }) {
 
   useEffect(() => {
     const checkToken = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       if (token) {
         const decodedToken = decodeToken(token);
         const userId = decodedToken.id;
@@ -68,7 +68,7 @@ function ProductCard({ product }) {
 
         try {
           const response = await axios.get(
-            `http://localhost:8000/cart/searchcustomercart/${userId}/`
+            `http://localhost:8000/cart/searchcustomercart/${userId}/`,
           );
           if (response.data.length > 0 && response.data[0].id) {
             const cartId = response.data[0].id;
@@ -76,8 +76,8 @@ function ProductCard({ product }) {
             dispatch(getCartItemsAction(cartId));
           } else {
             const newCartResponse = await axios.post(
-              "http://localhost:8000/cart/",
-              { customer_id: userId }
+              'http://localhost:8000/cart/',
+              { customer_id: userId },
             );
             if (newCartResponse.data && newCartResponse.data.id) {
               const newCartId = newCartResponse.data.id;
@@ -85,15 +85,15 @@ function ProductCard({ product }) {
               dispatch(getCartItemsAction(newCartId));
             } else {
               console.error(
-                "Error creating new cart: Response data or cart ID is undefined."
+                'Error creating new cart: Response data or cart ID is undefined.',
               );
             }
           }
         } catch (error) {
-          console.error("Error fetching or creating cart:", error);
+          console.error('Error fetching or creating cart:', error);
         }
       } else {
-        console.log("Token does not exist");
+        console.log('Token does not exist');
         // Redirect to login or handle the absence of token
       }
     };
@@ -105,14 +105,14 @@ function ProductCard({ product }) {
     e.preventDefault();
 
     if (!customer_id) {
-      navigate("/signup");
+      navigate('/login');
       return;
     }
 
     if (isInWishlist) {
       if (wishlists && wishlists.length > 0) {
         const wishlistItem = wishlists.find(
-          (item) => item.product_id === productId
+          (item) => item.product_id === productId,
         );
         if (wishlistItem) {
           dispatch(removeFromWishlistAction(wishlistItem.id));
@@ -137,7 +137,7 @@ function ProductCard({ product }) {
   useEffect(() => {
     if (cart_id !== null) {
       const exist = cartitems.some(
-        (item) => item.product_id === product?.id && item.cart_id === cart_id
+        (item) => item.product_id === product?.id && item.cart_id === cart_id,
       );
       setIsInCart(exist);
     }
@@ -155,12 +155,13 @@ function ProductCard({ product }) {
       // Ensure cartitems is defined and not empty before searching for a cart item
       if (cartitems && cartitems.length > 0) {
         const cartItem = cartitems.find(
-          (item) => item.product_id === productId && item.cart_id === cart_id
+          (item) => item.product_id === productId && item.cart_id === cart_id,
         );
         if (cartItem) {
           dispatch(removecartitemAction(cartItem.id));
           toast.success("Item Removed From Cart 😃");
         } else {
+          console.log(555555555555555555555555555, data);
           dispatch(addcartitemAction(data));
           toast.success("Item Added To Cart 😃");
         }
@@ -169,7 +170,7 @@ function ProductCard({ product }) {
         toast.success("Item Added To Cart 😃");
       }
     } else {
-      navigate("/signup");
+      navigate('/login');
     }
   };
 

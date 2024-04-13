@@ -7,9 +7,9 @@ import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import SweetAlert from '../../../components/alert';
-import { getUsersListThunk } from '../../../store/slices/userApi';
+import { getUsersListThunk } from '../../../redux/apis/userApi';
 import { useForm } from 'react-hook-form';
-import { addUserInfo } from '../../../store/slices/userSlice';
+import { addUserInfo } from '../../../redux/slices/userSlice';
 import Payment from '../../../components/payment/payment';
 Payment;
 const UserProfile = () => {
@@ -29,10 +29,14 @@ const UserProfile = () => {
   const updateMyProfile = () => {
     setWantUpdate(false);
   };
-  useEffect(async () => {
+  const fetchData = async () => {
     const res = await dispatch(getUsersListThunk());
     setMyImage(res.payload.image);
     dispatch(addUserInfo(res.payload));
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const handleImageUpdate = (data) => {

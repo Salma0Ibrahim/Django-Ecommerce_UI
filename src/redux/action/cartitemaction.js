@@ -3,14 +3,14 @@ import {
   ADD_CARTITEM,
   REMOVE_CARTITEM,
   UPDATE_CARTITEM_QUANTITY,
-} from "../constant/cartitemsconstant";
+} from '../constant/cartitemsconstant';
 import {
   getCartItem,
   addCartItem,
   removeCartItem,
   updateCartItem,
-} from "../apis/cartItem-apis";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+} from '../apis/cartItem-apis';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getCartItemsAction = createAsyncThunk(
   GET_CARTITEMS,
@@ -21,7 +21,7 @@ export const getCartItemsAction = createAsyncThunk(
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const addcartitemAction = createAsyncThunk(
@@ -30,10 +30,11 @@ export const addcartitemAction = createAsyncThunk(
     try {
       const response = await addCartItem(formdata);
       return response;
+      return response;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const removecartitemAction = createAsyncThunk(
@@ -45,7 +46,7 @@ export const removecartitemAction = createAsyncThunk(
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const updatecartitemAction = createAsyncThunk(

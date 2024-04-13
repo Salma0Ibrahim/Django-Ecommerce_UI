@@ -9,7 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
-import { addUserInfo } from '../../../store/slices/userSlice';
+import { addUserInfo } from '../../../redux/slices/userSlice';
 // axios.defaults.xsrfCookieName = 'csrftoken';
 // axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 // axios.defaults.withCredentials = true;

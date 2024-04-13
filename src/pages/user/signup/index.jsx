@@ -47,7 +47,12 @@ const Signup = () => {
       .catch((error) => {
         console.error(error);
         setAlertStatus('error');
-        setAlertMessage(error.response.data.error);
+        setAlertMessage(
+          error.response?.data.phone[0] ||
+            error.response?.data.detail ||
+            error.response.data.email[0] ||
+            'Internal Server Error !',
+        );
         setShowAlert(true);
       });
   };

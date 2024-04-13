@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import style from "./style.module.css";
-import { Link } from "react-router-dom";
-import "./navbar.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useEffect } from 'react';
+import style from './style.module.css';
+import { Link } from 'react-router-dom';
+import './navbar.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faShieldHeart,
   faUserPlus,

@@ -1,24 +1,26 @@
-import React, { useState, useEffect } from "react";
-import Slider from "react-slick";
-import { axiosInstance } from "../../apis/congif";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "./productsSlider.css";
-import TopRatedCard from "./TopRatedCard";
+import React, { useState, useEffect } from 'react';
+import Slider from 'react-slick';
+import { axiosInstance } from '../../apis/congif';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import './productsSlider.css';
+import TopRatedCard from './TopRatedCard';
 
 function ProductsSlider() {
   const [productsList, setProductsList] = useState([]);
 
   useEffect(() => {
     let params = {
-      order_by_rating: "desc",
+      order_by_rating: 'desc',
     };
 
     axiosInstance
-      .get("products/", {
+      .get('products/', {
         params: params,
       })
       .then((res) => {
+        console.log(res);
+
         setProductsList(res.data.results);
       })
       .catch((error) => {
