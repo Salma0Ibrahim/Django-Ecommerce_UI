@@ -4,15 +4,13 @@ import axios from 'axios';
 import SweetAlert from '../../../components/alert';
 import './style.css';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
+
 import { addUserInfo } from '../../../redux/slices/userSlice';
-// axios.defaults.xsrfCookieName = 'csrftoken';
-// axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-// axios.defaults.withCredentials = true;
+
 const Login = () => {
   const dispatch = useDispatch();
   const [showAlert, setShowAlert] = useState(false);
@@ -37,7 +35,7 @@ const Login = () => {
       .then((response) => {
         const decoded = jwtDecode(response.data.token);
         if (decoded?.is_superuser === false) navigate('/user-profile');
-        localStorage.setItem('jwt', response.data.token);
+        localStorage.setItem('token', response.data.token);
         console.log(response);
         dispatch(addUserInfo(response.data.user_info));
       })

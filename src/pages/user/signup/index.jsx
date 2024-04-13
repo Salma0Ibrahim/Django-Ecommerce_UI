@@ -5,12 +5,14 @@ import './signup.css';
 import SweetAlert from '../../../components/alert';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const [fileName, setFileName] = useState('No file chosen');
   const [showAlert, setShowAlert] = useState(false);
   const [alertStatus, setAlertStatus] = useState('success');
   const [alertMessage, setAlertMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -43,15 +45,17 @@ const Signup = () => {
         setAlertStatus('success');
         setAlertMessage('Account created successfully!');
         setShowAlert(true);
+        navigate('/login');
       })
       .catch((error) => {
         console.error(error);
         setAlertStatus('error');
         setAlertMessage(
-          error.response?.data.phone[0] ||
-            error.response?.data.detail ||
-            error.response.data.email[0] ||
-            'Internal Server Error !',
+          error.response?.data.phone
+            ? error.response?.data.phone[0]
+            : false || error.response?.data.detail || error.response.data.email
+              ? error.response.data.email[0]
+              : false || 'Internal Server Error !',
         );
         setShowAlert(true);
       });

@@ -1,3 +1,4 @@
+
 .mypencil{
     /* position: absolute; */
     
@@ -7,7 +8,7 @@
     cursor: pointer;
     font-size: 12px;
 }
-a{
+.myLink{
     text-decoration: none !important;
     color:#9a5b65 !important;
 }
@@ -28,7 +29,7 @@ a{
     justify-content: center;
     align-items: center;
     bottom: 25%;
-    right:21%;
+    right:8%;
     position: absolute;
     background-color: #9a5b65;
     padding: 5px;

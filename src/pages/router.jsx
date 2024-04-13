@@ -15,8 +15,8 @@ import { jwtDecode } from 'jwt-decode';
 
 const isAuthenticated = (role) => {
   if (role === 'user') {
-    if (localStorage.getItem('jwt') === null) return false;
-    const decoded = jwtDecode(localStorage.getItem('jwt'));
+    if (localStorage.getItem('token') === null) return false;
+    const decoded = jwtDecode(localStorage.getItem('token'));
     if (decoded?.is_superuser === false) {
       return true;
     } else {

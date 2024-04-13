@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { axiosInstance } from "../../apis/congif";
-import ProductCard from "./ProductCard";
-import CardLoader from "../cardLoader/cardLoader";
-import Pagination from "../pagination/pagination";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { axiosInstance } from '../../apis/congif';
+import ProductCard from './ProductCard';
+import CardLoader from '../cardLoader/cardLoader';
+import Pagination from '../pagination/pagination';
+import { useSelector } from 'react-redux';
 
 export default function ProductsList({ selectedCategory, selectedRating }) {
   const [productsList, setProductsList] = useState([]);
@@ -30,7 +30,7 @@ export default function ProductsList({ selectedCategory, selectedRating }) {
     }
 
     axiosInstance
-      .get("products/", {
+      .get('products/', {
         params: params,
       })
       .then((res) => {
@@ -63,12 +63,12 @@ export default function ProductsList({ selectedCategory, selectedRating }) {
         </div>
       ) : productsList.length === 0 ? (
         <div className="row">
-          <div className="col text-center" style={{ height: "60vh" }}>
+          <div className="col text-center" style={{ height: '60vh' }}>
             <div className="d-flex justify-content-center align-items-center ">
               <img
                 src="src/assets/product-not-found.png"
                 alt="No products found"
-                style={{ maxWidth: "50%", maxHeight: "60%" }}
+                style={{ maxWidth: '50%', maxHeight: '60%' }}
               />
             </div>
           </div>

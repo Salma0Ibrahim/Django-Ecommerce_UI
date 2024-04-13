@@ -48,7 +48,7 @@ const UserProfile = () => {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'X-CSRFToken': localStorage.getItem('jwt'),
+          'X-CSRFToken': localStorage.getItem('token'),
         },
       })
       .then((response) => {
@@ -164,21 +164,21 @@ const UserProfile = () => {
               </h2>
               <a
                 href="#"
-                className="flex items-center px-3 py-2.5 font-semibold hover:text-[#9a5b65] hover:border hover:rounded-full active:text-[#9a5b65] active:border active:rounded-full donot-center"
+                className="flex myLink items-center px-3 py-2.5 font-semibold hover:text-[#9a5b65] hover:border hover:rounded-full active:text-[#9a5b65] active:border active:rounded-full donot-center"
                 onClick={handleComponentAppear}
               >
                 Pubic Profile
               </a>
               <a
                 href="#"
-                className="flex items-center px-3 py-2.5 font-semibold  hover:text-[#9a5b65] hover:border hover:rounded-full"
+                className="flex items-center  myLink px-3 py-2.5 font-semibold  hover:text-[#9a5b65] hover:border hover:rounded-full"
                 onClick={handleComponentAppear}
               >
                 Shipment Details
               </a>
               <a
                 href="#"
-                className="flex items-center px-3 py-2.5 font-semibold hover:text-[#9a5b65] hover:border hover:rounded-full active:text-[#9a5b65] active:border active:rounded-full  "
+                className="flex items-center myLink px-3 py-2.5 font-semibold hover:text-[#9a5b65] hover:border hover:rounded-full active:text-[#9a5b65] active:border active:rounded-full  "
                 onClick={handleComponentAppear}
               >
                 Payment Details

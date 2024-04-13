@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
-import styles from './style.module.css';
+import './style.css';
 import { FaShoppingCart } from 'react-icons/fa';
 import { IoPricetags } from 'react-icons/io5';
 import { MdFavoriteBorder, MdFavorite } from 'react-icons/md';
@@ -20,8 +20,8 @@ import {
   getCartItemsAction,
   addcartitemAction,
   removecartitemAction,
-} from "../../redux/action/cartitemaction";
-import { toast } from "react-toastify";
+} from '../../redux/action/cartitemaction';
+import { toast } from 'react-toastify';
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
@@ -34,15 +34,15 @@ function ProductCard({ product }) {
     for (let i = 1; i <= 5; i++) {
       if (i <= rating) {
         stars.push(
-          <span key={i} style={{ color: "gold", fontSize: "26px" }}>
+          <span key={i} style={{ color: 'gold', fontSize: '26px' }}>
             &#9733;
-          </span>
+          </span>,
         ); // Full star
       } else {
         stars.push(
-          <span key={i} style={{ color: "gold", fontSize: "26px" }}>
+          <span key={i} style={{ color: 'gold', fontSize: '26px' }}>
             &#9734;
-          </span>
+          </span>,
         ); // Empty star
       }
     }
@@ -116,7 +116,7 @@ function ProductCard({ product }) {
         );
         if (wishlistItem) {
           dispatch(removeFromWishlistAction(wishlistItem.id));
-          toast.success("Item Removed From Wishlist 😃");
+          toast.success('Item Removed From Wishlist 😃');
         }
       }
     } else {
@@ -126,7 +126,7 @@ function ProductCard({ product }) {
         product_id: productId,
       };
       dispatch(addToWishlistAction(data));
-      toast.success("Item Added To Wishlist 😃");
+      toast.success('Item Added To Wishlist 😃');
     }
   };
 
@@ -159,15 +159,15 @@ function ProductCard({ product }) {
         );
         if (cartItem) {
           dispatch(removecartitemAction(cartItem.id));
-          toast.success("Item Removed From Cart 😃");
+          toast.success('Item Removed From Cart 😃');
         } else {
-          console.log(555555555555555555555555555, data);
           dispatch(addcartitemAction(data));
-          toast.success("Item Added To Cart 😃");
+          console.log('5555555555555555555555555555555555555555555');
+          toast.success('Item Added To Cart 😃');
         }
       } else {
         dispatch(addcartitemAction(data));
-        toast.success("Item Added To Cart 😃");
+        toast.success('Item Added To Cart 😃');
       }
     } else {
       navigate('/login');
@@ -175,31 +175,23 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className={styles.productcard}>
+    <div className={productcard}>
       <form
         onSubmit={(e) => handleAddToWishlist(e, product.id)}
-        style={{ height: "1px" }}
+        style={{ height: '1px' }}
       >
         <input type="hidden" name="product_id" value={product.id} readOnly />
         <button className="border-0 bg-none">
           {isInWishlist ? (
-            <MdFavorite
-              className={`${styles.icon} ${styles.favoriteIcon}`}
-              onMouseEnter={() => setIsFavoriteHovered(true)}
-              onMouseLeave={() => setIsFavoriteHovered(false)}
-            />
+            <MdFavorite className={`${icon} ${favoriteIcon}`} />
           ) : (
-            <MdFavoriteBorder
-              className={`${styles.icon} ${styles.favoriteIcon}`}
-              onMouseEnter={() => setIsFavoriteHovered(true)}
-              onMouseLeave={() => setIsFavoriteHovered(false)}
-            />
+            <MdFavoriteBorder className={`${icon} ${favoriteIcon}`} />
           )}
         </button>
       </form>
 
       <IoEyeOutline
-        className={`${styles.icon} ${styles.eyeIcon}`}
+        className={`${icon} ${eyeIcon}`}
         onMouseEnter={() => setIsEyeHovered(true)}
         onMouseLeave={() => setIsEyeHovered(false)}
         onClick={() => redirectToDetails(product.id)}
@@ -208,26 +200,26 @@ function ProductCard({ product }) {
       <Card.Img
         variant="top"
         src={product.thumbnail_url}
-        className={styles.cardImage}
+        className={cardImage}
       />
 
-      <div className={styles.cardBody}>
-        <Card.Title className={styles.cardTitle}>{product.name}</Card.Title>
+      <div className={cardBody}>
+        <Card.Title className={cardTitle}>{product.name}</Card.Title>
 
-        <div className={styles.priceRectangle}>
-          <IoPricetags className={styles.priceIcon} />${product.price}
+        <div className={priceRectangle}>
+          <IoPricetags className={priceIcon} />${product.price}
         </div>
 
-        <div className={styles.rating}>
+        <div className={rating}>
           {renderStars(product.rating)} ({product.rating})
         </div>
 
         <Button
           variant="primary"
-          className={styles.customButton}
+          className={customButton}
           onClick={() => AddCartitemSubmit(product.id)}
         >
-          <FaShoppingCart className={styles.cartIcon} />
+          <FaShoppingCart className={cartIcon} />
           {isInCart ? (
             <span>&nbsp; remove from cart</span>
           ) : (
