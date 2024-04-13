@@ -11,7 +11,7 @@ function parseJwt(token) {
   return JSON.parse(window.atob(base64));
 }
 const user = parseJwt(token)
-console.log(user.id)
+// console.log(user.id)
 
 
 // Function to retrieve the token from a cookie

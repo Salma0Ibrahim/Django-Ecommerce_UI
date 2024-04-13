@@ -12,6 +12,8 @@ import {
   addcartitemAction,
   removecartitemAction,
 } from "../../../redux/action/cartitemaction";
+import { toast } from 'react-toastify';
+
 
 import "./index.css";
 
@@ -111,8 +113,10 @@ const ProductDetails = () => {
       );
       if (cartItem) {
         dispatch(removecartitemAction(cartItem.id));
+        toast.success("the item removed from cart..")
       } else {
         dispatch(addcartitemAction(data));
+        toast.success("the item added in your cart..")
       }
     } else {
       navigate("/signup");
