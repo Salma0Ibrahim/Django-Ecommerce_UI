@@ -21,16 +21,13 @@ import {
   addcartitemAction,
   removecartitemAction,
 } from "../../redux/action/cartitemaction";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 function ProductCard({ product }) {
   const navigate = useNavigate();
   const redirectToDetails = (id) => {
     navigate(`/product-details/${id}`);
   };
-  const [isFavoriteHovered, setIsFavoriteHovered] = useState(false);
-  const [isEyeHovered, setIsEyeHovered] = useState(false);
 
   const renderStars = (rating) => {
     const stars = [];
@@ -119,6 +116,7 @@ function ProductCard({ product }) {
         );
         if (wishlistItem) {
           dispatch(removeFromWishlistAction(wishlistItem.id));
+          toast.success("Item Removed From Wishlist 😃");
         }
       }
     } else {
@@ -128,7 +126,7 @@ function ProductCard({ product }) {
         product_id: productId,
       };
       dispatch(addToWishlistAction(data));
-      toast.success("you added item in your wishlist 😃");
+      toast.success("Item Added To Wishlist 😃");
     }
   };
 
@@ -161,12 +159,14 @@ function ProductCard({ product }) {
         );
         if (cartItem) {
           dispatch(removecartitemAction(cartItem.id));
+          toast.success("Item Removed From Cart 😃");
         } else {
           dispatch(addcartitemAction(data));
+          toast.success("Item Added To Cart 😃");
         }
       } else {
         dispatch(addcartitemAction(data));
-        toast.success("you added item in your cart 😃");
+        toast.success("Item Added To Cart 😃");
       }
     } else {
       navigate("/signup");

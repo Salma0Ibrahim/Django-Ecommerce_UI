@@ -18,6 +18,7 @@ import { getCartItemsAction } from "../../redux/action/cartitemaction";
 import decodeToken from "../../redux/action/decodeToken";
 import axios from "axios";
 import { Dropdown } from "react-bootstrap";
+import { setSearchValue } from "../../redux/slices/searchReducer";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -36,7 +37,7 @@ const Navbar = () => {
   const { cartitems } = useSelector((state) => state.cartitems);
   const [cart_id, setCartId] = useState(null);
   const [customer_id, setCustomerId] = useState(null);
-  const [searchValue, setSearchValue] = useState("");
+  const searchValue = useSelector((state) => state.search.searchValue); // Get the searchValue from Redux
 
   useEffect(() => {
     const checkToken = async () => {
@@ -129,7 +130,7 @@ const Navbar = () => {
               className="form-control"
               placeholder="search...."
               value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
+              onChange={(e) => dispatch(setSearchValue(e.target.value))}
             />
             <button className="navbutton1" onClick={toggleMobileMenu}>
               <FontAwesomeIcon icon={faMagnifyingGlass} />

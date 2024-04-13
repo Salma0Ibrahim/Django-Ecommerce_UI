@@ -12,10 +12,10 @@ import {
   addcartitemAction,
   removecartitemAction,
 } from "../../../redux/action/cartitemaction";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 import "./index.css";
+import CardLoader from "../../../components/cardLoader/cardLoader";
 
 const ProductDetails = () => {
   const params = useParams();
@@ -113,17 +113,17 @@ const ProductDetails = () => {
       );
       if (cartItem) {
         dispatch(removecartitemAction(cartItem.id));
-        toast.success("the item removed from cart..")
+        toast.success("Item Removed From Cart 😃");
       } else {
         dispatch(addcartitemAction(data));
-        toast.success("the item added in your cart..")
+        toast.success("Item Added To Cart 😃");
       }
     } else {
       navigate("/signup");
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <CardLoader />;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
@@ -151,7 +151,9 @@ const ProductDetails = () => {
               </h4>
               <div className="d-flex flex-row my-3">
                 <div className="text-warning mb-1 me-2">
-                  <span className="ms-1 fw-bold">{product.rating} Stars</span>
+                  <span className="ms-1 fw-bold">
+                    Avg: {product.rating} Stars
+                  </span>
                 </div>
               </div>
               <div className="mb-4">

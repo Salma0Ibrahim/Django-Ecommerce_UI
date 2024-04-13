@@ -3,12 +3,14 @@ import { axiosInstance } from "../../apis/congif";
 import ProductCard from "./ProductCard";
 import CardLoader from "../cardLoader/cardLoader";
 import Pagination from "../pagination/pagination";
+import { useSelector } from "react-redux";
 
 export default function ProductsList({ selectedCategory, selectedRating }) {
   const [productsList, setProductsList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const searchValue = useSelector((state) => state.search.searchValue);
 
   useEffect(() => {
     let params = {
@@ -21,6 +23,10 @@ export default function ProductsList({ selectedCategory, selectedRating }) {
 
     if (selectedRating) {
       params = { ...params, rating: selectedRating };
+    }
+
+    if (searchValue) {
+      params = { ...params, name: searchValue };
     }
 
     axiosInstance
@@ -36,7 +42,7 @@ export default function ProductsList({ selectedCategory, selectedRating }) {
         console.log(error);
         setIsLoading(false);
       });
-  }, [selectedCategory, selectedRating, currentPage]);
+  }, [selectedCategory, selectedRating, currentPage, searchValue]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);

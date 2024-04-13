@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { getCartItemsAction, removecartitemAction, updatecartitemAction } from "../../../redux/action/cartitemaction";
-import axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getCartItemsAction,
+  removecartitemAction,
+  updatecartitemAction,
+} from "../../../redux/action/cartitemaction";
+import axios from "axios";
 import decodeToken from "../../../redux/action/decodeToken";
 import "./Cart.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { toast } from 'react-toastify';
-
+import { faXmark, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -90,15 +93,20 @@ const Cart = () => {
     }
   };
 
-    const updateCartItemQuantity = async (cartItemId,productId, newQuantity) => {
-        try {
-            const formdata = {id:1 , product_id:productId, quantity: newQuantity , cart_id:cart_id };
-            console.log("the form = ",formdata)
-            dispatch(updatecartitemAction({ cartItemId, formdata }));
-        } catch (error) {
-            console.log("Error updating cart item quantity:", error);
-        }
-    };
+  const updateCartItemQuantity = async (cartItemId, productId, newQuantity) => {
+    try {
+      const formdata = {
+        id: 1,
+        product_id: productId,
+        quantity: newQuantity,
+        cart_id: cart_id,
+      };
+      console.log("the form = ", formdata);
+      dispatch(updatecartitemAction({ cartItemId, formdata }));
+    } catch (error) {
+      console.log("Error updating cart item quantity:", error);
+    }
+  };
 
   const getTotalPrice = () => {
     return cartitemsProducts.reduce((total, cartItem) => {
@@ -111,76 +119,101 @@ const Cart = () => {
     }, 0);
   };
 
-    return (
-        <div className="cart-container">
-            <div className="text-center mx-4">
-                <h2 className="carttitle">Cart</h2>
-            </div>
-            <div className="row">
-                <div className="col-md-8">
-                    {/* Product Details Section */}
-                    <div className="product-details">
-                        {cartitemsProducts.length > 0 ? (
-                            cartitemsProducts.map((cartItem) => (
-                                <div className="cart-item" key={cartItem.id}>
-                                    {cartItem.productDetails && (
-                                        <div className="row" style={{ alignItems: "center" }}>
-                                            <div className="col-md-2">
-                                                <button
-                                                    onClick={() => {
-                                                        dispatch(removecartitemAction(cartItem.id));
-                                                        toast.success("the item removed from your card 👍🏼")
-                                                    }}
-                                                    className="wishlistitemremove"
-                                                >
-                                                    <FontAwesomeIcon className="wishlistitemremovechild" icon={faXmark} />
-                                                </button>
-                                            </div>
-                                            <div className="col-md-3">
-                                            <img src="https://i.pinimg.com/564x/56/78/bd/5678bdf9361dffbb932d143b333ff3e2.jpg" alt={cartItem.productDetails.name} className="img-fluid" />
-                                            </div>
-                                            <div className="col-md-2">
-                                                <h5 className="itemname">{cartItem.productDetails.name}</h5>
-                                            </div>
-                                            <div className="col-md-2">
-                                                <h5 className="textmute">${cartItem.productDetails.price}</h5>
-                                            </div>
-                                            <div className="col-md-2 cartquantity">
-                                                <button onClick={() => handleIncrementQuantity(cartItem.id,cartItem.productDetails.id)}>
-                                                    <FontAwesomeIcon icon={faPlus} />
-                                                </button>
-                                                <h5 className="textmute">{cartItem.quantity}</h5>
-                                                <button onClick={() => handleDecrementQuantity(cartItem.id,cartItem.productDetails.id)}>
-                                                    <FontAwesomeIcon icon={faMinus} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            ))
-                        ) : (
-                            <div className="empty-cart" style={{marginTop:'80px'}}>
-                                <p>No products in the cart.</p>
-                            </div>
-                        )}
+  return (
+    <div className="cart-container">
+      <div className="text-center mx-4">
+        <h2 className="carttitle">Cart</h2>
+      </div>
+      <div className="row">
+        <div className="col-md-8">
+          {/* Product Details Section */}
+          <div className="product-details">
+            {cartitemsProducts.length > 0 ? (
+              cartitemsProducts.map((cartItem) => (
+                <div className="cart-item" key={cartItem.id}>
+                  {cartItem.productDetails && (
+                    <div className="row" style={{ alignItems: "center" }}>
+                      <div className="col-md-2">
+                        <button
+                          onClick={() => {
+                            dispatch(removecartitemAction(cartItem.id));
+                            toast.success("the item removed from your card 👍🏼");
+                          }}
+                          className="wishlistitemremove"
+                        >
+                          <FontAwesomeIcon
+                            className="wishlistitemremovechild"
+                            icon={faXmark}
+                          />
+                        </button>
+                      </div>
+                      <div className="col-md-3">
+                        <img
+                          src={cartItem.productDetails.thumbnail_url}
+                          alt={cartItem.productDetails.name}
+                          className="img-fluid"
+                        />
+                      </div>
+                      <div className="col-md-2">
+                        <h5 className="itemname">
+                          {cartItem.productDetails.name}
+                        </h5>
+                      </div>
+                      <div className="col-md-2">
+                        <h5 className="textmute">
+                          ${cartItem.productDetails.price}
+                        </h5>
+                      </div>
+                      <div className="col-md-2 cartquantity">
+                        <button
+                          onClick={() =>
+                            handleIncrementQuantity(
+                              cartItem.id,
+                              cartItem.productDetails.id
+                            )
+                          }
+                        >
+                          <FontAwesomeIcon icon={faPlus} />
+                        </button>
+                        <h5 className="textmute">{cartItem.quantity}</h5>
+                        <button
+                          onClick={() =>
+                            handleDecrementQuantity(
+                              cartItem.id,
+                              cartItem.productDetails.id
+                            )
+                          }
+                        >
+                          <FontAwesomeIcon icon={faMinus} />
+                        </button>
+                      </div>
                     </div>
+                  )}
                 </div>
-                <div className="col-md-4">
-                    {/* Cart Summary Section */}
-                    <div className="cart-summary">
-                        <div className="summary-header">
-                            <h5>Cart Summary</h5>
-                        </div>
-                        <div className="summary-content">
-                            <p>Total Items: {cartitems.length}</p>
-                            <p>Total Price: ${getTotalPrice().toFixed(2)}</p>
-                            <button className="cartbutton">Make Order</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+              ))
+            ) : (
+              <div className="empty-cart" style={{ marginTop: "80px" }}>
+                <p>No products in the cart.</p>
+              </div>
+            )}
+          </div>
         </div>
-    );
+        <div className="col-md-4">
+          {/* Cart Summary Section */}
+          <div className="cart-summary">
+            <div className="summary-header">
+              <h5>Cart Summary</h5>
+            </div>
+            <div className="summary-content">
+              <p>Total Items: {cartitems.length}</p>
+              <p>Total Price: ${getTotalPrice().toFixed(2)}</p>
+              <button className="cartbutton">Make Order</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Cart;
