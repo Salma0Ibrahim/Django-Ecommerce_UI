@@ -1,11 +1,19 @@
 import "./HomeSlider.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from "react-bootstrap/Button";
+
 import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const HomeSlider = () => {
+  const navigate = useNavigate();
+
+  const redirectToProducts = (id) => {
+    navigate(`/products`);
+  };
   return (
     <>
       <div
@@ -31,31 +39,21 @@ const HomeSlider = () => {
                 </div>
                 <div className="col-lg-6 mb-0 d-flex align-items-center">
                   <div className="text-align-left align-self-center">
-                    <h1 className="h1 text-success">
-                      <b>Zay</b> eCommerce
+                    <h1 className="h1 " style={{ color: "#c93535" }}>
+                      <b>Electric</b> Products
                     </h1>
-                    <h3 className="h2">Tiny and Perfect eCommerce Template</h3>
+                    <h3 className="h2">Walk in Style, Everywhere You Go</h3>
                     <p>
-                      Zay Shop is an eCommerce HTML5 CSS template with latest
-                      version of Bootstrap 5 (beta 1). This template is 100%
-                      free provided by{" "}
-                      <a rel="sponsored" className="text-success" href="#">
-                        TemplateMo
-                      </a>{" "}
-                      website. Image credits go to{" "}
-                      <a rel="sponsored" className="text-success" href="#">
-                        Freepik Stories
-                      </a>
-                      ,
-                      <a rel="sponsored" className="text-success" href="#">
-                        Unsplash
-                      </a>{" "}
-                      and
-                      <a rel="sponsored" className="text-success" href="#">
-                        Icons 8
-                      </a>
-                      .
+                      See what you love, dream of more, and we'll bring it to
+                      your door.
                     </p>
+                    <Button
+                      className="customButton"
+                      style={{ color: "white" }}
+                      onClick={redirectToProducts}
+                    >
+                      Shop Now
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -73,15 +71,21 @@ const HomeSlider = () => {
                 </div>
                 <div className="col-lg-6 mb-0 d-flex align-items-center">
                   <div className="text-align-left">
-                    <h1 className="h1">Proident occaecat</h1>
-                    <h3 className="h2">Aliquip ex ea commodo consequat</h3>
+                    <h1 className="h1">Beauty and Skincare</h1>
+                    <h3 className="h2">
+                      Glow up with our skincare essentials.
+                    </h3>
                     <p>
-                      You are permitted to use this Zay CSS template for your
-                      commercial websites. You are{" "}
-                      <strong>not permitted</strong> to re-distribute the
-                      template ZIP file in any kind of template collection
-                      websites.
+                      Find products that bring out your natural beauty. Shop now
+                      and let your inner glow shine!
                     </p>
+                    <Button
+                      className="customButton"
+                      style={{ color: "white" }}
+                      onClick={redirectToProducts}
+                    >
+                      Shop Now
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -99,14 +103,21 @@ const HomeSlider = () => {
                 </div>
                 <div className="col-lg-6 mb-0 d-flex align-items-center">
                   <div className="text-align-left">
-                    <h1 className="h1">Repr in voluptate</h1>
-                    <h3 className="h2">Ullamco laboris nisi ut </h3>
+                    <h1 className="h1">Home and Living</h1>
+                    <h3 className="h2">
+                      Elevate your living space with our decor.{" "}
+                    </h3>
                     <p>
-                      We bring you 100% free CSS templates for your websites. If
-                      you wish to support TemplateMo, please make a small
-                      contribution via PayPal or tell your friends about our
-                      website. Thank you.
+                      Shop now and find home essentials that enhance comfort and
+                      convenience. Make life cozier
                     </p>
+                    <Button
+                      className="customButton"
+                      style={{ color: "white" }}
+                      onClick={redirectToProducts}
+                    >
+                      Shop Now
+                    </Button>
                   </div>
                 </div>
               </div>

@@ -3,86 +3,92 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCartItemsAction, removecartitemAction, updatecartitemAction } from "../../../redux/action/cartitemaction";
 import axios from 'axios';
 import decodeToken from "../../../redux/action/decodeToken";
-import './Cart.css';
+import "./Cart.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 
 
 const Cart = () => {
-    const dispatch = useDispatch();
-    const { cartitems } = useSelector(state => state.cartitems);
-    const [cart_id, setCartId] = useState(null);
-    const [cartitemsProducts, setCartItemsProducts] = useState([]);
+  const dispatch = useDispatch();
+  const { cartitems } = useSelector((state) => state.cartitems);
+  const [cart_id, setCartId] = useState(null);
+  const [cartitemsProducts, setCartItemsProducts] = useState([]);
 
-    useEffect(() => {
-        const checkToken = async () => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                const decodedToken = decodeToken(token);
-                const userId = decodedToken.id;
-                try {
-                    const response = await axios.get(`http://localhost:8000/cart/searchcustomercart/${userId}/`);
-                    if (response.data.length > 0 && response.data[0].id) {
-                        const retrievedCartId = response.data[0].id;
-                        setCartId(retrievedCartId);
-                        dispatch(getCartItemsAction(retrievedCartId));
-                    }
-                } catch (error) {
-                    console.error("Error fetching or creating cart:", error);
-                    // Handle the error condition, e.g., display a message to the user
-                }
-            } else {
-                console.log('Token does not exist');
-                // Redirect to login or handle the absence of token
-            }
-        };
-
-        checkToken();
-    }, [dispatch]);
-
-    useEffect(() => {
-        const fetchCartItemsProducts = async () => {
-            const productsWithDetails = await Promise.all(
-                cartitems.map(async (cartItem) => {
-                    const productResponse = await fetchProductDetails(cartItem.product_id);
-                    return {
-                        ...cartItem,
-                        productDetails: productResponse,
-                    };
-                })
-            );
-            setCartItemsProducts(productsWithDetails);
-        };
-
-        if (cartitems.length >= 0) {
-            fetchCartItemsProducts();
-        }
-    }, [cartitems]);
-
-    const fetchProductDetails = async (productId) => {
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const decodedToken = decodeToken(token);
+        const userId = decodedToken.id;
         try {
-            const response = await axios.get(`http://localhost:8000/products/${productId}/`);
-            return response.data;
+          const response = await axios.get(
+            `http://localhost:8000/cart/searchcustomercart/${userId}/`
+          );
+          if (response.data.length > 0 && response.data[0].id) {
+            const retrievedCartId = response.data[0].id;
+            setCartId(retrievedCartId);
+            dispatch(getCartItemsAction(retrievedCartId));
+          }
         } catch (error) {
-            console.error("Error fetching product details:", error);
-            return null;
+          console.error("Error fetching or creating cart:", error);
+          // Handle the error condition, e.g., display a message to the user
         }
+      } else {
+        console.log("Token does not exist");
+        // Redirect to login or handle the absence of token
+      }
     };
 
-    const handleIncrementQuantity = async (cartItemId,productId) => {
-        const cartItem = cartitems.find(item => item.id === cartItemId);
-        const newQuantity = cartItem.quantity + 1;
-        await updateCartItemQuantity(cartItemId,productId, newQuantity);
+    checkToken();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const fetchCartItemsProducts = async () => {
+      const productsWithDetails = await Promise.all(
+        cartitems.map(async (cartItem) => {
+          const productResponse = await fetchProductDetails(
+            cartItem.product_id
+          );
+          return {
+            ...cartItem,
+            productDetails: productResponse,
+          };
+        })
+      );
+      setCartItemsProducts(productsWithDetails);
     };
 
-    const handleDecrementQuantity = async (cartItemId,productId) => {
-        const cartItem = cartitems.find(item => item.id === cartItemId);
-        const newQuantity = cartItem.quantity - 1;
-        if (newQuantity >= 0) {
-            await updateCartItemQuantity(cartItemId,productId, newQuantity);
-        }
-    };
+    if (cartitems.length >= 0) {
+      fetchCartItemsProducts();
+    }
+  }, [cartitems]);
+
+  const fetchProductDetails = async (productId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/products/${productId}/`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching product details:", error);
+      return null;
+    }
+  };
+
+  const handleIncrementQuantity = async (cartItemId, productId) => {
+    const cartItem = cartitems.find((item) => item.id === cartItemId);
+    const newQuantity = cartItem.quantity + 1;
+    await updateCartItemQuantity(cartItemId, productId, newQuantity);
+  };
+
+  const handleDecrementQuantity = async (cartItemId, productId) => {
+    const cartItem = cartitems.find((item) => item.id === cartItemId);
+    const newQuantity = cartItem.quantity - 1;
+    if (newQuantity >= 0) {
+      await updateCartItemQuantity(cartItemId, productId, newQuantity);
+    }
+  };
 
     const updateCartItemQuantity = async (cartItemId,productId, newQuantity) => {
         try {
@@ -94,14 +100,16 @@ const Cart = () => {
         }
     };
 
-    const getTotalPrice = () => {
-        return cartitemsProducts.reduce((total, cartItem) => {
-            if (cartItem.productDetails) {
-                return total + (Number(cartItem.productDetails.price)*cartItem.quantity);
-            }
-            return total;
-        }, 0);
-    };
+  const getTotalPrice = () => {
+    return cartitemsProducts.reduce((total, cartItem) => {
+      if (cartItem.productDetails) {
+        return (
+          total + Number(cartItem.productDetails.price) * cartItem.quantity
+        );
+      }
+      return total;
+    }, 0);
+  };
 
     return (
         <div className="cart-container">

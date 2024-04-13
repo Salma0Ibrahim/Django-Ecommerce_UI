@@ -1,20 +1,20 @@
 import React from "react";
 import "./productsSlider.css";
 import { IoPricetags } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 function StarRating({ rating }) {
   const stars = [];
-
   for (let i = 1; i <= 5; i++) {
     if (i <= rating) {
       stars.push(
-        <span key={i} style={{ color: "gold" }}>
+        <span key={i} style={{ color: "gold", fontSize: "24px" }}>
           ★
         </span>
       );
     } else {
       stars.push(
-        <span key={i} style={{ color: "gray" }}>
+        <span key={i} style={{ color: "gray", fontSize: "24px" }}>
           ★
         </span>
       );
@@ -25,21 +25,20 @@ function StarRating({ rating }) {
 }
 
 function TopRatedCard({ product }) {
+  const navigate = useNavigate();
+  const redirectToDetails = (id) => {
+    navigate(`/product-details/${id}`);
+  };
+
   return (
     <div
-      className="card"
-      style={{
-        width: "18rem",
-        height: "100%",
-        boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
-        margin: "1rem",
-      }}
+      onClick={() => redirectToDetails(product.id)}
+      className="card product-card"
     >
       <img
-        src="src/assets/shoe-photography-featured-image.webp"
+        src={product.thumbnail_url}
         className="card-img-top"
         alt={product.name}
-        style={{ width: "100%", height: "200px", objectFit: "cover" }}
       />
       <div className="card-body d-flex flex-column justify-content-center align-items-center">
         <h5 className="card-title text-center">{product.name}</h5>

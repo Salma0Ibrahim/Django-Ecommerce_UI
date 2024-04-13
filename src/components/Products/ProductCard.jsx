@@ -25,6 +25,10 @@ import { toast } from 'react-toastify';
 
 
 function ProductCard({ product }) {
+  const navigate = useNavigate();
+  const redirectToDetails = (id) => {
+    navigate(`/product-details/${id}`);
+  };
   const [isFavoriteHovered, setIsFavoriteHovered] = useState(false);
   const [isEyeHovered, setIsEyeHovered] = useState(false);
 
@@ -32,16 +36,23 @@ function ProductCard({ product }) {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       if (i <= rating) {
-        stars.push(<span key={i}>&#9733;</span>); // Full star
+        stars.push(
+          <span key={i} style={{ color: "gold", fontSize: "26px" }}>
+            &#9733;
+          </span>
+        ); // Full star
       } else {
-        stars.push(<span key={i}>&#9734;</span>); // Empty star
+        stars.push(
+          <span key={i} style={{ color: "gold", fontSize: "26px" }}>
+            &#9734;
+          </span>
+        ); // Empty star
       }
     }
     return stars;
   };
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [customer_id, setCustomerId] = useState(null);
   const [cart_id, setCartId] = useState(null);
   const [isInWishlist, setIsInWishlist] = useState(false);
@@ -164,7 +175,10 @@ function ProductCard({ product }) {
 
   return (
     <div className={styles.productcard}>
-      <form onSubmit={(e) => handleAddToWishlist(e, product.id)}>
+      <form
+        onSubmit={(e) => handleAddToWishlist(e, product.id)}
+        style={{ height: "1px" }}
+      >
         <input type="hidden" name="product_id" value={product.id} readOnly />
         <button className="border-0 bg-none">
           {isInWishlist ? (
@@ -183,35 +197,16 @@ function ProductCard({ product }) {
         </button>
       </form>
 
-      {isFavoriteHovered && (
-        <Badge
-          className={`${styles.badgeHover} ${styles.favoriteBadge}`}
-          pill
-          variant="danger"
-        >
-          Add to Wishlist
-        </Badge>
-      )}
-
       <IoEyeOutline
         className={`${styles.icon} ${styles.eyeIcon}`}
         onMouseEnter={() => setIsEyeHovered(true)}
         onMouseLeave={() => setIsEyeHovered(false)}
+        onClick={() => redirectToDetails(product.id)}
       />
-
-      {isEyeHovered && (
-        <Badge
-          className={`${styles.badgeHover} ${styles.eyeBadge}`}
-          pill
-          variant="primary"
-        >
-          View Details
-        </Badge>
-      )}
 
       <Card.Img
         variant="top"
-        src="src\assets\istockphoto-1436061606-612x612.jpg"
+        src={product.thumbnail_url}
         className={styles.cardImage}
       />
 

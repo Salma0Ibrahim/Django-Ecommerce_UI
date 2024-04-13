@@ -35,3 +35,48 @@
   margin: 0 auto;
   color: #c93535 !important;
 }
+.card.product-card {
+  width: 18rem;
+  height: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card.product-card:hover {
+  transform: scale(1.05);
+}
+
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.priceRectangle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.priceIcon {
+  margin-right: 5px;
+}
+
+.card-title {
+  margin-top: 1rem;
+}
+
+.card-text {
+  margin-top: 1rem;
+}
+
+.star-rating {
+  font-size: 24px;
+  color: gold;
+}
+
+.star-rating.gray {
+  color: gray;
+}
