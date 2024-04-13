@@ -1,45 +1,60 @@
-import { GET_CARTITEMS , ADD_CARTITEM , REMOVE_CARTITEM , UPDATE_CARTITEM_QUANTITY } from "../constant/cartitemsconstant";
-import axios from "axios";
+import {
+  GET_CARTITEMS,
+  ADD_CARTITEM,
+  REMOVE_CARTITEM,
+  UPDATE_CARTITEM_QUANTITY,
+} from "../constant/cartitemsconstant";
+import {
+  getCartItem,
+  addCartItem,
+  removeCartItem,
+  updateCartItem,
+} from "../apis/cartItem-apis";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getCartItemsAction = (cartId) => async dispatch => {
+export const getCartItemsAction = createAsyncThunk(
+  GET_CARTITEMS,
+  async (cartId) => {
     try {
-        const response = await axios.get(`http://localhost:8000/cartitem/searchitems/${cartId}/`)
-        dispatch({type:GET_CARTITEMS , payload : response.data})
+      const response = await getCartItem(cartId);
+      return response;
     } catch (error) {
-        console.log("get cartitems error : " , error)
+      console.log(error);
     }
-}
+  }
+);
 
-export const addcartitemAction = (formdata) => async dispatch => {
+export const addcartitemAction = createAsyncThunk(
+  ADD_CARTITEM,
+  async (formdata) => {
     try {
-        const response = await axios.post('http://localhost:8000/cartitem/',formdata)
-        dispatch({type:ADD_CARTITEM , payload : response.data})
+      const response = await addCartItem(formdata);
+      return response.data;
     } catch (error) {
-        console.log("add cartitem error is = ",error)
+      console.log(error);
     }
-}
+  }
+);
 
-
-export const removecartitemAction = (cartitemId) => async dispatch => {
+export const removecartitemAction = createAsyncThunk(
+  REMOVE_CARTITEM,
+  async (cartItemId) => {
     try {
-        await axios.delete(`http://localhost:8000/cartitem/${cartitemId}/`);
-        dispatch({ type: REMOVE_CARTITEM, payload: cartitemId });
+      await removeCartItem(cartItemId);
+      return cartItemId;
     } catch (error) {
-        console.log("delete cartitem error is = ", error);
+      console.log(error);
     }
-}
+  }
+);
 
-export const updatecartitemAction = (cartitemId,formdata) => async dispatch => {
-    try {
-        await axios.put(`http://localhost:8000/cartitem/${cartitemId}/`,formdata);
-        dispatch({
-            type: UPDATE_CARTITEM_QUANTITY,
-            payload: {
-                cartitemId: cartitemId,
-                newQuantity: formdata.quantity
-            }
-        });
-    } catch (error) {
-        console.log("update cartitem error is = ", error);
-    }
-}
+export const updatecartitemAction = createAsyncThunk(
+  UPDATE_CARTITEM_QUANTITY,
+  async (cartItemId, formdata) => {
+    await updateCartItem(cartItemId, formdata);
+    return {
+      cartitemId: cartItemId,
+      newQuantity: formdata.quantity,
+    };
+  }
+);

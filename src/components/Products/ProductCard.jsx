@@ -100,9 +100,13 @@ function ProductCard({ product }) {
     }
 
     if (isInWishlist) {
-      const wishlistItem = wishlists.find((item) => item.product_id === productId);
-      if (wishlistItem) {
-        dispatch(removeFromWishlistAction(wishlistItem.id));
+      if (wishlists && wishlists.length > 0) {
+        const wishlistItem = wishlists.find(
+          (item) => item.product_id === productId
+        );
+        if (wishlistItem) {
+          dispatch(removeFromWishlistAction(wishlistItem.id));
+        }
       }
     } else {
       const data = {
@@ -115,17 +119,18 @@ function ProductCard({ product }) {
   };
 
   useEffect(() => {
-    setIsInWishlist(wishlists.some((item) => item.product_id === product.id));
-  }, [wishlists, product.id]);
+    setIsInWishlist(wishlists.some((item) => item.product_id === product?.id));
+  }, [wishlists, product?.id]);
 
   useEffect(() => {
+    console.log("ay kelma", cartitems);
     if (cart_id !== null) {
       const exist = cartitems.some(
-        (item) => item.product_id === product.id && item.cart_id === cart_id
+        (item) => item.product_id === product?.id && item.cart_id === cart_id
       );
       setIsInCart(exist);
     }
-  }, [cartitems, product.id, cart_id]);
+  }, [cartitems, product?.id, cart_id]);
 
   const AddCartitemSubmit = (productId) => {
     const data = {
@@ -136,11 +141,16 @@ function ProductCard({ product }) {
     };
 
     if (customer_id) {
-      const cartItem = cartitems.find(
-        (item) => item.product_id === productId && item.cart_id === cart_id
-      );
-      if (cartItem) {
-        dispatch(removecartitemAction(cartItem.id));
+      // Ensure cartitems is defined and not empty before searching for a cart item
+      if (cartitems && cartitems.length > 0) {
+        const cartItem = cartitems.find(
+          (item) => item.product_id === productId && item.cart_id === cart_id
+        );
+        if (cartItem) {
+          dispatch(removecartitemAction(cartItem.id));
+        } else {
+          dispatch(addcartitemAction(data));
+        }
       } else {
         dispatch(addcartitemAction(data));
       }
@@ -219,7 +229,11 @@ function ProductCard({ product }) {
           onClick={() => AddCartitemSubmit(product.id)}
         >
           <FaShoppingCart className={styles.cartIcon} />
-          {isInCart ? <span>&nbsp; remove from cart</span> : <span>&nbsp; Add to cart</span>}
+          {isInCart ? (
+            <span>&nbsp; remove from cart</span>
+          ) : (
+            <span>&nbsp; Add to cart</span>
+          )}
         </Button>
       </div>
     </div>
