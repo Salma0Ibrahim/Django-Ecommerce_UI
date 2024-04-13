@@ -4,11 +4,13 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import { productreducer } from '../reducer/productreducer';
 import { wishlistreducer } from '../reducer/wishlist-reducer';
 import { cartItemReducer } from '../reducer/cartitemreducer';
+import { categoryReducer } from '../reducer/categoryreducer';
 
 const reducer = combineReducers({
     products : productreducer,
     wishlists : wishlistreducer,
     cartitems : cartItemReducer,
+    categories : categoryReducer,
 });
 
 const initialstate = {};

@@ -1,0 +1,12 @@
+.listitems{
+    margin-top: 15px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 5px rgb(241, 241, 241);
+}
+.listitems div p{
+    color: rgb(88, 88, 88);
+    font-weight: bold;
+    text-transform: capitalize;
+}

@@ -6,6 +6,8 @@ import './wishlist.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import decodeToken from "../../../redux/action/decodeToken";
+import { toast } from 'react-toastify';
+
 
 const Wishlist = ({ isOpen, onClose }) => {
     const dispatch = useDispatch();
@@ -90,6 +92,7 @@ const Wishlist = ({ isOpen, onClose }) => {
                                                     onClick={(e) => {
                                                         e.stopPropagation(); // Stop the event from propagating
                                                         dispatch(removeFromWishlistAction(wishlistItem.id));
+                                                        toast.success("the item removed from your wishlist 👍🏼")
                                                     }}
                                                     className="wishlistitemremove"
                                                 >

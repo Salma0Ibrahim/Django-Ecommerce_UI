@@ -6,6 +6,8 @@ import decodeToken from "../../../redux/action/decodeToken";
 import './Cart.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
+
 
 const Cart = () => {
     const dispatch = useDispatch();
@@ -123,7 +125,10 @@ const Cart = () => {
                                         <div className="row" style={{ alignItems: "center" }}>
                                             <div className="col-md-2">
                                                 <button
-                                                    onClick={() => dispatch(removecartitemAction(cartItem.id))}
+                                                    onClick={() => {
+                                                        dispatch(removecartitemAction(cartItem.id));
+                                                        toast.success("the item removed from your card 👍🏼")
+                                                    }}
                                                     className="wishlistitemremove"
                                                 >
                                                     <FontAwesomeIcon className="wishlistitemremovechild" icon={faXmark} />

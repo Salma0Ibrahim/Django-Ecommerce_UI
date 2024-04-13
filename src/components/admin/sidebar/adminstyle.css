@@ -1,0 +1,50 @@
+/* adminstyle.css */
+
+.adminsidebar {
+    height: 100%;
+    width: 249px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #f9fafb;
+    padding: 10px;
+}
+  
+.adminsidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+  
+.adminsidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+  
+.adminsidebar ul li {
+    margin: 10px;
+    transition: all 0.3s ease-in-out;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+  
+.adminsidebar ul li:hover{
+    background-color: #c93535;
+}
+.adminsidebar ul li:hover .adminsidebarselectitem{
+    color: rgb(255, 255, 255);
+}
+  
+.adminsidebar ul li.active {
+    background-color: #c93535; 
+}
+
+.adminsidebar ul li.active .adminsidebarselectitem {
+    color: rgb(255, 255, 255);
+}
+  
+.adminsidebarselectitem {
+    text-decoration: none;
+    color: #808080;
+    font-weight: 700;
+}

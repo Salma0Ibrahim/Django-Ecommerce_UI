@@ -1,0 +1,51 @@
+.categorymanagement {
+    margin: 0;
+    background-color: #f9fafb;
+    padding: 20px;
+    height: 100%;
+}
+.createnewitem h2{
+    font-weight: bold;
+}
+.createnewitem,.searchitem ,.itemcolumns{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.searchitem{
+    margin-top: 30px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 5px rgb(241, 241, 241);
+}
+.searchitem div{
+    position: relative;
+}
+.searchitem div .filtericon{
+    position: absolute;
+    top: 11px;
+    left: 10px;
+    color: gray;
+}
+.createnewitem div button{
+    padding: 10px;
+    background-color: #c93535;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 0;
+    transition: all 0.4s ease-in-out;
+}
+.createnewitem div button:hover{
+    background-color: black;
+}
+.itemcolumns{
+    padding: 20px 30px 5px 25px;
+}
+.itemcolumns p{
+    color: rgb(88, 88, 88);
+    font-weight: bold;
+    text-transform: capitalize;
+}

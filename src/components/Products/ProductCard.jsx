@@ -21,6 +21,8 @@ import {
   addcartitemAction,
   removecartitemAction,
 } from "../../redux/action/cartitemaction";
+import { toast } from 'react-toastify';
+
 
 function ProductCard({ product }) {
   const [isFavoriteHovered, setIsFavoriteHovered] = useState(false);
@@ -103,6 +105,8 @@ function ProductCard({ product }) {
       const wishlistItem = wishlists.find((item) => item.product_id === productId);
       if (wishlistItem) {
         dispatch(removeFromWishlistAction(wishlistItem.id));
+        toast.success("you removed item from your wishlist 👍🏼");
+
       }
     } else {
       const data = {
@@ -111,6 +115,7 @@ function ProductCard({ product }) {
         product_id: productId,
       };
       dispatch(addToWishlistAction(data));
+      toast.success("you added item in your wishlist 😃");
     }
   };
 
@@ -141,8 +146,10 @@ function ProductCard({ product }) {
       );
       if (cartItem) {
         dispatch(removecartitemAction(cartItem.id));
+        toast.success("you removed item from your cart 👍🏼");
       } else {
         dispatch(addcartitemAction(data));
+        toast.success("you added item in your cart 😃");
       }
     } else {
       navigate("/signup");
