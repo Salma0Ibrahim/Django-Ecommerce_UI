@@ -39,20 +39,10 @@ const cartitems = createSlice({
         state.loading = false;
         state.error = null;
         const { cartitemId, newQuantity } = action.payload;
-        const updatedCartItems = state.cartitems.map((item) => {
-          if (item.id === cartitemId) {
-            return {
-              ...item,
-              quantity: newQuantity,
-            };
-          }
-          return item;
-        });
-
-        return {
-          ...state,
-          cartitems: updatedCartItems,
-        };
+        const updatedCartItems = state.cartitems.map((item) =>
+          item.id === cartitemId ? { ...item, quantity: newQuantity } : item
+        );
+        state.cartitems = updatedCartItems;
       })
       .addCase(updatecartitemAction.rejected, (state, action) => {
         state.loading = false;

@@ -27,7 +27,7 @@ export const addToWishlistAction = createAsyncThunk(
   async (formdata) => {
     try {
       const response = await addToWishlist(formdata);
-      return response.data;
+      return response;
     } catch (error) {
       console.log(error);
     }

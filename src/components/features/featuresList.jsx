@@ -8,7 +8,7 @@ import FeaturesCard from "./featureCard";
 
 function FeaturesList() {
   return (
-    <section className="product-thumb-slider section-padding shadow mt-5">
+    <section className="product-thumb-slider section-padding shadow mt-5" style={{padding:'40px'}}>
       <div className="container">
         {" "}
         {/* Added shadow class here */}

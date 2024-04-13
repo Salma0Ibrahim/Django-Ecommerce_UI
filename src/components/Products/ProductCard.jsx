@@ -126,7 +126,6 @@ function ProductCard({ product }) {
   }, [wishlists, product?.id]);
 
   useEffect(() => {
-    console.log("ay kelma", cartitems);
     if (cart_id !== null) {
       const exist = cartitems.some(
         (item) => item.product_id === product?.id && item.cart_id === cart_id

@@ -29,7 +29,7 @@ export const addcartitemAction = createAsyncThunk(
   async (formdata) => {
     try {
       const response = await addCartItem(formdata);
-      return response.data;
+      return response;
     } catch (error) {
       console.log(error);
     }
@@ -50,11 +50,19 @@ export const removecartitemAction = createAsyncThunk(
 
 export const updatecartitemAction = createAsyncThunk(
   UPDATE_CARTITEM_QUANTITY,
-  async (cartItemId, formdata) => {
-    await updateCartItem(cartItemId, formdata);
-    return {
-      cartitemId: cartItemId,
-      newQuantity: formdata.quantity,
-    };
+  async ({ cartItemId, formdata }, { dispatch }) => {
+    try {
+      await updateCartItem(cartItemId, formdata);
+      console.log("in action:",cartItemId,formdata.quantity)
+      return {
+        cartitemId: cartItemId,
+        newQuantity: formdata.quantity,
+      };
+    } catch (error) {
+      console.log("cartitemid = ",cartItemId)
+      console.log("formdata = ",formdata)
+      console.log("the error in update = ",error)
+    }
+   
   }
 );

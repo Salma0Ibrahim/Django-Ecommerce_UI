@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getCartItemsAction, removecartitemAction } from "../../../redux/action/cartitemaction";
+import { getCartItemsAction, removecartitemAction, updatecartitemAction } from "../../../redux/action/cartitemaction";
 import axios from 'axios';
 import decodeToken from "../../../redux/action/decodeToken";
 import './Cart.css';
@@ -87,14 +87,8 @@ const Cart = () => {
     const updateCartItemQuantity = async (cartItemId,productId, newQuantity) => {
         try {
             const formdata = {id:1 , product_id:productId, quantity: newQuantity , cart_id:cart_id };
-            await axios.put(`http://localhost:8000/cartitem/${cartItemId}/`, formdata);
-            dispatch({
-                type: 'UPDATE_CARTITEM_QUANTITY',
-                payload: {
-                    cartitemId: cartItemId,
-                    newQuantity: newQuantity
-                }
-            });
+            console.log("the form = ",formdata)
+            dispatch(updatecartitemAction({ cartItemId, formdata }));
         } catch (error) {
             console.log("Error updating cart item quantity:", error);
         }

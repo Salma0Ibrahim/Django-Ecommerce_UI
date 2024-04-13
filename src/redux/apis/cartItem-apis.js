@@ -13,5 +13,5 @@ export const removeCartItem = (cartitemId) => {
 }
 
 export const updateCartItem = (cartitemId,formdata) => {
-  return axiosInstance.patch(`/cartitem/${cartitemId}/`,formdata)
+  return axiosInstance.put(`/cartitem/${cartitemId}/`,formdata)
 }

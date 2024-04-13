@@ -1,0 +1,97 @@
+.aboutdiv1{
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px ;
+}
+.aboutdiv1 h6{
+    color: rgba(0,0,0,0.66);
+    font-weight: bold;
+}
+.aboutdiv1 h2{
+    font-weight: bolder;
+    text-transform: capitalize;
+    font-size: 40px;
+}
+.aboutdiv1 h3{
+    font-weight: bolder;
+    text-transform: capitalize;
+    font-size: 40px;
+}
+.aboutdiv1 h4{
+    color: gray;
+    font-size: 15px;
+    line-height: 25px;
+    text-transform: capitalize;
+}
+.aboutdiv1 hr{
+    width: 40px;
+    color: #c93535;
+    transform: rotate(90deg);
+    margin: 30px auto;
+    font-size: 30px;
+}
+
+.abouticon{
+    border-radius: 50%;
+    border: 0px;
+    display: inline;
+    padding: 15px 20px;
+    margin-top: 20px;
+    text-align: center;
+    align-items: center;
+    background-color: #c93535;
+    color: white;
+    font-size: 20px;
+    transition: all 0.4s ease-in-out;
+}
+.abouticon:hover{
+    background-color: black;
+}
+.aboutdiv2 h5{
+    text-transform: capitalize;
+    font-weight: bolder;
+    font-size: 23px;
+    margin-top: 30px;
+}
+.aboutdiv2 p{
+    color: gray;
+    font-size: 15px;
+}
+
+.aboutbox{
+    margin-top: 20px;
+    background-color:  #edf5ff;
+    width: 400px auto;
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px 5px #c8cfd6;
+    padding: 30px;
+}
+/* /* .aboutbox2{
+    padding-top: 10%;
+    text-transform: capitalize;
+    padding-right: 50px;
+} */
+.aboutbox2 h1{
+    font-weight: bolder;
+    font-size: 30px;
+}
+.aboutbox2 p{
+    font-size: 20px;
+    color: gray;
+    font-weight: 500;
+    margin-top: 15px;
+}
+.aboutbox2 button{
+    border: 0px;
+    padding: 10px 40px;
+    border-radius: 5px;
+    background-color: #000000;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: all 0.4s ease-in-out;
+}
+.aboutbox2 button:hover{
+    background-color: #c93535;
+}
