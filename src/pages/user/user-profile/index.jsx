@@ -10,8 +10,6 @@ import SweetAlert from '../../../components/alert';
 import { getUsersListThunk } from '../../../redux/apis/userApi';
 import { useForm } from 'react-hook-form';
 import { addUserInfo } from '../../../redux/slices/userSlice';
-import Payment from '../../../components/payment/payment';
-Payment;
 const UserProfile = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const [wantUpdate, setWantUpdate] = useState(true);
@@ -22,7 +20,6 @@ const UserProfile = () => {
   const [alertMessage, setAlertMessage] = useState('');
   const [shipment, setShipment] = useState(false);
   const [publicProfile, setPublicProfile] = useState(true);
-  const [payment, setPayment] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -73,15 +70,12 @@ const UserProfile = () => {
     console.log(event.target.innerText);
     if (event.target.innerText === 'Pubic Profile') {
       setPublicProfile(true);
-      setPayment(false);
       setShipment(false);
     } else if (event.target.innerText === 'Shipment Details') {
       setPublicProfile(false);
-      setPayment(false);
       setShipment(true);
     } else if (event.target.innerText === 'Payment Details') {
       setPublicProfile(false);
-      setPayment(true);
       setShipment(false);
     }
   };
@@ -383,8 +377,6 @@ const UserProfile = () => {
               </div>
             </main>
           )}
-
-          {payment && <Payment></Payment>}
         </div>
       </>
     </>

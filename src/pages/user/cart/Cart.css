@@ -90,7 +90,7 @@
     font-size: 20px;
     border: 0px;
     border-radius: 5px;
-    cursor: pointer;
+    cursor: pointer !important; 
     transition: all 0.4s ease-in-out;
 }
 .cartbutton:hover{

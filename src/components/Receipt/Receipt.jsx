@@ -7,22 +7,24 @@ import {
   MDBContainer,
   MDBRow,
   MDBTypography,
-} from "mdb-react-ui-kit";
-import "./Receipt.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { getCartItemsAction } from "../../redux/action/cartitemaction";
-import decodeToken from "../../redux/action/decodeToken";
-import axios from "axios";
-import { fetchShipment } from "../../redux/action/shipment-action";
-import { createOrder, createOrderItem } from "../../redux/action/order-actions";
+} from 'mdb-react-ui-kit';
+import './Receipt.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { getCartItemsAction } from '../../redux/action/cartitemaction';
+import decodeToken from '../../redux/action/decodeToken';
+import axios from 'axios';
+import { fetchShipment } from '../../redux/action/shipment-action';
+import { createOrder, createOrderItem } from '../../redux/action/order-actions';
+import React from 'react';
 
 const OrderDetails = () => {
   const dispatch = useDispatch();
   const { cartitems } = useSelector((state) => state.cartitems);
   const [cart_id, setCartId] = useState(null);
+  const [response, serResponse] = useState('');
   const [cartitemsProducts, setCartItemsProducts] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState("");
+  const [selectedAddress, setSelectedAddress] = useState('');
   const { shipments } = useSelector((state) => state.shipment);
 
   useEffect(() => {
@@ -36,7 +38,7 @@ const OrderDetails = () => {
 
   const handlePlaceOrder = () => {
     const checkToken = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       if (token) {
         const decodedToken = decodeToken(token);
         const userId = decodedToken.id;
@@ -48,7 +50,7 @@ const OrderDetails = () => {
     const userId = checkToken();
 
     if (!userId) {
-      console.log("Token does not exist");
+      console.log('Token does not exist');
       // Handle the absence of token
       return;
     }
@@ -58,37 +60,48 @@ const OrderDetails = () => {
       total_price: getTotalPrice(),
       shipment_id: selectedAddress,
       delivery_date: new Date(),
-      status: "pending",
+      status: 'pending',
       user: userId,
       items: cartitemsProducts.map((item) => ({
         quantity: item.quantity,
         product_id: item.productDetails.id,
       })),
     };
+    return orderData;
+  };
+  
 
-    dispatch(createOrder(orderData)).then((orderResponse) => {
-      const orderId = orderResponse.payload.id;
-
-      cartitemsProducts.forEach((cartItem) => {
-        const orderItemData = {
-          orderId: orderId,
-          productId: cartItem.productId,
-          quantity: cartItem.quantity,
-        };
-        dispatch(createOrderItem(orderItemData));
-      });
-    });
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post(
+        'http://127.0.0.1:8000/stripe/create-checkout-session',
+        handlePlaceOrder(dispatch, selectedAddress, cartitemsProducts),
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'X-CSRFToken': localStorage.getItem('token'),
+          },
+        },
+      );
+      // Redirect to the checkout session URL
+      window.location.href = response.data.redirect_to;
+      const [message, setMessage] = useState('');
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error
+    }
   };
 
   useEffect(() => {
     const checkToken = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       if (token) {
         const decodedToken = decodeToken(token);
         const userId = decodedToken.id;
         try {
           const response = await axios.get(
-            `http://localhost:8000/cart/searchcustomercart/${userId}/`
+            `http://localhost:8000/cart/searchcustomercart/${userId}/`,
           );
           if (response.data.length > 0 && response.data[0].id) {
             const retrievedCartId = response.data[0].id;
@@ -96,11 +109,11 @@ const OrderDetails = () => {
             dispatch(getCartItemsAction(retrievedCartId));
           }
         } catch (error) {
-          console.error("Error fetching or creating cart:", error);
+          console.error('Error fetching or creating cart:', error);
           // Handle the error condition, e.g., display a message to the user
         }
       } else {
-        console.log("Token does not exist");
+        console.log('Token does not exist');
         // Redirect to login or handle the absence of token
       }
     };
@@ -113,13 +126,13 @@ const OrderDetails = () => {
       const productsWithDetails = await Promise.all(
         cartitems.map(async (cartItem) => {
           const productResponse = await fetchProductDetails(
-            cartItem.product_id
+            cartItem.product_id,
           );
           return {
             ...cartItem,
             productDetails: productResponse,
           };
-        })
+        }),
       );
       setCartItemsProducts(productsWithDetails);
     };
@@ -132,11 +145,11 @@ const OrderDetails = () => {
   const fetchProductDetails = async (productId) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/products/${productId}/`
+        `http://localhost:8000/products/${productId}/`,
       );
       return response.data;
     } catch (error) {
-      console.error("Error fetching product details:", error);
+      console.error('Error fetching product details:', error);
       return null;
     }
   };
@@ -156,12 +169,12 @@ const OrderDetails = () => {
     <>
       <section
         className="h-100 gradient-custom"
-        style={{ backgroundColor: "#eee" }}
+        style={{ backgroundColor: '#eee' }}
       >
         <MDBContainer className="py-5 h-100 ">
           <MDBRow className="justify-content-center align-items-center h-100">
             <MDBCol lg="10" xl="8">
-              <MDBCard style={{ borderRadius: "10px" }}>
+              <MDBCard style={{ borderRadius: '10px' }}>
                 <MDBCardHeader className="px-4 py-5">
                   <MDBTypography tag="h5" className="text-secondary-dark mb-0">
                     Thanks for your Order
@@ -191,7 +204,7 @@ const OrderDetails = () => {
                               className="text-center d-flex justify-content-center align-items-center"
                             >
                               <p className="text-secondary-dark mb-0 recipet_color">
-                                {cartItem.productDetails.name}&nbsp;{" "}
+                                {cartItem.productDetails.name}&nbsp;{' '}
                                 <span className="text-secondary-dark mb-0 recipet_entity small">
                                   &times;{cartItem.quantity}
                                 </span>
@@ -208,7 +221,7 @@ const OrderDetails = () => {
                           </MDBRow>
                           <hr
                             className="mb-4"
-                            style={{ backgroundColor: "#e0e0e0", opacity: 1 }}
+                            style={{ backgroundColor: '#e0e0e0', opacity: 1 }}
                           />
                         </MDBCardBody>
                       </MDBCard>
@@ -216,7 +229,7 @@ const OrderDetails = () => {
                   <div className="position-relative mt-2">
                     <hr
                       className="mb-4"
-                      style={{ backgroundColor: "#e0e0e0", opacity: 1 }}
+                      style={{ backgroundColor: '#e0e0e0', opacity: 1 }}
                     />
                     <div className="text-center position-absolute top-50 start-50 translate-middle">
                       <span className="bg-white px-2">SHIPPING OPTIONS</span>
@@ -251,7 +264,7 @@ const OrderDetails = () => {
                     <p className="text-secondary-dark mb-0 mx-3 recipet_entity">
                       <span className="text-secondary-dark mb-0 recipet_entity">
                         Total:
-                      </span>{" "}
+                      </span>{' '}
                       ${getTotalPrice().toFixed(2)}
                     </p>
                   </div>
@@ -259,11 +272,13 @@ const OrderDetails = () => {
                     <button className="order_button mb-0">
                       return to cart
                     </button>
+
                     <button
-                      className="order_button mb-0"
-                      onClick={() => handlePlaceOrder(dispatch, selectedAddress, cartitemsProducts)}
+                      onClick={handleSubmit}
+                      type="submit"
+                      className="text-white transition duration-500 ease-in-out text-[#32001a] hover:text-[white] bg-[#9a5b65] text-[] hover:bg-[#866b79] focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
                     >
-                      place order
+                      Checkout
                     </button>
                   </div>
                 </MDBCardBody>
