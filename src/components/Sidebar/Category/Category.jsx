@@ -9,7 +9,9 @@ function Category({ handleChange }) {
     // Fetch categories from API
     fetch("http://127.0.0.1:8000/categories/")
       .then((response) => response.json())
-      .then((data) => setCategories(data))
+      .then((data) => {
+        setCategories(data), console.log(categories);
+      })
       .catch((error) => console.error("Error fetching categories:", error));
   }, []);
 
@@ -24,7 +26,7 @@ function Category({ handleChange }) {
         </label>
         {categories.map((category) => (
           <Input
-            key={category.id} // Assuming each category has a unique id
+            key={category.id}
             handleChange={handleChange}
             value={category.name}
             title={category.name}

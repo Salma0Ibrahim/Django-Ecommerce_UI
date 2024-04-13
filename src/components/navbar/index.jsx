@@ -9,6 +9,7 @@ import {
   faMagnifyingGlass,
   faCartShopping,
   faUser,
+  faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import Wishlist from "../../pages/user/wishlist";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,9 +21,14 @@ import { Dropdown } from "react-bootstrap";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   const dispatch = useDispatch();
@@ -85,7 +91,12 @@ const Navbar = () => {
   return (
     <>
       <div className="navbar2">
-        <div className="nav-links">
+        <button className="toggle-button" onClick={toggleMobileMenu}>
+          <FontAwesomeIcon icon={faBars} />
+        </button>
+        <div
+          className={`nav-links ${isMobileMenuOpen ? "mobile-menu-open" : ""}`}
+        >
           <Link className="navlink" to="/">
             Home
           </Link>
@@ -108,13 +119,19 @@ const Navbar = () => {
           products
         </div>
         <div className="auth-buttons">
-          <div className="auth-fields1">
+          <div
+            className={`auth-fields1 ${
+              isMobileMenuOpen ? "mobile-menu-open" : ""
+            }`}
+          >
             <input
               type="text"
               className="form-control"
               placeholder="search...."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
-            <button className="navbutton1">
+            <button className="navbutton1" onClick={toggleMobileMenu}>
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </button>
           </div>

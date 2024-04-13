@@ -164,7 +164,10 @@ function ProductCard({ product }) {
 
   return (
     <div className={styles.productcard}>
-      <form onSubmit={(e) => handleAddToWishlist(e, product.id)}>
+      <form
+        onSubmit={(e) => handleAddToWishlist(e, product.id)}
+        style={{ height: "1px" }}
+      >
         <input type="hidden" name="product_id" value={product.id} readOnly />
         <button className="border-0 bg-none">
           {isInWishlist ? (
@@ -192,7 +195,7 @@ function ProductCard({ product }) {
 
       <Card.Img
         variant="top"
-        src="src\assets\istockphoto-1436061606-612x612.jpg"
+        src={product.thumbnail_url}
         className={styles.cardImage}
       />
 

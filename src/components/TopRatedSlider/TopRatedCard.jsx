@@ -36,7 +36,7 @@ function TopRatedCard({ product }) {
       className="card product-card"
     >
       <img
-        src="src/assets/shoe-photography-featured-image.webp"
+        src={product.thumbnail_url}
         className="card-img-top"
         alt={product.name}
       />

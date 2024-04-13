@@ -135,7 +135,7 @@ const ProductDetails = () => {
                   margin: "auto",
                 }}
                 className="rounded-4 fit"
-                src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/detail1/big.webp"
+                src={product.thumbnail_url}
                 alt="Product"
               />
             </div>
@@ -158,8 +158,8 @@ const ProductDetails = () => {
               <h5>About the product:</h5>
               <p className="mb-4">{product.description}</p>
               <div className="row mb-4">
-                <dt className="col-1">Stock:</dt>
-                <dd className="col-11">{product.stock}</dd>
+                <dt className="col-2">Stock:</dt>
+                <dd className="col-9">{product.stock}</dd>
               </div>
               <hr />
               <div className="d-flex justify-content-center">
