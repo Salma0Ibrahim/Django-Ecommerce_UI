@@ -1,26 +1,25 @@
-import { combineReducers , applyMiddleware , createStore} from 'redux'
-import { thunk } from 'redux-thunk'
-import {composeWithDevTools} from 'redux-devtools-extension'
-import { productreducer } from '../reducer/productreducer';
-import { wishlistreducer } from '../reducer/wishlist-reducer';
-import { cartItemReducer } from '../reducer/cartitemreducer';
-import { categoryReducer } from '../reducer/categoryreducer';
+// import { combineReducers , applyMiddleware , createStore} from 'redux'
+// import { thunk } from 'redux-thunk'
+// // import {composeWithDevTools} from 'redux-devtools/extension'
+// import { composeWithDevTools } from '@redux-devtools/extension';
+// import { productreducer } from '../reducer/productreducer';
+// import { wishlistreducer } from '../reducer/wishlist-reducer';
+// import { cartItemReducer } from '../reducer/cartitemreducer';
 
-const reducer = combineReducers({
-    products : productreducer,
-    wishlists : wishlistreducer,
-    cartitems : cartItemReducer,
-    categories : categoryReducer,
-});
+// const reducer = combineReducers({
+//     products : productreducer,
+//     wishlists : wishlistreducer,
+//     cartitems : cartItemReducer,
+// });
 
-const initialstate = {};
+// const initialstate = {};
 
-const middleware = [thunk];
+// const middleware = [thunk];
 
-const store = createStore(
-    reducer,
-    initialstate,
-    composeWithDevTools(applyMiddleware(...middleware))
-)
+// const store = createStore(
+//     reducer,
+//     initialstate,
+//     composeWithDevTools(applyMiddleware(...middleware))
+// )
 
-export default store;
+// export default store;

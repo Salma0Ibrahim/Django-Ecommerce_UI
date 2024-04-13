@@ -34,12 +34,6 @@ export const cartItemReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 cartitems: updatedCartItems
             };
-
-    
-                return {
-                    ...state,
-                    cartitems: updatedCartItems,
-                };
         default:
             return state;
     }
