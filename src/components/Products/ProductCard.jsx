@@ -22,12 +22,13 @@ import {
   removecartitemAction,
 } from '../../redux/action/cartitemaction';
 import { toast } from 'react-toastify';
-
 function ProductCard({ product }) {
   const navigate = useNavigate();
   const redirectToDetails = (id) => {
     navigate(`/product-details/${id}`);
   };
+
+  const base_url = import.meta.env.VITE_base_url;
 
   const renderStars = (rating) => {
     const stars = [];
@@ -68,17 +69,16 @@ function ProductCard({ product }) {
 
         try {
           const response = await axios.get(
-            `http://localhost:8000/cart/searchcustomercart/${userId}/`,
+            `${base_url}cart/searchcustomercart/${userId}/`,
           );
           if (response.data.length > 0 && response.data[0].id) {
             const cartId = response.data[0].id;
             setCartId(cartId);
             dispatch(getCartItemsAction(cartId));
           } else {
-            const newCartResponse = await axios.post(
-              'http://localhost:8000/cart/',
-              { customer_id: userId },
-            );
+            const newCartResponse = await axios.post(`${base_url}cart/`, {
+              customer_id: userId,
+            });
             if (newCartResponse.data && newCartResponse.data.id) {
               const newCartId = newCartResponse.data.id;
               setCartId(newCartId);
@@ -93,7 +93,6 @@ function ProductCard({ product }) {
           console.error('Error fetching or creating cart:', error);
         }
       } else {
-        console.log('Token does not exist');
         // Redirect to login or handle the absence of token
       }
     };
@@ -162,7 +161,6 @@ function ProductCard({ product }) {
           toast.success('Item Removed From Cart 😃');
         } else {
           dispatch(addcartitemAction(data));
-          console.log('5555555555555555555555555555555555555555555')
           toast.success('Item Added To Cart 😃');
         }
       } else {

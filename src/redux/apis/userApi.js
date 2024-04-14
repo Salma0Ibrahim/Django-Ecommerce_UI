@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { axiosInstance } from '../../axios/axiosInstance';
+const base_url = import.meta.env.VITE_base_url;
 
 export const getUsersListThunk = createAsyncThunk(
   'users/update',
   async (formData) => {
     const res = await axiosInstance.patch(
-      'http://127.0.0.1:8000/users/update/',
+      `${base_url}users/update/`,
       formData,
       {
         withCredentials: true,

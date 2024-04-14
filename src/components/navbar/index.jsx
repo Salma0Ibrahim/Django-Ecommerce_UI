@@ -43,6 +43,8 @@ const Navbar = () => {
   const [customer_id, setCustomerId] = useState(null);
   const searchValue = useSelector((state) => state.search.searchValue); // Get the searchValue from Redux
 
+  const base_url = import.meta.env.VITE_base_url;
+
   useEffect(() => {
     const checkToken = async () => {
       const token = localStorage.getItem('token');
@@ -53,17 +55,16 @@ const Navbar = () => {
 
         try {
           const response = await axios.get(
-            `http://localhost:8000/cart/searchcustomercart/${userId}/`,
+            `${base_url}cart/searchcustomercart/${userId}/`,
           );
           if (response.data.length > 0 && response.data[0].id) {
             const cartId = response.data[0].id;
             setCartId(cartId);
             dispatch(getCartItemsAction(cartId));
           } else {
-            const newCartResponse = await axios.post(
-              'http://localhost:8000/cart/',
-              { customer_id: userId },
-            );
+            const newCartResponse = await axios.post(`${base_url}cart/`, {
+              customer_id: userId,
+            });
             if (newCartResponse.data && newCartResponse.data.id) {
               const newCartId = newCartResponse.data.id;
               setCartId(newCartId);

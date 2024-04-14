@@ -19,6 +19,7 @@ const Cart = () => {
   const [cart_id, setCartId] = useState(null);
   const [cartitemsProducts, setCartItemsProducts] = useState([]);
   const navigate = useNavigate();
+  const base_url = import.meta.env.VITE_base_url;
 
   useEffect(() => {
     const checkToken = async () => {
@@ -28,7 +29,7 @@ const Cart = () => {
         const userId = decodedToken.id;
         try {
           const response = await axios.get(
-            `http://localhost:8000/cart/searchcustomercart/${userId}/`,
+            `${base_url}cart/searchcustomercart/${userId}/`,
           );
           if (response.data.length > 0 && response.data[0].id) {
             const retrievedCartId = response.data[0].id;
@@ -71,9 +72,7 @@ const Cart = () => {
 
   const fetchProductDetails = async (productId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/products/${productId}/`,
-      );
+      const response = await axios.get(`${base_url}products/${productId}/`);
       return response.data;
     } catch (error) {
       console.error('Error fetching product details:', error);

@@ -10,9 +10,9 @@ import {
 } from 'mdb-react-ui-kit';
 import './Receipt.css';
 import { useDispatch, useSelector } from 'react-redux';
-import Box from "@mui/material/Box";
-import ShipmentForm from "../../components/shipment-form/shipment-form";
-import Modal from "@mui/material/Modal";
+import Box from '@mui/material/Box';
+import ShipmentForm from '../../components/shipment-form/shipment-form';
+import Modal from '@mui/material/Modal';
 import { useEffect, useState } from 'react';
 import { getCartItemsAction } from '../../redux/action/cartitemaction';
 import decodeToken from '../../redux/action/decodeToken';
@@ -22,13 +22,13 @@ import { createOrder, createOrderItem } from '../../redux/action/order-actions';
 import React from 'react';
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
@@ -92,12 +92,11 @@ const OrderDetails = () => {
     };
     return orderData;
   };
-  
 
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8000/stripe/create-checkout-session',
+        `${base_url}stripe/create-checkout-session`,
         handlePlaceOrder(dispatch, selectedAddress, cartitemsProducts),
         {
           withCredentials: true,
@@ -116,6 +115,8 @@ const OrderDetails = () => {
     }
   };
 
+  const base_url = import.meta.env.VITE_base_url;
+
   useEffect(() => {
     const checkToken = async () => {
       const token = localStorage.getItem('token');
@@ -124,7 +125,7 @@ const OrderDetails = () => {
         const userId = decodedToken.id;
         try {
           const response = await axios.get(
-            `http://localhost:8000/cart/searchcustomercart/${userId}/`,
+            `${base_url}searchcustomercart/${userId}/`,
           );
           if (response.data.length > 0 && response.data[0].id) {
             const retrievedCartId = response.data[0].id;
@@ -167,9 +168,7 @@ const OrderDetails = () => {
 
   const fetchProductDetails = async (productId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/products/${productId}/`,
-      );
+      const response = await axios.get(`${base_url}products/${productId}/`);
       return response.data;
     } catch (error) {
       console.error('Error fetching product details:', error);
@@ -196,15 +195,15 @@ const OrderDetails = () => {
       >
         {cartitemsProducts.length == 0 ? (
           <div className="row">
-            <div className="col text-center" style={{ height: "100vh" }}>
-              <h3 style={{ color: "#c93535" }} className="mt-5">
+            <div className="col text-center" style={{ height: '100vh' }}>
+              <h3 style={{ color: '#c93535' }} className="mt-5">
                 Please Add Products to the Cart
               </h3>
               <div className="d-flex justify-content-center align-items-center ">
                 <img
                   src="src/assets/empty_cart.png"
                   alt="No products found"
-                  style={{ maxWidth: "20%", maxHeight: "20%" }}
+                  style={{ maxWidth: '20%', maxHeight: '20%' }}
                 />
               </div>
             </div>
@@ -213,7 +212,7 @@ const OrderDetails = () => {
           <MDBContainer className="py-5 h-100 ">
             <MDBRow className="justify-content-center align-items-center h-100">
               <MDBCol lg="10" xl="8">
-                <MDBCard style={{ borderRadius: "10px" }}>
+                <MDBCard style={{ borderRadius: '10px' }}>
                   <MDBCardHeader className="px-4 py-5">
                     <MDBTypography
                       tag="h5"
@@ -236,7 +235,7 @@ const OrderDetails = () => {
                             <MDBRow>
                               <MDBCol md="2">
                                 <MDBCardImage
-                                  src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
+                                  src={cartItem.productDetails.thumbnail_url}
                                   fluid
                                   alt="Phone"
                                 />
@@ -246,7 +245,7 @@ const OrderDetails = () => {
                                 className="text-center d-flex justify-content-center align-items-center"
                               >
                                 <p className="text-secondary-dark mb-0 recipet_color">
-                                  {cartItem.productDetails.name}&nbsp;{" "}
+                                  {cartItem.productDetails.name}&nbsp;{' '}
                                   <span className="text-secondary-dark mb-0 recipet_entity small">
                                     &times;{cartItem.quantity}
                                   </span>
@@ -263,7 +262,7 @@ const OrderDetails = () => {
                             </MDBRow>
                             <hr
                               className="mb-5"
-                              style={{ backgroundColor: "#e0e0e0", opacity: 1 }}
+                              style={{ backgroundColor: '#e0e0e0', opacity: 1 }}
                             />
                           </MDBCardBody>
                         </MDBCard>
@@ -271,7 +270,7 @@ const OrderDetails = () => {
 
                     {shipments.length === 0 ? (
                       <div className="text-center mt-5 position-absolute top-50 start-50 translate-middle">
-                        <h6 className="mt-5" style={{ color: "black" }}>
+                        <h6 className="mt-5" style={{ color: 'black' }}>
                           Please add shipment to proceed your order
                         </h6>
                       </div>
@@ -280,7 +279,7 @@ const OrderDetails = () => {
                         <div className="position-relative mt-2">
                           <hr
                             className="mb-4"
-                            style={{ backgroundColor: "#e0e0e0", opacity: 1 }}
+                            style={{ backgroundColor: '#e0e0e0', opacity: 1 }}
                           />
                           <div className="text-center position-absolute top-50 start-50 translate-middle">
                             <span className="bg-white px-2">
@@ -300,7 +299,7 @@ const OrderDetails = () => {
                                 name="shipmentAddress"
                                 id={`shipmentAddress${shipment.id}`}
                                 value={shipment.id}
-                                style={{backgroundColor:'#c93535'}}
+                                style={{ backgroundColor: '#c93535' }}
                                 onChange={handleAddressChange}
                               />
                               <label
@@ -320,7 +319,7 @@ const OrderDetails = () => {
                       <p className="text-secondary-dark mb-0 mx-3 recipet_entity">
                         <span className="text-secondary-dark mb-0 recipet_entity">
                           Total:
-                        </span>{" "}
+                        </span>{' '}
                         ${getTotalPrice().toFixed(2)}
                       </p>
                     </div>
@@ -337,8 +336,8 @@ const OrderDetails = () => {
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                         sx={{
-                          border: "none",
-                          boxShadow: "none",
+                          border: 'none',
+                          boxShadow: 'none',
                         }}
                       >
                         <Box sx={style}>
@@ -347,16 +346,10 @@ const OrderDetails = () => {
                       </Modal>
                       <button
                         className={`order_button mb-0 ${
-                          !selectedAddress ? "disabled_button" : ""
+                          !selectedAddress ? 'disabled_button' : ''
                         }`}
                         disabled={!selectedAddress}
-                        onClick={() =>
-                          handlePlaceOrder(
-                            dispatch,
-                            selectedAddress,
-                            cartitemsProducts
-                          )
-                        }
+                        onClick={handleSubmit}
                       >
                         place order
                       </button>

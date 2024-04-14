@@ -16,10 +16,11 @@ import { resetCartItems } from './redux/slices/cartItem';
 
 function App() {
   const dispatch = useDispatch();
+  const base_url = import.meta.env.VITE_base_url;
   const handleStockAndCart = async (token) => {
     const response = await axios
       .post(
-        'http://127.0.0.1:8000/cart-product',
+        `${base_url}cart-product`,
         {},
         {
           withCredentials: true,

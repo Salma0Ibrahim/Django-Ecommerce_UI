@@ -10,8 +10,8 @@ function parseJwt(token) {
   const base64 = base64Url.replace('-', '+').replace('_', '/');
   return JSON.parse(window.atob(base64));
 }
-const user = parseJwt(token)
-
+const user = parseJwt(token);
+console.log(user)
 
 // Function to retrieve the token from a cookie
 // function getToken() {
@@ -26,11 +26,11 @@ const user = parseJwt(token)
 // }
 
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
+  baseURL: 'https://django-ecommerce-app-1.onrender.com/',
   headers: {
     'Content-Type': 'application/json',
     'X-CSRFToken': `${token}`,
-    withCredentials: true,
+    // withCredentials: true,
     // Authorization: `jwt=${getToken()};`
   },
 });
@@ -40,8 +40,8 @@ axiosInstance.interceptors.request.use(
     // if (token) {
     //   config.headers.Authorization = `${token}`;
     // }
-    
-    config.data = {...config.data, user:user.id}
+
+    config.data = { ...config.data, user: user.id };
     return config;
   },
   (error) => {

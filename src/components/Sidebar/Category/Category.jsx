@@ -5,9 +5,11 @@ import Input from "../Helpers/Input";
 function Category({ handleChange }) {
   const [categories, setCategories] = useState([]);
 
+  const base_url = import.meta.env.VITE_base_url;
+
   useEffect(() => {
     // Fetch categories from API
-    fetch("http://127.0.0.1:8000/categories/")
+    fetch(`${base_url}categories/`)
       .then((response) => response.json())
       .then((data) => {
         setCategories(data), console.log(categories);

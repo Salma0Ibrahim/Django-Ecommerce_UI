@@ -22,6 +22,8 @@ const UserProfile = () => {
   const [shipment, setShipment] = useState(false);
   const [publicProfile, setPublicProfile] = useState(true);
 
+  const base_url = import.meta.env.VITE_base_url;
+
   const dispatch = useDispatch();
 
   const updateMyProfile = () => {
@@ -42,7 +44,7 @@ const UserProfile = () => {
     const formData = new FormData();
     formData.append('image', data.target.files[0]);
     axios
-      .patch('http://127.0.0.1:8000/users/update/', formData, {
+      .patch(`${base_url}users/update/`, formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -97,7 +99,7 @@ const UserProfile = () => {
     console.log(formData);
 
     axios
-      .patch('http://127.0.0.1:8000/users/update/', formData, {
+      .patch(`${base_url}users/update/`, formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',

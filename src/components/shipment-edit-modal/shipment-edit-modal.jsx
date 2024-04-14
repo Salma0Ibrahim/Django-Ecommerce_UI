@@ -1,25 +1,25 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch } from "react-redux";
-import { updateShipment } from "../../redux/action/shipment-action";
-import "./form-style.css";
-import { toast } from "react-toastify";
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useDispatch } from 'react-redux';
+import { updateShipment } from '../../redux/action/shipment-action';
+import './form-style.css';
+import { toast } from 'react-toastify';
 
 const schema = z.object({
-  address: z.string().min(1, { message: "Address is required" }).max(100),
-  city: z.string().min(1, { message: "City is required" }).max(100),
-  state: z.string().min(1, { message: "State is required" }).max(100),
+  address: z.string().min(1, { message: 'Address is required' }).max(100),
+  city: z.string().min(1, { message: 'City is required' }).max(100),
+  state: z.string().min(1, { message: 'State is required' }).max(100),
   zip_code: z
     .string()
-    .min(1, { message: "Zip Code is required" })
-    .length(5, { message: "Invalid Zip Code" }),
-  country: z.string().min(1, { message: "Phone Number is required" }).max(100),
+    .min(1, { message: 'Zip Code is required' })
+    .length(5, { message: 'Invalid Zip Code' }),
+  country: z.string().min(1, { message: 'Phone Number is required' }).max(100),
   phone: z
     .string()
-    .min(1, { message: "Phone Number is required" })
-    .length(11, { message: "Invalid Phone Number" }),
+    .min(1, { message: 'Phone Number is required' })
+    .length(11, { message: 'Invalid Phone Number' }),
 });
 
 // eslint-disable-next-line react/prop-types
@@ -42,11 +42,11 @@ export default function EditShipmentModal({ shipment, rowId, onCloseModal }) {
   const onSubmit = async (data) => {
     try {
       await dispatch(updateShipment({ shipmentId: rowId, data }));
-      toast.success("The Shipment has been updated successfully");
+      toast.success('The Shipment has been updated successfully');
       onCloseModal();
       reset();
     } catch (error) {
-      setError("root", { message: "This Address already exists" });
+      setError('root', { message: 'This Address already exists' });
     }
   };
 
@@ -61,7 +61,7 @@ export default function EditShipmentModal({ shipment, rowId, onCloseModal }) {
           <label htmlFor="address">
             Address:
             <input
-              {...register("address", { required: "Address is required" })}
+              {...register('address', { required: 'Address is required' })}
               type="text"
               id="address"
               className="input"
@@ -77,7 +77,7 @@ export default function EditShipmentModal({ shipment, rowId, onCloseModal }) {
             <label htmlFor="city">
               City:
               <input
-                {...register("city", { required: "City is required" })}
+                {...register('city', { required: 'City is required' })}
                 type="text"
                 id="city"
                 className="input"
@@ -92,7 +92,7 @@ export default function EditShipmentModal({ shipment, rowId, onCloseModal }) {
             <label htmlFor="state">
               State:
               <input
-                {...register("state", { required: "State is required" })}
+                {...register('state', { required: 'State is required' })}
                 type="text"
                 id="state"
                 className="input"
@@ -109,7 +109,7 @@ export default function EditShipmentModal({ shipment, rowId, onCloseModal }) {
             <label htmlFor="country">
               Country:
               <input
-                {...register("country", { required: "Country is required" })}
+                {...register('country', { required: 'Country is required' })}
                 type="text"
                 id="country"
                 className="input"
@@ -124,7 +124,7 @@ export default function EditShipmentModal({ shipment, rowId, onCloseModal }) {
             <label htmlFor="zip_code">
               Zip Code:
               <input
-                {...register("zip_code", { required: "Zip Code is required" })}
+                {...register('zip_code', { required: 'Zip Code is required' })}
                 type="text"
                 id="zip_code"
                 className="input"
@@ -140,7 +140,7 @@ export default function EditShipmentModal({ shipment, rowId, onCloseModal }) {
           <label htmlFor="phone">
             Phone:
             <input
-              {...register("phone", { required: "Phone is required" })}
+              {...register('phone', { required: 'Phone is required' })}
               type="text"
               id="phone"
               className="input"
@@ -152,7 +152,7 @@ export default function EditShipmentModal({ shipment, rowId, onCloseModal }) {
           )}
         </div>
         <button type="submit" className="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Loading..." : "Submit"}
+          {isSubmitting ? 'Loading...' : 'Submit'}
         </button>
       </form>
     </>
