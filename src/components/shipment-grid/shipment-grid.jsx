@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchShipment,
   deleteShipment,
-} from "../../redux/action/shipment-action";
-import EditShipmentModal from "../shipment-edit-modal/shipment-edit-modal";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
+} from '../../redux/action/shipment-action';
+import EditShipmentModal from '../shipment-edit-modal/shipment-edit-modal';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
@@ -36,15 +36,15 @@ export default function DataTable() {
   }, [dispatch]);
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this shipment?")) {
+    if (window.confirm('Are you sure you want to delete this shipment?')) {
       dispatch(deleteShipment(id))
         .then(() => {
           // Optional: Perform any additional actions after successful deletion
-          console.log("Shipment deleted successfully.");
+          console.log('Shipment deleted successfully.');
         })
         .catch((error) => {
           // Handle errors
-          console.error("Error deleting shipment:", error);
+          console.error('Error deleting shipment:', error);
         });
     }
   };
@@ -60,16 +60,16 @@ export default function DataTable() {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "address", headerName: "Address", width: 200 },
-    { field: "city", headerName: "City", width: 130 },
-    { field: "state", headerName: "State", width: 130 },
-    { field: "zip_code", headerName: "Zip Code", width: 130 },
-    { field: "phone", headerName: "Phone", width: 130 },
-    { field: "country", headerName: "Country", width: 130 },
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'address', headerName: 'Address', width: 200 },
+    { field: 'city', headerName: 'City', width: 130 },
+    { field: 'state', headerName: 'State', width: 130 },
+    { field: 'zip_code', headerName: 'Zip Code', width: 130 },
+    { field: 'phone', headerName: 'Phone', width: 130 },
+    { field: 'country', headerName: 'Country', width: 130 },
     {
-      field: "actions",
-      headerName: "Actions",
+      field: 'actions',
+      headerName: 'Actions',
       width: 150,
       renderCell: (params) => (
         <div>
@@ -87,7 +87,7 @@ export default function DataTable() {
   ];
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <div style={{ height: 400, width: '100%' }}>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (

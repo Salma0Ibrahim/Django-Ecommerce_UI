@@ -10,6 +10,7 @@ import SweetAlert from '../../../components/alert';
 import { getUsersListThunk } from '../../../redux/apis/userApi';
 import { useForm } from 'react-hook-form';
 import { addUserInfo } from '../../../redux/slices/userSlice';
+import LabTabs from '../../../components/shipment/Shipment';
 const UserProfile = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const [wantUpdate, setWantUpdate] = useState(true);
@@ -28,7 +29,7 @@ const UserProfile = () => {
   };
   const fetchData = async () => {
     const res = await dispatch(getUsersListThunk());
-    setMyImage(res.payload.image);
+    setMyImage(res.payload?.image);
     dispatch(addUserInfo(res.payload));
   };
 
@@ -100,7 +101,7 @@ const UserProfile = () => {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'X-CSRFToken': localStorage.getItem('jwt'),
+          'X-CSRFToken': localStorage.getItem('token'),
         },
       })
       .then((response) => {
@@ -170,13 +171,6 @@ const UserProfile = () => {
               >
                 Shipment Details
               </a>
-              <a
-                href="#"
-                className="flex items-center myLink px-3 py-2.5 font-semibold hover:text-[#9a5b65] hover:border hover:rounded-full active:text-[#9a5b65] active:border active:rounded-full  "
-                onClick={handleComponentAppear}
-              >
-                Payment Details
-              </a>
             </div>
           </aside>
 
@@ -226,7 +220,7 @@ const UserProfile = () => {
                           className="block mb-2 text-sm font-medium text-[#7e7181]
                       dark:text-white mt-2"
                         >
-                          {userInfo.email}
+                          {userInfo?.email}
                         </p>
                       </div>
 
@@ -286,7 +280,7 @@ const UserProfile = () => {
                             id="last_name"
                             className="bg-[#fff9fa] border border-[#9a5b65] text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 "
                             placeholder="Your last name"
-                            defaultValue={userInfo.lastName}
+                            defaultValue={userInfo?.lastName}
                             required=""
                             disabled={wantUpdate}
                             {...register('last_name', {
@@ -377,6 +371,8 @@ const UserProfile = () => {
               </div>
             </main>
           )}
+
+          {shipment && (<LabTabs />)}
         </div>
       </>
     </>

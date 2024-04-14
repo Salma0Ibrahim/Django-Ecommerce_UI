@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 import {
   getCartItemsAction,
   updatecartitemAction,
   removecartitemAction,
   addcartitemAction,
-} from "../action/cartitemaction";
+} from '../action/cartitemaction';
 
 const INITIAL_STATE = {
   loading: false,
@@ -13,9 +13,13 @@ const INITIAL_STATE = {
 };
 
 const cartitems = createSlice({
-  name: "cartitems",
+  name: 'cartitems',
   initialState: INITIAL_STATE,
-  reducers: {},
+  reducers: {
+    resetCartItems: (state, action) => {
+        state.cartitems=[]
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCartItemsAction.pending, (state) => {
@@ -40,7 +44,7 @@ const cartitems = createSlice({
         state.error = null;
         const { cartitemId, newQuantity } = action.payload;
         const updatedCartItems = state.cartitems.map((item) =>
-          item.id === cartitemId ? { ...item, quantity: newQuantity } : item
+          item.id === cartitemId ? { ...item, quantity: newQuantity } : item,
         );
         state.cartitems = updatedCartItems;
       })
@@ -56,8 +60,9 @@ const cartitems = createSlice({
         state.loading = false;
         state.error = null;
         state.cartitems = state.cartitems.filter(
-          (cartitem) => cartitem.id !== action.payload
+          (cartitem) => cartitem.id !== action.payload,
         );
+        console.log(state.cartitems);
       })
       .addCase(removecartitemAction.rejected, (state, action) => {
         state.loading = false;
@@ -79,4 +84,6 @@ const cartitems = createSlice({
   },
 });
 
+
+export const { resetCartItems } = cartitems.actions;
 export default cartitems.reducer;

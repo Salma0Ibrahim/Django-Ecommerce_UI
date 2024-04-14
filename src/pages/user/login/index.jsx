@@ -34,7 +34,7 @@ const Login = () => {
       .post('http://127.0.0.1:8000/users/login/', formData)
       .then((response) => {
         const decoded = jwtDecode(response.data.token);
-        if (decoded?.is_superuser === false) navigate('/user-profile');
+        if (decoded?.is_superuser === false) navigate('/products');
         localStorage.setItem('token', response.data.token);
         console.log(response);
         dispatch(addUserInfo(response.data.user_info));

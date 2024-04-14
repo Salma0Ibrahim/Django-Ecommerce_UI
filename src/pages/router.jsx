@@ -63,12 +63,8 @@ const router = createBrowserRouter([
     element: <UserLayoutAuth />,
     children: [
       {
-        element: <Product />,
-        path: '/products',
-      },
-      {
         element: <ProductDetails />,
-        path: "/product-details/:id",
+        path: '/product-details/:id',
       },
 
       {
@@ -100,6 +96,10 @@ const router = createBrowserRouter([
       {
         element: <Home />,
         path: '/home',
+      },
+      {
+        element: <Product />,
+        path: '/products',
       },
     ],
   },

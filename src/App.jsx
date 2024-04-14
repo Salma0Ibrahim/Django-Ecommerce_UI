@@ -11,20 +11,27 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import OrderDetails from './components/Receipt/Receipt';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { resetCartItems } from './redux/slices/cartItem';
 
 function App() {
+  const dispatch = useDispatch();
   const handleStockAndCart = async (token) => {
-    const response = await axios.post(
-      'http://127.0.0.1:8000/cart-product',
-      {},
-      {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'X-CSRFToken': token,
+    const response = await axios
+      .post(
+        'http://127.0.0.1:8000/cart-product',
+        {},
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'X-CSRFToken': token,
+          },
         },
-      },
-    );
+      )
+      .then((res) => {
+        dispatch(resetCartItems());
+      });
   };
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -36,7 +43,6 @@ function App() {
     }
 
     if (query.get('canceled')) {
-      //! will do
       toast.success('Payment successed !');
     }
   }, []);

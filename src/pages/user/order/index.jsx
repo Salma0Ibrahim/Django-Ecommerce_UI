@@ -6,7 +6,7 @@ const Order = () => {
   return (
     <>
       {/* <LabTabs/>   */}
-      <LabTabs />
+      {/* <LabTabs /> */}
       <OrderDetails/>
     </>
   );

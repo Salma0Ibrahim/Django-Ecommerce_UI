@@ -1,10 +1,23 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { axiosInstance } from '../../axios/axiosInstance';
 
-export const getUsersListThunk = createAsyncThunk('users/update', async () => {
-  const res = await axiosInstance.patch('/users/update/');
-  return res.data;
-});
+export const getUsersListThunk = createAsyncThunk(
+  'users/update',
+  async (formData) => {
+    const res = await axiosInstance.patch(
+      'http://127.0.0.1:8000/users/update/',
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'X-CSRFToken': localStorage.getItem('token'),
+        },
+      },
+    );
+    return res.data;
+  },
+);
 
 export const userAPISlicce = createSlice({
   name: 'userApi',
