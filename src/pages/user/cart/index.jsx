@@ -133,7 +133,10 @@ const Cart = () => {
               cartitemsProducts.map((cartItem) => (
                 <div className="cart-item" key={cartItem.id}>
                   {cartItem.productDetails && (
-                    <div className="row" style={{ alignItems: 'center' }}>
+                    <div
+                      className="row"
+                      style={{ alignItems: 'center', padding: '25px' }}
+                    >
                       <div className="col-md-2">
                         <button
                           onClick={() => {

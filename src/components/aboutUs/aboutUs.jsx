@@ -8,6 +8,7 @@ import {
   faPhone,
   faTruck,
 } from '@fortawesome/free-solid-svg-icons';
+import cat1 from '../../assets/img/cat1.jpg';
 
 const AboutUs = () => {
   return (
@@ -37,7 +38,7 @@ const AboutUs = () => {
           <div className="col-md-6">
             <img
               className="img-fluid"
-              src="src\assets\img\cat1.jpg"
+              src={cat1}
               height="100"
               width="100"
               alt=""

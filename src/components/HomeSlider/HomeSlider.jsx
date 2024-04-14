@@ -1,13 +1,16 @@
 import './HomeSlider.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'react-bootstrap/Button';
-
 import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+// import { banner_img_01, banner_img_02, banner_img_03 } from '../../assets/img';
+import banner_img_01 from '../../assets/img/banner_img_01.jpg';
+import banner_img_02 from '../../assets/img/banner_img_02.jpg';
+import banner_img_03 from '../../assets/img/banner_img_03.jpg';
 
+import { useNavigate } from 'react-router-dom';
 const HomeSlider = () => {
   const navigate = useNavigate();
 
@@ -31,11 +34,7 @@ const HomeSlider = () => {
             <div className="container">
               <div className="row p-5">
                 <div className="mx-auto col-md-8 col-lg-6 order-lg-last">
-                  <img
-                    className="img-fluid"
-                    src="src/assets/img/banner_img_01.jpg"
-                    alt=""
-                  />
+                  <img className="img-fluid" src={banner_img_01} alt="" />
                 </div>
                 <div className="col-lg-6 mb-0 d-flex align-items-center">
                   <div className="text-align-left align-self-center">
@@ -63,11 +62,7 @@ const HomeSlider = () => {
             <div className="container">
               <div className="row p-5">
                 <div className="mx-auto col-md-8 col-lg-6 order-lg-last">
-                  <img
-                    className="img-fluid"
-                    src="src\assets\img\banner_img_02.jpg"
-                    alt=""
-                  />
+                  <img className="img-fluid" src={banner_img_02} alt="" />
                 </div>
                 <div className="col-lg-6 mb-0 d-flex align-items-center">
                   <div className="text-align-left">
@@ -95,11 +90,7 @@ const HomeSlider = () => {
             <div className="container">
               <div className="row p-5">
                 <div className="mx-auto col-md-8 col-lg-6 order-lg-last">
-                  <img
-                    className="img-fluid"
-                    src="src\assets\img\banner_img_03.jpg"
-                    alt=""
-                  />
+                  <img className="img-fluid" src={banner_img_03} alt="" />
                 </div>
                 <div className="col-lg-6 mb-0 d-flex align-items-center">
                   <div className="text-align-left">

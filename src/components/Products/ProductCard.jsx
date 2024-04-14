@@ -22,6 +22,9 @@ import {
   removecartitemAction,
 } from '../../redux/action/cartitemaction';
 import { toast } from 'react-toastify';
+import './style.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 function ProductCard({ product }) {
   const navigate = useNavigate();
   const redirectToDetails = (id) => {
@@ -219,7 +222,8 @@ function ProductCard({ product }) {
           className={styles.customButton}
           onClick={() => AddCartitemSubmit(product.id)}
         >
-          <FaShoppingCart className={styles.cartIcon} />
+          {/* <FaShoppingCart className={styles.cartIcon} /> */}
+          <FontAwesomeIcon className="cartbuttonicon" icon={faShoppingCart} />
           {isInCart ? (
             <span>&nbsp; remove from cart</span>
           ) : (
