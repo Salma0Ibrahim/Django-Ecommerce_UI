@@ -36,7 +36,7 @@ const Login = () => {
       .post(`${base_url}users/login/`, formData)
       .then((response) => {
         const decoded = jwtDecode(response.data.token);
-        if (decoded?.is_superuser === false) navigate('/products');
+        if (decoded?.is_superuser === false) navigate('/');
         localStorage.setItem('token', response.data.token);
         console.log(response);
         dispatch(addUserInfo(response.data.user_info));

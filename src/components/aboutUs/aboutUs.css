@@ -95,3 +95,21 @@
 .aboutbox2 button:hover{
     background-color: #c93535;
 }
+.aboutchilddiv{
+    padding: 10px 180px;
+}
+.aboutchilddiv2{
+    padding: 10px 280px;
+}
+@media(max-width:787px){
+    .aboutchilddiv,.aboutchilddiv2{
+        padding: 10px 3px;
+    }
+    .aboutchilddiv h2{
+        font-size: 25px;
+    }
+    .aboutchilddiv2 h4{
+        font-size: 20px;
+        line-height: 30px;
+    }
+}

@@ -9,6 +9,11 @@
 .product-details {
     margin-bottom: 20px;
 }
+@media(max-width:767px){
+    .product-details{
+        text-align: center;
+    }
+}
 
 /* Styling for each cart item */
 .cart-item {

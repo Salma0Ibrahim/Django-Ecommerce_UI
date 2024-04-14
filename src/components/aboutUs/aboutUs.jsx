@@ -16,7 +16,7 @@ const AboutUs = () => {
       <div className="aboutdiv1">
         <hr />
         <h6>about us</h6>
-        <div style={{ padding: '10px 180px' }}>
+        <div className="aboutchilddiv">
           <h2>
             If you’re looking for a brand new electric scooter, you’re in the
             right place
@@ -59,7 +59,7 @@ const AboutUs = () => {
       <div className="aboutdiv1">
         <hr />
         <h3 style={{ fontWeight: 'bolder' }}>Contact Us</h3>
-        <div style={{ padding: '10px 280px' }}>
+        <div className="aboutchilddiv2">
           <h4>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et labore.

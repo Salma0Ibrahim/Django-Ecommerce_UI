@@ -16,6 +16,8 @@ import { toast } from 'react-toastify';
 
 import './index.css';
 import CardLoader from '../../../components/cardLoader/cardLoader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart, faTag } from '@fortawesome/free-solid-svg-icons';
 
 const ProductDetails = () => {
   const params = useParams();
@@ -159,7 +161,7 @@ const ProductDetails = () => {
               </div>
               <div className="mb-4">
                 <span className="price">
-                  <IoPricetags /> ${product.price}
+                  <FontAwesomeIcon icon={faTag} /> ${product.price}
                 </span>
               </div>
               <h5>About the product:</h5>
@@ -175,7 +177,7 @@ const ProductDetails = () => {
                   onClick={() => AddCartitemSubmit(product.id)}
                   disabled={product.stock === 0}
                 >
-                  <FaShoppingCart />{' '}
+                  <FontAwesomeIcon icon={faShoppingCart} /> &nbsp;{' '}
                   {isInCart ? 'Remove from cart' : 'Add to cart'}
                 </button>
               </div>
