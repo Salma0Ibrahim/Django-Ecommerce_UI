@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.myLogin{
+    width: 50% !important;
+}
+.myform{
+    border: 1px  solid rgba(201, 53, 53, 0.407);
+    padding: 24px;
+    border-radius: 10px;
+    position: relative;
+    padding-top: 36px;
+}
+
+.paraIn{
+    top:-20px;
+    position: absolute;
+    background-color: white;
+    padding: 8px;
+    font-weight: 500;
+}

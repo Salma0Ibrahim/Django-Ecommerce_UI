@@ -1,0 +1,39 @@
+.recipet_color{
+  font-family: var(--secondary-font-family);
+  color: var(--main-color);
+  font-weight: 500;
+}
+
+.recipet_entity {
+  font-family: var(--secondary-font-family);
+  color: var(--font-main-color);
+}
+
+.card_intro {
+  color: var(--font-main-color);
+  font-family: var(--main-font-family);
+}
+
+.order_button{
+  margin: 10px;
+  padding: 10px;
+  width: 30%;
+  text-transform: capitalize;
+  background-color: #c93535;
+  color: white;
+  font-weight: 500;
+  font-size: 20px;
+  border: 0px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+}
+.order_button:hover{
+  background-color: black;
+}
+
+.disabled_button {
+  background-color: #c93535;
+  color: white;
+  cursor: not-allowed;
+}

@@ -1,12 +1,12 @@
-import React from "react";
-import style from "./style.module.css"
+import OrderDetails from "../../../components/Receipt/Receipt";
+import DataTable from "../../../components/shipment-grid/shipment-grid";
 
 const Order = () => {
     return(
         <>
-            <h1>order</h1>
+        {/* <DataTable/> */}
+          <OrderDetails/>
         </>
     );
 }
-
-export default Order
+export default Order;

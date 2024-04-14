@@ -1,0 +1,35 @@
+.price {
+  border: 1px solid #c93535 !important;
+  padding: 5px 10px;
+  font-weight: bold;
+  width: 150px;
+  height: 40px;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  color: #c93535 !important;
+  margin-bottom: 1rem;
+}
+.customButton {
+  background-color: #c93535 !important;
+  border-color: #c93535 !important;
+  font-family: "Open Sans", sans-serif;
+  width: 200px;
+}
+
+h5 {
+  margin-top: 1.5rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+.row.mb-4 {
+  margin-bottom: 1rem;
+}
+.customButton:hover {
+  background-color: black !important;
+  border-color: black !important;
+}

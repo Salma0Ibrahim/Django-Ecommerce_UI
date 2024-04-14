@@ -1,0 +1,29 @@
+.contact-us-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+  }
+  
+  .section-heading {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .content {
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  
+  .contact-info {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .contact-info li {
+    margin-bottom: 10px;
+  }
+  
+  .contact-info li strong {
+    margin-right: 10px;
+  }
+  

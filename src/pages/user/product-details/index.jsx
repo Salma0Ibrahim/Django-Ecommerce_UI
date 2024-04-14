@@ -1,12 +1,190 @@
-import React from "react";
-import style from "./style.module.css"
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { axiosInstance } from '../../../apis/congif';
+import { IoPricetags } from 'react-icons/io5';
+import { FaShoppingCart } from 'react-icons/fa';
+import decodeToken from '../../../redux/action/decodeToken';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {
+  getCartItemsAction,
+  addcartitemAction,
+  removecartitemAction,
+} from '../../../redux/action/cartitemaction';
+import { toast } from 'react-toastify';
+
+import './index.css';
+import CardLoader from '../../../components/cardLoader/cardLoader';
 
 const ProductDetails = () => {
-    return(
-        <>
-            <h1>Products details</h1>
-        </>
-    );
-}
+  const params = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-export default ProductDetails
+  const dispatch = useDispatch();
+  const [customer_id, setCustomerId] = useState(null);
+  const [cart_id, setCartId] = useState(null);
+  const [isInCart, setIsInCart] = useState(false);
+
+  const { cartitems } = useSelector((state) => state.cartitems);
+
+  const base_url = import.meta.env.VITE_base_url;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch product details
+        const response = await axiosInstance.get(`products/${params.id}/`);
+        setProduct(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError(err);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [params.id]);
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decodedToken = decodeToken(token);
+        const userId = decodedToken.id;
+        setCustomerId(userId);
+
+        try {
+          const response = await axios.get(
+            `${base_url}cart/searchcustomercart/${userId}/`,
+          );
+          if (response.data.length > 0 && response.data[0].id) {
+            const cartId = response.data[0].id;
+            setCartId(cartId);
+            dispatch(getCartItemsAction(cartId));
+          } else {
+            const newCartResponse = await axios.post(`${base_url}cart/`, {
+              customer_id: userId,
+            });
+            if (newCartResponse.data && newCartResponse.data.id) {
+              const newCartId = newCartResponse.data.id;
+              setCartId(newCartId);
+              dispatch(getCartItemsAction(newCartId));
+            } else {
+              console.error(
+                'Error creating new cart: Response data or cart ID is undefined.',
+              );
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching or creating cart:', error);
+        }
+      } else {
+        console.log('Token does not exist');
+        // Redirect to login or handle the absence of token
+      }
+    };
+
+    checkToken();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (cart_id !== null) {
+      const exist = cartitems.some(
+        (item) => item.product_id === product?.id && item.cart_id === cart_id,
+      );
+      setIsInCart(exist);
+    }
+  }, [cartitems, product?.id, cart_id]);
+
+  const AddCartitemSubmit = (productId) => {
+    const data = {
+      id: 1,
+      product_id: productId,
+      quantity: 1,
+      cart_id: cart_id,
+    };
+
+    if (customer_id) {
+      const cartItem = cartitems.find(
+        (item) => item.product_id === productId && item.cart_id === cart_id,
+      );
+      if (cartItem) {
+        dispatch(removecartitemAction(cartItem.id));
+        toast.success('Item Removed From Cart 😃');
+      } else {
+        dispatch(addcartitemAction(data));
+        toast.success('Item Added To Cart 😃');
+      }
+    } else {
+      navigate('/signup');
+    }
+  };
+
+  if (loading) return <CardLoader />;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <section className="py-5">
+      <div className="container">
+        <div className="row gx-5">
+          <aside className="col-lg-6">
+            <div className="border rounded-4 mb-3 d-flex justify-content-center">
+              <img
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '100vh',
+                  margin: 'auto',
+                }}
+                className="rounded-4 fit"
+                src={product.thumbnail_url}
+                alt="Product"
+              />
+            </div>
+          </aside>
+          <main className="col-lg-6">
+            <div className="ps-lg-3">
+              <h4 className="title text-dark border-bottom pb-2 mb-4">
+                {product.name}
+              </h4>
+              <div className="d-flex flex-row my-3">
+                <div className="text-warning mb-1 me-2">
+                  <span className="ms-1 fw-bold">
+                    Avg: {product.rating} Stars
+                  </span>
+                </div>
+              </div>
+              <div className="mb-4">
+                <span className="price">
+                  <IoPricetags /> ${product.price}
+                </span>
+              </div>
+              <h5>About the product:</h5>
+              <p className="mb-4">{product.description}</p>
+              <div className="row mb-4">
+                <dt className="col-2">Stock:</dt>
+                <dd className="col-9">{product.stock}</dd>
+              </div>
+              <hr />
+              <div className="d-flex justify-content-center">
+                <button
+                  className="btn btn-primary shadow-0 customButton"
+                  onClick={() => AddCartitemSubmit(product.id)}
+                  disabled={product.stock === 0}
+                >
+                  <FaShoppingCart />{' '}
+                  {isInCart ? 'Remove from cart' : 'Add to cart'}
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ProductDetails;

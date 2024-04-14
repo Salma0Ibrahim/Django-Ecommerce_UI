@@ -1,12 +1,24 @@
-import React from "react";
-import style from "./style.module.css"
+import React, { useEffect } from 'react';
+import style from './style.module.css';
+import HomeSlider from '../../../components/HomeSlider/HomeSlider';
+import ProductsSlider from '../../../components/TopRatedSlider/slider';
+import FeaturesList from '../../../components/features/featuresList';
+import AboutUs from '../../../components/aboutUs/aboutUs';
+import ContactUs from '../../../components/contactUs/contactUs';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const Home = () => {
-    return(
-        <>
-            <h1>home</h1>
-        </>
-    );
-}
+  
+  return (
+    <>
+      <HomeSlider />
+      <ProductsSlider />
+      <FeaturesList />
+      <AboutUs />
+      {/* <ContactUs /> */}
+    </>
+  );
+};
 
-export default Home
+export default Home;

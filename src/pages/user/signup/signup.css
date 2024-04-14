@@ -1,0 +1,53 @@
+
+@import url('../../../index.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.para {
+  color: red;
+}
+
+.shadow-box:focus {
+  box-shadow: 0 0 0 3px rgba(252, 165, 165, 0.5);
+}
+
+.mycontainer {
+  height: 100vh;
+}
+
+.mybtn {
+  background-color: var(--main-color) !important;
+}
+
+input:focus {
+  box-shadow: 0 0 0 1px var(--main-color) !important; /* Changed the color to #c93535 */
+  border: none !important;
+}
+.peer:focus ~ .peer-focus\:text-blue-600 {
+  color: var(--main-color) !important;
+}
+
+.mylabel {
+  background-color: var(--main-color);
+  color: white;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  margin: 0;
+}
+
+#file-chosen {
+  margin-left: 0.3rem;
+  font-family: sans-serif;
+}
+
+.mybtn{
+  transition: all 0.3s;
+}
+.mybtn:hover{
+  background-color: #eaeaea !important; 
+  background-color: #d85d5d !important; /* Desaturated Red */
+}
