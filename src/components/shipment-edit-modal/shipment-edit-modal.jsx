@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch } from "react-redux";
 import { updateShipment } from "../../redux/action/shipment-action";
+import "./form-style.css";
+import { toast } from "react-toastify";
 
 const schema = z.object({
   address: z.string().min(1, { message: "Address is required" }).max(100),
@@ -13,10 +15,7 @@ const schema = z.object({
     .string()
     .min(1, { message: "Zip Code is required" })
     .length(5, { message: "Invalid Zip Code" }),
-  country: z
-    .string()
-    .min(1, { message: "Phone Number is required" })
-    .max(100),
+  country: z.string().min(1, { message: "Phone Number is required" }).max(100),
   phone: z
     .string()
     .min(1, { message: "Phone Number is required" })
@@ -24,7 +23,7 @@ const schema = z.object({
 });
 
 // eslint-disable-next-line react/prop-types
-export default function EditShipmentModal({ shipment, rowId }) {
+export default function EditShipmentModal({ shipment, rowId, onCloseModal }) {
   const {
     register,
     handleSubmit,
@@ -32,12 +31,9 @@ export default function EditShipmentModal({ shipment, rowId }) {
     reset,
     formState: { errors, isSubmitting },
   } = useForm({ resolver: zodResolver(schema) });
-
-  const [successMessage, setSuccessMessage] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Reset the form with shipment data when shipment prop changes
     if (shipment) {
       reset(shipment);
     }
@@ -45,123 +41,119 @@ export default function EditShipmentModal({ shipment, rowId }) {
 
   const onSubmit = async (data) => {
     try {
-      console.log('on submit', rowId);
       await dispatch(updateShipment({ shipmentId: rowId, data }));
-  
-      setSuccessMessage("Form submitted successfully!");
+      toast.success("The Shipment has been updated successfully");
+      onCloseModal();
       reset();
     } catch (error) {
       setError("root", { message: "This Address already exists" });
     }
   };
-  
 
   return (
     <>
-      <form onSubmit={handleSubmit((data) => onSubmit(data))} className="max-w-md mx-auto">
-        <div className="mb-4">
-          <label htmlFor="address" className="block mb-1">
+      <form onSubmit={handleSubmit((data) => onSubmit(data))} className="form">
+        <h2 className="title">
+          <span className="title-text">Add Shipment</span>
+          <span className="title-pulse"></span>
+        </h2>
+        <div className="form-group">
+          <label htmlFor="address">
             Address:
+            <input
+              {...register("address", { required: "Address is required" })}
+              type="text"
+              id="address"
+              className="input"
+              placeholder="Enter address"
+            />
           </label>
-          <input
-            {...register("address")}
-            type="text"
-            id="address"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter address"
-          />
           {errors.address && (
-            <div className="text-red-500">{errors.address.message}</div>
+            <span className="error">{errors.address.message}</span>
           )}
         </div>
-        <div className="mb-4">
-          <label htmlFor="city" className="block mb-1">
-            City:
-          </label>
-          <input
-            {...register("city")}
-            type="text"
-            id="city"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter city"
-          />
-          {errors.city && (
-            <div className="text-red-500">{errors.city.message}</div>
-          )}
+        <div className="flex">
+          <div className="form-group flex-1">
+            <label htmlFor="city">
+              City:
+              <input
+                {...register("city", { required: "City is required" })}
+                type="text"
+                id="city"
+                className="input"
+                placeholder="Enter city"
+              />
+            </label>
+            {errors.city && (
+              <span className="error">{errors.city.message}</span>
+            )}
+          </div>
+          <div className="form-group flex-1">
+            <label htmlFor="state">
+              State:
+              <input
+                {...register("state", { required: "State is required" })}
+                type="text"
+                id="state"
+                className="input"
+                placeholder="Enter state"
+              />
+            </label>
+            {errors.state && (
+              <span className="error">{errors.state.message}</span>
+            )}
+          </div>
         </div>
-        <div className="mb-4">
-          <label htmlFor="state" className="block mb-1">
-            State:
-          </label>
-          <input
-            {...register("state")}
-            type="text"
-            id="state"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter state"
-          />
-          {errors.state && (
-            <div className="text-red-500">{errors.state.message}</div>
-          )}
+        <div className="flex">
+          <div className="form-group flex-1">
+            <label htmlFor="country">
+              Country:
+              <input
+                {...register("country", { required: "Country is required" })}
+                type="text"
+                id="country"
+                className="input"
+                placeholder="Enter Country"
+              />
+            </label>
+            {errors.country && (
+              <span className="error">{errors.country.message}</span>
+            )}
+          </div>
+          <div className="form-group flex-1">
+            <label htmlFor="zip_code">
+              Zip Code:
+              <input
+                {...register("zip_code", { required: "Zip Code is required" })}
+                type="text"
+                id="zip_code"
+                className="input"
+                placeholder="Enter zip code"
+              />
+            </label>
+            {errors.zip_code && (
+              <span className="error">{errors.zip_code.message}</span>
+            )}
+          </div>
         </div>
-        <div className="mb-4">
-          <label htmlFor="country" className="block mb-1">
-            Country:
-          </label>
-          <input
-            {...register("country")}
-            type="text"
-            id="country"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter Country"
-          />
-          {errors.country && (
-            <div className="text-red-500">{errors.country.message}</div>
-          )}
-        </div>
-        <div className="mb-4">
-          <label htmlFor="zip_code" className="block mb-1">
-            Zip Code:
-          </label>
-          <input
-            {...register("zip_code")}
-            type="text"
-            id="zip_code"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter zip code"
-          />
-          {errors.zip_code && (
-            <div className="text-red-500">{errors.zip_code.message}</div>
-          )}
-        </div>
-        <div className="mb-4">
-          <label htmlFor="phone" className="block mb-1">
+        <div className="form-group">
+          <label htmlFor="phone">
             Phone:
+            <input
+              {...register("phone", { required: "Phone is required" })}
+              type="text"
+              id="phone"
+              className="input"
+              placeholder="Enter phone number"
+            />
           </label>
-          <input
-            {...register("phone")}
-            type="text"
-            id="phone"
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter phone number"
-          />
           {errors.phone && (
-            <div className="text-red-500">{errors.phone.message}</div>
+            <span className="error">{errors.phone.message}</span>
           )}
         </div>
-        <button
-          type="submit"
-          className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          disabled={isSubmitting}
-        >
+        <button type="submit" className="submit" disabled={isSubmitting}>
           {isSubmitting ? "Loading..." : "Submit"}
         </button>
-        {successMessage && (
-          <div className="text-green-500">{successMessage}</div>
-        )}
-        {errors.root && (
-          <div className="text-red-500">{errors.root.message}</div>
-        )}
       </form>
     </>
   );

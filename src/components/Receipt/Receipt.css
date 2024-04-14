@@ -31,3 +31,9 @@
 .order_button:hover{
   background-color: black;
 }
+
+.disabled_button {
+  background-color: #c93535;
+  color: white;
+  cursor: not-allowed;
+}

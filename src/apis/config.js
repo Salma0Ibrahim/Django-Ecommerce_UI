@@ -10,7 +10,8 @@ function parseJwt(token) {
   const base64 = base64Url.replace('-', '+').replace('_', '/');
   return JSON.parse(window.atob(base64));
 }
-const user = parseJwt(token);
+const user = parseJwt(token)
+
 
 // Function to retrieve the token from a cookie
 // function getToken() {
@@ -39,9 +40,8 @@ axiosInstance.interceptors.request.use(
     // if (token) {
     //   config.headers.Authorization = `${token}`;
     // }
-
-    config.data = { ...config.data, user: user.id };
-    console.log('123', config.data);
+    
+    config.data = {...config.data, user:user.id}
     return config;
   },
   (error) => {
@@ -53,7 +53,6 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     // You can modify the response data here, e.g., handling pagination
-    console.log(response.data);
     return response.data;
   },
   (error) => {

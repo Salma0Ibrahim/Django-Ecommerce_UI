@@ -10,6 +10,9 @@ import {
 } from 'mdb-react-ui-kit';
 import './Receipt.css';
 import { useDispatch, useSelector } from 'react-redux';
+import Box from "@mui/material/Box";
+import ShipmentForm from "../../components/shipment-form/shipment-form";
+import Modal from "@mui/material/Modal";
 import { useEffect, useState } from 'react';
 import { getCartItemsAction } from '../../redux/action/cartitemaction';
 import decodeToken from '../../redux/action/decodeToken';
@@ -17,6 +20,18 @@ import axios from 'axios';
 import { fetchShipment } from '../../redux/action/shipment-action';
 import { createOrder, createOrderItem } from '../../redux/action/order-actions';
 import React from 'react';
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const OrderDetails = () => {
   const dispatch = useDispatch();
@@ -26,6 +41,15 @@ const OrderDetails = () => {
   const [cartitemsProducts, setCartItemsProducts] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('');
   const { shipments } = useSelector((state) => state.shipment);
+  const [openAddModal, setOpenAddModal] = useState(false);
+
+  const handleAdd = () => {
+    setOpenAddModal(true);
+  };
+
+  const handleCloseAddModal = () => {
+    setOpenAddModal(false);
+  };
 
   useEffect(() => {
     dispatch(fetchShipment());
@@ -33,7 +57,6 @@ const OrderDetails = () => {
 
   const handleAddressChange = (event) => {
     setSelectedAddress(event.target.value);
-    // You can perform additional actions here if needed
   };
 
   const handlePlaceOrder = () => {
@@ -171,121 +194,179 @@ const OrderDetails = () => {
         className="h-100 gradient-custom"
         style={{ backgroundColor: '#eee' }}
       >
-        <MDBContainer className="py-5 h-100 ">
-          <MDBRow className="justify-content-center align-items-center h-100">
-            <MDBCol lg="10" xl="8">
-              <MDBCard style={{ borderRadius: '10px' }}>
-                <MDBCardHeader className="px-4 py-5">
-                  <MDBTypography tag="h5" className="text-secondary-dark mb-0">
-                    Thanks for your Order
-                  </MDBTypography>
-                </MDBCardHeader>
-                <MDBCardBody className="p-4">
-                  <div className="d-flex justify-content-between align-items-center mb-4">
-                    <p className="lead mb-0 recipet_color">Receipt</p>
-                  </div>
-                  {cartitemsProducts.length > 0 &&
-                    cartitemsProducts.map((cartItem) => (
-                      <MDBCard
-                        key={cartItem.id}
-                        className="shadow-0 border mb-4"
-                      >
-                        <MDBCardBody>
-                          <MDBRow>
-                            <MDBCol md="2">
-                              <MDBCardImage
-                                src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
-                                fluid
-                                alt="Phone"
-                              />
-                            </MDBCol>
-                            <MDBCol
-                              md="2"
-                              className="text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p className="text-secondary-dark mb-0 recipet_color">
-                                {cartItem.productDetails.name}&nbsp;{' '}
-                                <span className="text-secondary-dark mb-0 recipet_entity small">
-                                  &times;{cartItem.quantity}
-                                </span>
-                              </p>
-                            </MDBCol>
-                            <MDBCol
-                              md="8"
-                              className="text-center d-flex justify-content-center align-items-center"
-                            >
-                              <p className="text-secondary-dark mb-0 recipet_entity ">
-                                Price: {cartItem.productDetails.price}
-                              </p>
-                            </MDBCol>
-                          </MDBRow>
+        {cartitemsProducts.length == 0 ? (
+          <div className="row">
+            <div className="col text-center" style={{ height: "100vh" }}>
+              <h3 style={{ color: "#c93535" }} className="mt-5">
+                Please Add Products to the Cart
+              </h3>
+              <div className="d-flex justify-content-center align-items-center ">
+                <img
+                  src="src/assets/empty_cart.png"
+                  alt="No products found"
+                  style={{ maxWidth: "20%", maxHeight: "20%" }}
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <MDBContainer className="py-5 h-100 ">
+            <MDBRow className="justify-content-center align-items-center h-100">
+              <MDBCol lg="10" xl="8">
+                <MDBCard style={{ borderRadius: "10px" }}>
+                  <MDBCardHeader className="px-4 py-5">
+                    <MDBTypography
+                      tag="h5"
+                      className="text-secondary-dark mb-0"
+                    >
+                      Thanks for your Order
+                    </MDBTypography>
+                  </MDBCardHeader>
+                  <MDBCardBody className="p-4">
+                    <div className="d-flex justify-content-between align-items-center mb-4">
+                      <p className="lead mb-0 recipet_color">Receipt</p>
+                    </div>
+                    {cartitemsProducts.length > 0 &&
+                      cartitemsProducts.map((cartItem) => (
+                        <MDBCard
+                          key={cartItem.id}
+                          className="shadow-0 border mb-4"
+                        >
+                          <MDBCardBody>
+                            <MDBRow>
+                              <MDBCol md="2">
+                                <MDBCardImage
+                                  src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/13.webp"
+                                  fluid
+                                  alt="Phone"
+                                />
+                              </MDBCol>
+                              <MDBCol
+                                md="2"
+                                className="text-center d-flex justify-content-center align-items-center"
+                              >
+                                <p className="text-secondary-dark mb-0 recipet_color">
+                                  {cartItem.productDetails.name}&nbsp;{" "}
+                                  <span className="text-secondary-dark mb-0 recipet_entity small">
+                                    &times;{cartItem.quantity}
+                                  </span>
+                                </p>
+                              </MDBCol>
+                              <MDBCol
+                                md="8"
+                                className="text-center d-flex justify-content-center align-items-center"
+                              >
+                                <p className="text-secondary-dark mb-0 recipet_entity ">
+                                  Price: {cartItem.productDetails.price}
+                                </p>
+                              </MDBCol>
+                            </MDBRow>
+                            <hr
+                              className="mb-5"
+                              style={{ backgroundColor: "#e0e0e0", opacity: 1 }}
+                            />
+                          </MDBCardBody>
+                        </MDBCard>
+                      ))}
+
+                    {shipments.length === 0 ? (
+                      <div className="text-center mt-5 position-absolute top-50 start-50 translate-middle">
+                        <h6 className="mt-5" style={{ color: "black" }}>
+                          Please add shipment to proceed your order
+                        </h6>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="position-relative mt-2">
                           <hr
                             className="mb-4"
-                            style={{ backgroundColor: '#e0e0e0', opacity: 1 }}
+                            style={{ backgroundColor: "#e0e0e0", opacity: 1 }}
                           />
-                        </MDBCardBody>
-                      </MDBCard>
-                    ))}
-                  <div className="position-relative mt-2">
-                    <hr
-                      className="mb-4"
-                      style={{ backgroundColor: '#e0e0e0', opacity: 1 }}
-                    />
-                    <div className="text-center position-absolute top-50 start-50 translate-middle">
-                      <span className="bg-white px-2">SHIPPING OPTIONS</span>
+                          <div className="text-center position-absolute top-50 start-50 translate-middle">
+                            <span className="bg-white px-2">
+                              SHIPPING OPTIONS
+                            </span>
+                          </div>
+                        </div>
+                        <div className="d-flex justify-content-center mt-2">
+                          {shipments.map((shipment) => (
+                            <div
+                              key={shipment.id}
+                              className="form-check form-check-inline"
+                            >
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="shipmentAddress"
+                                id={`shipmentAddress${shipment.id}`}
+                                value={shipment.id}
+                                style={{backgroundColor:'#c93535'}}
+                                onChange={handleAddressChange}
+                              />
+                              <label
+                                className="form-check-label"
+                                htmlFor={`shipmentAddress${shipment.id}`}
+                              >
+                                {`${shipment.address}, ${shipment.city}, ${shipment.state}`}
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+
+                    <div className="d-flex justify-content-between pt-2">
+                      <p className="fw-bold mx-4">Order Details</p>
+                      <p className="text-secondary-dark mb-0 mx-3 recipet_entity">
+                        <span className="text-secondary-dark mb-0 recipet_entity">
+                          Total:
+                        </span>{" "}
+                        ${getTotalPrice().toFixed(2)}
+                      </p>
                     </div>
-                  </div>
-                  <div className="d-flex justify-content-center mt-2">
-                    {shipments.map((shipment) => (
-                      <div
-                        key={shipment.id}
-                        className="form-check form-check-inline"
+                    <div className="d-flex justify-content-between pt-2">
+                      <button className="order_button mb-0">
+                        return to cart
+                      </button>
+                      <button onClick={handleAdd} className="order_button mb-0">
+                        Add Shipment
+                      </button>
+                      <Modal
+                        open={openAddModal}
+                        onClose={handleCloseAddModal}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        sx={{
+                          border: "none",
+                          boxShadow: "none",
+                        }}
                       >
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          name="shipmentAddress"
-                          id={`shipmentAddress${shipment.id}`}
-                          value={shipment.id}
-                          onChange={handleAddressChange}
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor={`shipmentAddress${shipment.id}`}
-                        >
-                          {shipment.address}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="d-flex justify-content-between pt-2">
-                    <p className="fw-bold mx-4">Order Details</p>
-                    <p className="text-secondary-dark mb-0 mx-3 recipet_entity">
-                      <span className="text-secondary-dark mb-0 recipet_entity">
-                        Total:
-                      </span>{' '}
-                      ${getTotalPrice().toFixed(2)}
-                    </p>
-                  </div>
-                  <div className="d-flex justify-content-between pt-2">
-                    <button className="order_button mb-0">
-                      return to cart
-                    </button>
-
-                    <button
-                      onClick={handleSubmit}
-                      type="submit"
-                      className="text-white transition duration-500 ease-in-out text-[#32001a] hover:text-[white] bg-[#9a5b65] text-[] hover:bg-[#866b79] focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
-                    >
-                      Checkout
-                    </button>
-                  </div>
-                </MDBCardBody>
-              </MDBCard>
-            </MDBCol>
-          </MDBRow>
-        </MDBContainer>
+                        <Box sx={style}>
+                          <ShipmentForm onCloseModal={handleCloseAddModal} />
+                        </Box>
+                      </Modal>
+                      <button
+                        className={`order_button mb-0 ${
+                          !selectedAddress ? "disabled_button" : ""
+                        }`}
+                        disabled={!selectedAddress}
+                        onClick={() =>
+                          handlePlaceOrder(
+                            dispatch,
+                            selectedAddress,
+                            cartitemsProducts
+                          )
+                        }
+                      >
+                        place order
+                      </button>
+                    </div>
+                  </MDBCardBody>
+                </MDBCard>
+              </MDBCol>
+            </MDBRow>
+          </MDBContainer>
+        )}
       </section>
     </>
   );
