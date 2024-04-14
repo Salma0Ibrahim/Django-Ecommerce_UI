@@ -28,9 +28,9 @@ const user = parseJwt(token)
 const axiosInstance = axios.create({
   baseURL: 'http://127.0.0.1:8000',
   headers: {
-    Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
-    // withCredentials: true,
+    'X-CSRFToken': `${token}`,
+    withCredentials: true,
     // Authorization: `jwt=${getToken()};`
   },
 });

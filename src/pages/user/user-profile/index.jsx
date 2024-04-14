@@ -10,7 +10,7 @@ import SweetAlert from '../../../components/alert';
 import { getUsersListThunk } from '../../../redux/apis/userApi';
 import { useForm } from 'react-hook-form';
 import { addUserInfo } from '../../../redux/slices/userSlice';
-import LabTabs from '../../../components/shipment/Shipment';
+import DataTable from '../../../components/shipment-grid/shipment-grid';
 const UserProfile = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const [wantUpdate, setWantUpdate] = useState(true);
@@ -372,7 +372,7 @@ const UserProfile = () => {
             </main>
           )}
 
-          {shipment && (<LabTabs />)}
+          {shipment && (<DataTable />)}
         </div>
       </>
     </>
