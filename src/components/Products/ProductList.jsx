@@ -4,6 +4,8 @@ import ProductCard from './ProductCard';
 import CardLoader from '../cardLoader/cardLoader';
 import Pagination from '../pagination/pagination';
 import { useSelector } from 'react-redux';
+import productnotfount from '../../assets/img/productnotfount.png';
+import './style.css';
 
 export default function ProductsList({ selectedCategory, selectedRating }) {
   const [productsList, setProductsList] = useState([]);
@@ -50,7 +52,7 @@ export default function ProductsList({ selectedCategory, selectedRating }) {
 
   return (
     <>
-      <h2>Products list</h2>
+      <h2 className="mt-4">Products list</h2>
       <hr />
 
       {isLoading ? (
@@ -66,7 +68,7 @@ export default function ProductsList({ selectedCategory, selectedRating }) {
           <div className="col text-center" style={{ height: '60vh' }}>
             <div className="d-flex justify-content-center align-items-center ">
               <img
-                src="src/assets/product-not-found.png"
+                src={productnotfount}
                 alt="No products found"
                 style={{ maxWidth: '50%', maxHeight: '60%' }}
               />
@@ -77,7 +79,7 @@ export default function ProductsList({ selectedCategory, selectedRating }) {
         <>
           <div className="row row-cols-1 row-cols-md-4 g-2">
             {productsList.map((product) => (
-              <div className="col mb-4" key={product.id}>
+              <div className="productthecart col-md-3" key={product.id}>
                 <ProductCard product={product} />
               </div>
             ))}

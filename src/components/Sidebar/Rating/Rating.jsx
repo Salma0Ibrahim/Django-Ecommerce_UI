@@ -2,6 +2,7 @@ import "./Rating.css";
 
 const Rating = ({ handleChange }) => {
   const ratings = [1, 2, 3, 4, 5];
+  
 
   return (
     <>

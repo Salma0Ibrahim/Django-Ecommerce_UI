@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Badge from 'react-bootstrap/Badge';
-import './style.css';
+import styles from './style.module.css';
 import { FaShoppingCart } from 'react-icons/fa';
 import { IoPricetags } from 'react-icons/io5';
 import { MdFavoriteBorder, MdFavorite } from 'react-icons/md';
@@ -22,12 +22,16 @@ import {
   removecartitemAction,
 } from '../../redux/action/cartitemaction';
 import { toast } from 'react-toastify';
-
+import './style.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 function ProductCard({ product }) {
   const navigate = useNavigate();
   const redirectToDetails = (id) => {
     navigate(`/product-details/${id}`);
   };
+
+  const base_url = import.meta.env.VITE_base_url;
 
   const renderStars = (rating) => {
     const stars = [];
@@ -68,17 +72,16 @@ function ProductCard({ product }) {
 
         try {
           const response = await axios.get(
-            `http://localhost:8000/cart/searchcustomercart/${userId}/`,
+            `${base_url}cart/searchcustomercart/${userId}/`,
           );
           if (response.data.length > 0 && response.data[0].id) {
             const cartId = response.data[0].id;
             setCartId(cartId);
             dispatch(getCartItemsAction(cartId));
           } else {
-            const newCartResponse = await axios.post(
-              'http://localhost:8000/cart/',
-              { customer_id: userId },
-            );
+            const newCartResponse = await axios.post(`${base_url}cart/`, {
+              customer_id: userId,
+            });
             if (newCartResponse.data && newCartResponse.data.id) {
               const newCartId = newCartResponse.data.id;
               setCartId(newCartId);
@@ -93,7 +96,6 @@ function ProductCard({ product }) {
           console.error('Error fetching or creating cart:', error);
         }
       } else {
-        console.log('Token does not exist');
         // Redirect to login or handle the absence of token
       }
     };
@@ -162,7 +164,6 @@ function ProductCard({ product }) {
           toast.success('Item Removed From Cart 😃');
         } else {
           dispatch(addcartitemAction(data));
-          console.log('5555555555555555555555555555555555555555555');
           toast.success('Item Added To Cart 😃');
         }
       } else {
@@ -175,7 +176,7 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className={productcard}>
+    <div className={styles.productcard}>
       <form
         onSubmit={(e) => handleAddToWishlist(e, product.id)}
         style={{ height: '1px' }}
@@ -183,15 +184,17 @@ function ProductCard({ product }) {
         <input type="hidden" name="product_id" value={product.id} readOnly />
         <button className="border-0 bg-none">
           {isInWishlist ? (
-            <MdFavorite className={`${icon} ${favoriteIcon}`} />
+            <MdFavorite className={`${styles.icon} ${styles.favoriteIcon}`} />
           ) : (
-            <MdFavoriteBorder className={`${icon} ${favoriteIcon}`} />
+            <MdFavoriteBorder
+              className={`${styles.icon} ${styles.favoriteIcon}`}
+            />
           )}
         </button>
       </form>
 
       <IoEyeOutline
-        className={`${icon} ${eyeIcon}`}
+        className={`${styles.icon} ${styles.eyeIcon}`}
         onMouseEnter={() => setIsEyeHovered(true)}
         onMouseLeave={() => setIsEyeHovered(false)}
         onClick={() => redirectToDetails(product.id)}
@@ -200,26 +203,27 @@ function ProductCard({ product }) {
       <Card.Img
         variant="top"
         src={product.thumbnail_url}
-        className={cardImage}
+        className={styles.cardImage}
       />
 
-      <div className={cardBody}>
-        <Card.Title className={cardTitle}>{product.name}</Card.Title>
+      <div className={styles.cardBody}>
+        <Card.Title className={styles.cardTitle}>{product.name}</Card.Title>
 
-        <div className={priceRectangle}>
-          <IoPricetags className={priceIcon} />${product.price}
+        <div className={styles.priceRectangle}>
+          <IoPricetags className={styles.priceIcon} />${product.price}
         </div>
 
-        <div className={rating}>
+        <div className={styles.rating}>
           {renderStars(product.rating)} ({product.rating})
         </div>
 
         <Button
           variant="primary"
-          className={customButton}
+          className={styles.customButton}
           onClick={() => AddCartitemSubmit(product.id)}
         >
-          <FaShoppingCart className={cartIcon} />
+          {/* <FaShoppingCart className={styles.cartIcon} /> */}
+          <FontAwesomeIcon className="cartbuttonicon" icon={faShoppingCart} />
           {isInCart ? (
             <span>&nbsp; remove from cart</span>
           ) : (

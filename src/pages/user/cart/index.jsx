@@ -1,32 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getCartItemsAction,
   removecartitemAction,
   updatecartitemAction,
-} from "../../../redux/action/cartitemaction";
-import axios from "axios";
-import decodeToken from "../../../redux/action/decodeToken";
-import "./Cart.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
+} from '../../../redux/action/cartitemaction';
+import axios from 'axios';
+import decodeToken from '../../../redux/action/decodeToken';
+import './Cart.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const dispatch = useDispatch();
   const { cartitems } = useSelector((state) => state.cartitems);
   const [cart_id, setCartId] = useState(null);
   const [cartitemsProducts, setCartItemsProducts] = useState([]);
+  const navigate = useNavigate();
+  const base_url = import.meta.env.VITE_base_url;
 
   useEffect(() => {
     const checkToken = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       if (token) {
         const decodedToken = decodeToken(token);
         const userId = decodedToken.id;
         try {
           const response = await axios.get(
-            `http://localhost:8000/cart/searchcustomercart/${userId}/`
+            `${base_url}cart/searchcustomercart/${userId}/`,
           );
           if (response.data.length > 0 && response.data[0].id) {
             const retrievedCartId = response.data[0].id;
@@ -34,11 +37,11 @@ const Cart = () => {
             dispatch(getCartItemsAction(retrievedCartId));
           }
         } catch (error) {
-          console.error("Error fetching or creating cart:", error);
+          console.error('Error fetching or creating cart:', error);
           // Handle the error condition, e.g., display a message to the user
         }
       } else {
-        console.log("Token does not exist");
+        console.log('Token does not exist');
         // Redirect to login or handle the absence of token
       }
     };
@@ -51,13 +54,13 @@ const Cart = () => {
       const productsWithDetails = await Promise.all(
         cartitems.map(async (cartItem) => {
           const productResponse = await fetchProductDetails(
-            cartItem.product_id
+            cartItem.product_id,
           );
           return {
             ...cartItem,
             productDetails: productResponse,
           };
-        })
+        }),
       );
       setCartItemsProducts(productsWithDetails);
     };
@@ -69,12 +72,10 @@ const Cart = () => {
 
   const fetchProductDetails = async (productId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/products/${productId}/`
-      );
+      const response = await axios.get(`${base_url}products/${productId}/`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching product details:", error);
+      console.error('Error fetching product details:', error);
       return null;
     }
   };
@@ -101,10 +102,10 @@ const Cart = () => {
         quantity: newQuantity,
         cart_id: cart_id,
       };
-      console.log("the form = ", formdata);
+      console.log('the form = ', formdata);
       dispatch(updatecartitemAction({ cartItemId, formdata }));
     } catch (error) {
-      console.log("Error updating cart item quantity:", error);
+      console.log('Error updating cart item quantity:', error);
     }
   };
 
@@ -132,12 +133,15 @@ const Cart = () => {
               cartitemsProducts.map((cartItem) => (
                 <div className="cart-item" key={cartItem.id}>
                   {cartItem.productDetails && (
-                    <div className="row" style={{ alignItems: "center" }}>
+                    <div
+                      className="row"
+                      style={{ alignItems: 'center', padding: '25px' }}
+                    >
                       <div className="col-md-2">
                         <button
                           onClick={() => {
                             dispatch(removecartitemAction(cartItem.id));
-                            toast.success("the item removed from your card 👍🏼");
+                            toast.success('the item removed from your card 👍🏼');
                           }}
                           className="wishlistitemremove"
                         >
@@ -169,7 +173,7 @@ const Cart = () => {
                           onClick={() =>
                             handleIncrementQuantity(
                               cartItem.id,
-                              cartItem.productDetails.id
+                              cartItem.productDetails.id,
                             )
                           }
                         >
@@ -180,7 +184,7 @@ const Cart = () => {
                           onClick={() =>
                             handleDecrementQuantity(
                               cartItem.id,
-                              cartItem.productDetails.id
+                              cartItem.productDetails.id,
                             )
                           }
                         >
@@ -192,7 +196,7 @@ const Cart = () => {
                 </div>
               ))
             ) : (
-              <div className="empty-cart" style={{ marginTop: "80px" }}>
+              <div className="empty-cart" style={{ marginTop: '80px' }}>
                 <p>No products in the cart.</p>
               </div>
             )}
@@ -207,7 +211,14 @@ const Cart = () => {
             <div className="summary-content">
               <p>Total Items: {cartitems.length}</p>
               <p>Total Price: ${getTotalPrice().toFixed(2)}</p>
-              <button className="cartbutton">Make Order</button>
+              <button
+                className="cartbutton"
+                onClick={() => {
+                  navigate('/order');
+                }}
+              >
+                Make Order
+              </button>
             </div>
           </div>
         </div>

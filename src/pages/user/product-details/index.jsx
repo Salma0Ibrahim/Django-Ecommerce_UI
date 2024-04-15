@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { axiosInstance } from "../../../apis/congif";
-import { IoPricetags } from "react-icons/io5";
-import { FaShoppingCart } from "react-icons/fa";
-import decodeToken from "../../../redux/action/decodeToken";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { axiosInstance } from '../../../apis/congif';
+import { IoPricetags } from 'react-icons/io5';
+import { FaShoppingCart } from 'react-icons/fa';
+import decodeToken from '../../../redux/action/decodeToken';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   getCartItemsAction,
   addcartitemAction,
   removecartitemAction,
-} from "../../../redux/action/cartitemaction";
-import { toast } from "react-toastify";
+} from '../../../redux/action/cartitemaction';
+import { toast } from 'react-toastify';
 
-import "./index.css";
-import CardLoader from "../../../components/cardLoader/cardLoader";
+import './index.css';
+import CardLoader from '../../../components/cardLoader/cardLoader';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart, faTag } from '@fortawesome/free-solid-svg-icons';
 
 const ProductDetails = () => {
   const params = useParams();
@@ -30,6 +32,8 @@ const ProductDetails = () => {
   const [isInCart, setIsInCart] = useState(false);
 
   const { cartitems } = useSelector((state) => state.cartitems);
+
+  const base_url = import.meta.env.VITE_base_url;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +53,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     const checkToken = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       if (token) {
         const decodedToken = decodeToken(token);
         const userId = decodedToken.id;
@@ -57,32 +61,31 @@ const ProductDetails = () => {
 
         try {
           const response = await axios.get(
-            `http://localhost:8000/cart/searchcustomercart/${userId}/`
+            `${base_url}cart/searchcustomercart/${userId}/`,
           );
           if (response.data.length > 0 && response.data[0].id) {
             const cartId = response.data[0].id;
             setCartId(cartId);
             dispatch(getCartItemsAction(cartId));
           } else {
-            const newCartResponse = await axios.post(
-              "http://localhost:8000/cart/",
-              { customer_id: userId }
-            );
+            const newCartResponse = await axios.post(`${base_url}cart/`, {
+              customer_id: userId,
+            });
             if (newCartResponse.data && newCartResponse.data.id) {
               const newCartId = newCartResponse.data.id;
               setCartId(newCartId);
               dispatch(getCartItemsAction(newCartId));
             } else {
               console.error(
-                "Error creating new cart: Response data or cart ID is undefined."
+                'Error creating new cart: Response data or cart ID is undefined.',
               );
             }
           }
         } catch (error) {
-          console.error("Error fetching or creating cart:", error);
+          console.error('Error fetching or creating cart:', error);
         }
       } else {
-        console.log("Token does not exist");
+        console.log('Token does not exist');
         // Redirect to login or handle the absence of token
       }
     };
@@ -93,7 +96,7 @@ const ProductDetails = () => {
   useEffect(() => {
     if (cart_id !== null) {
       const exist = cartitems.some(
-        (item) => item.product_id === product?.id && item.cart_id === cart_id
+        (item) => item.product_id === product?.id && item.cart_id === cart_id,
       );
       setIsInCart(exist);
     }
@@ -109,17 +112,17 @@ const ProductDetails = () => {
 
     if (customer_id) {
       const cartItem = cartitems.find(
-        (item) => item.product_id === productId && item.cart_id === cart_id
+        (item) => item.product_id === productId && item.cart_id === cart_id,
       );
       if (cartItem) {
         dispatch(removecartitemAction(cartItem.id));
-        toast.success("Item Removed From Cart 😃");
+        toast.success('Item Removed From Cart 😃');
       } else {
         dispatch(addcartitemAction(data));
-        toast.success("Item Added To Cart 😃");
+        toast.success('Item Added To Cart 😃');
       }
     } else {
-      navigate("/signup");
+      navigate('/signup');
     }
   };
 
@@ -134,9 +137,9 @@ const ProductDetails = () => {
             <div className="border rounded-4 mb-3 d-flex justify-content-center">
               <img
                 style={{
-                  maxWidth: "100%",
-                  maxHeight: "100vh",
-                  margin: "auto",
+                  maxWidth: '100%',
+                  maxHeight: '100vh',
+                  margin: 'auto',
                 }}
                 className="rounded-4 fit"
                 src={product.thumbnail_url}
@@ -158,7 +161,7 @@ const ProductDetails = () => {
               </div>
               <div className="mb-4">
                 <span className="price">
-                  <IoPricetags /> ${product.price}
+                  <FontAwesomeIcon icon={faTag} /> ${product.price}
                 </span>
               </div>
               <h5>About the product:</h5>
@@ -174,8 +177,8 @@ const ProductDetails = () => {
                   onClick={() => AddCartitemSubmit(product.id)}
                   disabled={product.stock === 0}
                 >
-                  <FaShoppingCart />{" "}
-                  {isInCart ? "Remove from cart" : "Add to cart"}
+                  <FontAwesomeIcon icon={faShoppingCart} /> &nbsp;{' '}
+                  {isInCart ? 'Remove from cart' : 'Add to cart'}
                 </button>
               </div>
             </div>

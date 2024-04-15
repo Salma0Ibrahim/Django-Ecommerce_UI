@@ -23,6 +23,7 @@ const Signup = () => {
     }
   };
 
+  const base_url = import.meta.env.VITE_base_url;
   const {
     register,
     handleSubmit,
@@ -39,7 +40,7 @@ const Signup = () => {
     formData.append('image', data.image[0]);
 
     axios
-      .post('http://127.0.0.1:8000/users/register/', formData)
+      .post(`${base_url}users/register/`, formData)
       .then((response) => {
         console.log(response.data);
         setAlertStatus('success');

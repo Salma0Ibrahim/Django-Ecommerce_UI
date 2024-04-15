@@ -10,8 +10,7 @@ import SweetAlert from '../../../components/alert';
 import { getUsersListThunk } from '../../../redux/apis/userApi';
 import { useForm } from 'react-hook-form';
 import { addUserInfo } from '../../../redux/slices/userSlice';
-import Payment from '../../../components/payment/payment';
-Payment;
+import DataTable from '../../../components/shipment-grid/shipment-grid';
 const UserProfile = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const [wantUpdate, setWantUpdate] = useState(true);
@@ -22,7 +21,8 @@ const UserProfile = () => {
   const [alertMessage, setAlertMessage] = useState('');
   const [shipment, setShipment] = useState(false);
   const [publicProfile, setPublicProfile] = useState(true);
-  const [payment, setPayment] = useState(false);
+
+  const base_url = import.meta.env.VITE_base_url;
 
   const dispatch = useDispatch();
 
@@ -31,7 +31,7 @@ const UserProfile = () => {
   };
   const fetchData = async () => {
     const res = await dispatch(getUsersListThunk());
-    setMyImage(res.payload.image);
+    setMyImage(res.payload?.image);
     dispatch(addUserInfo(res.payload));
   };
 
@@ -44,7 +44,7 @@ const UserProfile = () => {
     const formData = new FormData();
     formData.append('image', data.target.files[0]);
     axios
-      .patch('http://127.0.0.1:8000/users/update/', formData, {
+      .patch(`${base_url}users/update/`, formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -73,15 +73,12 @@ const UserProfile = () => {
     console.log(event.target.innerText);
     if (event.target.innerText === 'Pubic Profile') {
       setPublicProfile(true);
-      setPayment(false);
       setShipment(false);
     } else if (event.target.innerText === 'Shipment Details') {
       setPublicProfile(false);
-      setPayment(false);
       setShipment(true);
     } else if (event.target.innerText === 'Payment Details') {
       setPublicProfile(false);
-      setPayment(true);
       setShipment(false);
     }
   };
@@ -102,11 +99,11 @@ const UserProfile = () => {
     console.log(formData);
 
     axios
-      .patch('http://127.0.0.1:8000/users/update/', formData, {
+      .patch(`${base_url}users/update/`, formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'X-CSRFToken': localStorage.getItem('jwt'),
+          'X-CSRFToken': localStorage.getItem('token'),
         },
       })
       .then((response) => {
@@ -176,13 +173,6 @@ const UserProfile = () => {
               >
                 Shipment Details
               </a>
-              <a
-                href="#"
-                className="flex items-center myLink px-3 py-2.5 font-semibold hover:text-[#9a5b65] hover:border hover:rounded-full active:text-[#9a5b65] active:border active:rounded-full  "
-                onClick={handleComponentAppear}
-              >
-                Payment Details
-              </a>
             </div>
           </aside>
 
@@ -232,7 +222,7 @@ const UserProfile = () => {
                           className="block mb-2 text-sm font-medium text-[#7e7181]
                       dark:text-white mt-2"
                         >
-                          {userInfo.email}
+                          {userInfo?.email}
                         </p>
                       </div>
 
@@ -292,7 +282,7 @@ const UserProfile = () => {
                             id="last_name"
                             className="bg-[#fff9fa] border border-[#9a5b65] text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 "
                             placeholder="Your last name"
-                            defaultValue={userInfo.lastName}
+                            defaultValue={userInfo?.lastName}
                             required=""
                             disabled={wantUpdate}
                             {...register('last_name', {
@@ -384,7 +374,7 @@ const UserProfile = () => {
             </main>
           )}
 
-          {payment && <Payment></Payment>}
+          {shipment && (<DataTable />)}
         </div>
       </>
     </>

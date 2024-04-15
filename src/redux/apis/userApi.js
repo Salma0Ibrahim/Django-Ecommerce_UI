@@ -1,10 +1,24 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { axiosInstance } from '../../axios/axiosInstance';
+const base_url = import.meta.env.VITE_base_url;
 
-export const getUsersListThunk = createAsyncThunk('users/update', async () => {
-  const res = await axiosInstance.patch('/users/update/');
-  return res.data;
-});
+export const getUsersListThunk = createAsyncThunk(
+  'users/update',
+  async (formData) => {
+    const res = await axiosInstance.patch(
+      `${base_url}users/update/`,
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'X-CSRFToken': localStorage.getItem('token'),
+        },
+      },
+    );
+    return res.data;
+  },
+);
 
 export const userAPISlicce = createSlice({
   name: 'userApi',

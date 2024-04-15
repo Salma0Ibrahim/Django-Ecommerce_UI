@@ -1,22 +1,27 @@
-import { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchShipment,
   deleteShipment,
-} from "../../redux/action/shipment-action";
-import EditShipmentModal from "../shipment-edit-modal/shipment-edit-modal";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
+} from '../../redux/action/shipment-action';
+import EditShipmentModal from '../shipment-edit-modal/shipment-edit-modal';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import "./shipment-grid.css";
+import ShipmentForm from "../shipment-form/shipment-form";
+import { toast } from "react-toastify";
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
@@ -26,98 +31,131 @@ export default function DataTable() {
   const { shipments, loading, error } = useSelector((state) => state.shipment);
   const [selectedShipment, setSelectedShipment] = useState(null);
   const [selectedRowId, setSelectedRowId] = useState(null);
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
+  const headerClassName = "custom-header";
 
   useEffect(() => {
     dispatch(fetchShipment());
-    console.log(shipments);
   }, [dispatch]);
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this shipment?")) {
-      dispatch(deleteShipment(id))
-        .then(() => {
-          // Optional: Perform any additional actions after successful deletion
-          console.log("Shipment deleted successfully.");
-        })
-        .catch((error) => {
-          // Handle errors
-          console.error("Error deleting shipment:", error);
-        });
-    }
+    dispatch(deleteShipment(id))
+      .then(() => {
+        toast.error("The Shipment has been deleted");
+      })
+      .catch((error) => {
+        console.error("Error deleting shipment:", error);
+      });
   };
 
+  const handleAdd = () => {
+    setOpenAddModal(true);
+  };
+
+  const handleCloseAddModal = () => {
+    setOpenAddModal(false);
+  };
+
+  const handleCloseEditModal = () => {
+    setOpenEditModal(false)
+  }
+
   const handleEdit = (id) => {
-    // Find the selected shipment by ID
     const shipment = shipments.find((shipment) => shipment.id === id);
-    console.log(shipment);
-    // Set the selected shipment in the state
     setSelectedShipment(shipment);
     setSelectedRowId(id);
-    handleOpen(); // Open the modal when edit is clicked
+    setOpenEditModal(true);
+  };
+
+  const editColumn = {
+    field: "edit",
+    headerName: "Edit",
+    headerClassName,
+    width: 100,
+    renderCell: (params) => (
+      <button
+        className="action_buttons"
+        onClick={() => {
+          handleEdit(params.row.id);
+        }}
+      >
+        <FontAwesomeIcon icon={faPencil} />
+      </button>
+    ),
+  };
+
+  const deleteColumn = {
+    field: "delete",
+    headerName: "Delete",
+    headerClassName,
+    width: 100,
+    renderCell: (params) => (
+      <button
+        className="action_buttons"
+        onClick={() => handleDelete(params.row.id)}
+      >
+        <FontAwesomeIcon icon={faTrashCan} />
+      </button>
+    ),
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "address", headerName: "Address", width: 200 },
-    { field: "city", headerName: "City", width: 130 },
-    { field: "state", headerName: "State", width: 130 },
-    { field: "zip_code", headerName: "Zip Code", width: 130 },
-    { field: "phone", headerName: "Phone", width: 130 },
-    { field: "country", headerName: "Country", width: 130 },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 150,
-      renderCell: (params) => (
-        <div>
-          <button
-            onClick={() => {
-              handleEdit(params.row.id);
-            }}
-          >
-            Edit
-          </button>
-          <button onClick={() => handleDelete(params.row.id)}>Delete</button>
-        </div>
-      ),
-    },
+    { field: "id", headerName: "ID", width: 70, headerClassName },
+    { field: "address", headerName: "Address", width: 200, headerClassName },
+    { field: "city", headerName: "City", width: 130, headerClassName },
+    { field: "state", headerName: "State", width: 130, headerClassName },
+    { field: "zip_code", headerName: "Zip Code", width: 130, headerClassName },
+    { field: "phone", headerName: "Phone", width: 130, headerClassName },
+    { field: "country", headerName: "Country", width: 130, headerClassName },
+    editColumn,
+    deleteColumn,
   ];
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <div style={{ height: 400, width: "100%", position: "relative" }}>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
         <p>Error: {error}</p>
       ) : (
         <>
-          <DataGrid
-            rows={shipments}
-            columns={columns}
-            pageSize={5}
-            // checkboxSelection
-          />
-          {/* Render EditShipmentModal with selected shipment as props */}
-          {/* {selectedShipment && (
-            <EditShipmentModal
-              shipment={selectedShipment}
-              rowId={selectedRowId}
-            />
-          )} */}
+          <DataGrid rows={shipments} columns={columns} pageSize={5} />
+          <button onClick={handleAdd} className="add_button">
+            Add Shipment
+          </button>
+          {openAddModal && (
+            <Modal
+              open={openAddModal}
+              onClose={handleCloseAddModal}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              sx={{
+                border: "none",
+                boxShadow: "none",
+              }}
+            >
+              <Box sx={style}>
+                <ShipmentForm onCloseModal={handleCloseAddModal} />
+              </Box>
+            </Modal>
+          )}
           <Modal
-            open={open}
-            onClose={handleClose}
+            open={openEditModal}
+            onClose={handleCloseEditModal}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            sx={{
+              border: "none",
+              boxShadow: "none",
+            }}
           >
             <Box sx={style}>
               {selectedShipment && (
                 <EditShipmentModal
                   shipment={selectedShipment}
                   rowId={selectedRowId}
+                  onCloseModal={handleCloseEditModal}
                 />
               )}
             </Box>

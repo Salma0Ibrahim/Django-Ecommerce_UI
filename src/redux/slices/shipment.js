@@ -25,7 +25,6 @@ const shipment = createSlice({
       .addCase(fetchShipment.fulfilled, (state, action) => {
         state.loading = false;
         state.shipments = action.payload;
-        console.log('123123-- action pay load', action.payload)
       })
       .addCase(fetchShipment.rejected, (state, action) => {
         state.loading = false;
@@ -33,11 +32,14 @@ const shipment = createSlice({
       })
       .addCase(createShipment.pending, (state) => {
         state.loading = true;
-        state.error = null; // Reset error when creation starts
+        state.error = null;
       })
       .addCase(createShipment.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
         state.shipments = [...state.shipments, action.payload];
+        console.log(`action`,action.payload)
+        console.log(state.shipments)
       })
       .addCase(createShipment.rejected, (state, action) => {
         state.loading = false;

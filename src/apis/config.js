@@ -11,6 +11,7 @@ function parseJwt(token) {
   return JSON.parse(window.atob(base64));
 }
 const user = parseJwt(token);
+console.log(user)
 
 // Function to retrieve the token from a cookie
 // function getToken() {
@@ -25,10 +26,10 @@ const user = parseJwt(token);
 // }
 
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
+  baseURL: 'https://django-ecommerce-app-1.onrender.com/',
   headers: {
-    Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
+    'X-CSRFToken': `${token}`,
     // withCredentials: true,
     // Authorization: `jwt=${getToken()};`
   },
@@ -41,7 +42,6 @@ axiosInstance.interceptors.request.use(
     // }
 
     config.data = { ...config.data, user: user.id };
-    console.log('123', config.data);
     return config;
   },
   (error) => {
@@ -53,7 +53,6 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => {
     // You can modify the response data here, e.g., handling pagination
-    console.log(response.data);
     return response.data;
   },
   (error) => {

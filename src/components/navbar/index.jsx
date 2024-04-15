@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import style from './style.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,24 +10,28 @@ import {
   faCartShopping,
   faUser,
   faBars,
-} from "@fortawesome/free-solid-svg-icons";
-import Wishlist from "../../pages/user/wishlist";
-import { useDispatch, useSelector } from "react-redux";
-import { getWishlistAction } from "../../redux/action/wishlist-action";
-import { getCartItemsAction } from "../../redux/action/cartitemaction";
-import decodeToken from "../../redux/action/decodeToken";
-import axios from "axios";
-import { Dropdown } from "react-bootstrap";
-import { setSearchValue } from "../../redux/slices/searchReducer";
+} from '@fortawesome/free-solid-svg-icons';
+import Wishlist from '../../pages/user/wishlist';
+import { useDispatch, useSelector } from 'react-redux';
+import { getWishlistAction } from '../../redux/action/wishlist-action';
+import { getCartItemsAction } from '../../redux/action/cartitemaction';
+import decodeToken from '../../redux/action/decodeToken';
+import axios from 'axios';
+import { Dropdown } from 'react-bootstrap';
+import { setSearchValue } from '../../redux/slices/searchReducer';
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/home');
+  };
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -39,9 +43,11 @@ const Navbar = () => {
   const [customer_id, setCustomerId] = useState(null);
   const searchValue = useSelector((state) => state.search.searchValue); // Get the searchValue from Redux
 
+  const base_url = import.meta.env.VITE_base_url;
+
   useEffect(() => {
     const checkToken = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       if (token) {
         const decodedToken = decodeToken(token);
         const userId = decodedToken.id;
@@ -49,32 +55,30 @@ const Navbar = () => {
 
         try {
           const response = await axios.get(
-            `http://localhost:8000/cart/searchcustomercart/${userId}/`
+            `${base_url}cart/searchcustomercart/${userId}/`,
           );
           if (response.data.length > 0 && response.data[0].id) {
             const cartId = response.data[0].id;
             setCartId(cartId);
             dispatch(getCartItemsAction(cartId));
           } else {
-            const newCartResponse = await axios.post(
-              "http://localhost:8000/cart/",
-              { customer_id: userId }
-            );
+            const newCartResponse = await axios.post(`${base_url}cart/`, {
+              customer_id: userId,
+            });
             if (newCartResponse.data && newCartResponse.data.id) {
               const newCartId = newCartResponse.data.id;
               setCartId(newCartId);
               dispatch(getCartItemsAction(newCartId));
             } else {
               console.error(
-                "Error creating new cart: Response data or cart ID is undefined."
+                'Error creating new cart: Response data or cart ID is undefined.',
               );
             }
           }
         } catch (error) {
-          console.error("Error fetching or creating cart:", error);
+          console.error('Error fetching or creating cart:', error);
         }
       } else {
-        console.log("Token does not exist");
         // Redirect to login or handle the absence of token
       }
     };
@@ -96,7 +100,7 @@ const Navbar = () => {
           <FontAwesomeIcon icon={faBars} />
         </button>
         <div
-          className={`nav-links ${isMobileMenuOpen ? "mobile-menu-open" : ""}`}
+          className={`nav-links ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}
         >
           <Link className="navlink" to="/">
             Home
@@ -104,13 +108,13 @@ const Navbar = () => {
           <Link className="navlink" to="/products">
             Products
           </Link>
-          <Link className="navlink" to="#">
+          <Link className="navlink" to="/">
             Services
           </Link>
-          <Link className="navlink" to="#">
+          <Link className="navlink" to="/">
             About Us
           </Link>
-          <Link className="navlink" to="#">
+          <Link className="navlink" to="/">
             Contact
           </Link>
         </div>
@@ -122,7 +126,7 @@ const Navbar = () => {
         <div className="auth-buttons">
           <div
             className={`auth-fields1 ${
-              isMobileMenuOpen ? "mobile-menu-open" : ""
+              isMobileMenuOpen ? 'mobile-menu-open' : ''
             }`}
           >
             <input
@@ -136,14 +140,14 @@ const Navbar = () => {
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </button>
           </div>
-          {customer_id ? (
+          {localStorage.getItem('token') ? (
             <>
               <div className="notificationparent">
                 <div className="notification">{cartitems.length}</div>
                 <Link to="/cart">
                   <button className="navbutton2">
                     <FontAwesomeIcon
-                      style={{ color: "black" }}
+                      style={{ color: 'black' }}
                       icon={faCartShopping}
                     />
                   </button>
@@ -153,7 +157,7 @@ const Navbar = () => {
                 <div className="notification">{wishlists.length}</div>
                 <button className="navbutton2" onClick={toggleSidebar}>
                   <FontAwesomeIcon
-                    style={{ color: "black" }}
+                    style={{ color: 'black' }}
                     icon={faShieldHeart}
                   />
                 </button>
@@ -167,10 +171,14 @@ const Navbar = () => {
                   <FontAwesomeIcon icon={faUser} />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item href="/update-profile">
-                    Update Profile
+                  <Dropdown.Item
+                    onClick={() => {
+                      navigate('/user-profile');
+                    }}
+                  >
+                    Profile
                   </Dropdown.Item>
-                  <Dropdown.Item href="/logout">Logout</Dropdown.Item>
+                  <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </>
@@ -179,14 +187,14 @@ const Navbar = () => {
               <Link to="/login">
                 <button className="navbutton2">
                   Login
-                  <FontAwesomeIcon style={{ color: "black" }} icon={faUser} />
+                  <FontAwesomeIcon style={{ color: 'black' }} icon={faUser} />
                 </button>
               </Link>
               <Link to="/signup">
                 <button className="navbutton2">
                   Signup
                   <FontAwesomeIcon
-                    style={{ color: "black" }}
+                    style={{ color: 'black' }}
                     icon={faUserPlus}
                   />
                 </button>

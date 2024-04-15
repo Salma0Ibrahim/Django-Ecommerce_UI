@@ -15,7 +15,6 @@ import {
 export const fetchShipment = createAsyncThunk(FETCH_SHIPMENT, async () => {
   try {
     const response = await getShipments();
-    console.log("response data", response);
     return response;
   } catch (error) {
     console.error("Error fetching shipments:", error);
@@ -26,7 +25,7 @@ export const fetchShipment = createAsyncThunk(FETCH_SHIPMENT, async () => {
 
 export const createShipment = createAsyncThunk(ADD_SHIPMENT, async (data) => {
   const response = await addShipment(data);
-  return response.data;
+  return response;
 });
 
 export const deleteShipment = createAsyncThunk(
@@ -41,7 +40,6 @@ export const updateShipment = createAsyncThunk(
   UPDATE_SHIPMENT,
   async ({ shipmentId, data }) => {
     const response = await updateShipmentApi(shipmentId, data);
-    console.log('asdasd',response);
     return response;
   }
 );

@@ -18,6 +18,8 @@ const Login = () => {
   const [alertMessage, setAlertMessage] = useState('');
   const navigate = useNavigate();
 
+  const base_url = import.meta.env.VITE_base_url;
+
   const {
     register,
     handleSubmit,
@@ -31,10 +33,10 @@ const Login = () => {
     });
 
     axios
-      .post('http://127.0.0.1:8000/users/login/', formData)
+      .post(`${base_url}users/login/`, formData)
       .then((response) => {
         const decoded = jwtDecode(response.data.token);
-        if (decoded?.is_superuser === false) navigate('/user-profile');
+        if (decoded?.is_superuser === false) navigate('/');
         localStorage.setItem('token', response.data.token);
         console.log(response);
         dispatch(addUserInfo(response.data.user_info));

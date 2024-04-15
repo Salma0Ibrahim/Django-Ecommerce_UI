@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getWishlistAction,
   removeFromWishlistAction,
-} from "../../../redux/action/wishlist-action";
-import axios from "axios";
-import "./wishlist.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import decodeToken from "../../../redux/action/decodeToken";
-import { toast } from "react-toastify";
+} from '../../../redux/action/wishlist-action';
+import axios from 'axios';
+import './wishlist.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import decodeToken from '../../../redux/action/decodeToken';
+import { toast } from 'react-toastify';
 
 const Wishlist = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -17,15 +17,16 @@ const Wishlist = ({ isOpen, onClose }) => {
   const [wishlistProducts, setWishlistProducts] = useState([]);
   const [customer_id, setCustomerId] = useState(null);
 
+  const base_url = import.meta.env.VITE_base_url;
   useEffect(() => {
     const checkToken = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       if (token) {
         const decodedToken = decodeToken(token);
         const userId = decodedToken.id;
         setCustomerId(userId);
       } else {
-        console.log("Token does not exist");
+        console.log('Token does not exist');
         // Redirect to login or handle the absence of token
       }
     };
@@ -43,13 +44,13 @@ const Wishlist = ({ isOpen, onClose }) => {
       const productsWithDetails = await Promise.all(
         wishlists.map(async (wishlistItem) => {
           const productResponse = await fetchProductDetails(
-            wishlistItem.product_id
+            wishlistItem.product_id,
           );
           return {
             ...wishlistItem,
             productDetails: productResponse,
           };
-        })
+        }),
       );
       setWishlistProducts(productsWithDetails);
     };
@@ -58,12 +59,10 @@ const Wishlist = ({ isOpen, onClose }) => {
 
   const fetchProductDetails = async (productId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/products/${productId}/`
-      );
+      const response = await axios.get(`${base_url}products/${productId}/`);
       return response.data;
     } catch (error) {
-      console.error("Error fetching product details:", error);
+      console.error('Error fetching product details:', error);
       return null;
     }
   };
@@ -71,7 +70,7 @@ const Wishlist = ({ isOpen, onClose }) => {
   return (
     <div className="wishlist">
       {isOpen && <div className="overlay" onClick={onClose}></div>}
-      <div className={`wishlistsidebar ${isOpen ? "open" : ""}`}>
+      <div className={`wishlistsidebar ${isOpen ? 'open' : ''}`}>
         <div className="wishlistdiv1">
           <div className="wishlistdiv1child1">
             <p className="wishlistTitle">Shopping Wishlist</p>
@@ -96,7 +95,7 @@ const Wishlist = ({ isOpen, onClose }) => {
                     <div className="productdetails2">
                       <div className="productInfo">
                         <p>{wishlistItem.productDetails.name}</p>
-                        <p style={{ color: "gray" }}>
+                        <p style={{ color: 'gray' }}>
                           {wishlistItem.productDetails.price} $
                         </p>
                       </div>
@@ -106,7 +105,7 @@ const Wishlist = ({ isOpen, onClose }) => {
                             e.stopPropagation(); // Stop the event from propagating
                             dispatch(removeFromWishlistAction(wishlistItem.id));
                             toast.success(
-                              "the item removed from your wishlist 👍🏼"
+                              'the item removed from your wishlist 👍🏼',
                             );
                           }}
                           className="wishlistitemremove"
