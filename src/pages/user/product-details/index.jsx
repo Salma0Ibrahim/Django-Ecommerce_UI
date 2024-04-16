@@ -18,6 +18,9 @@ import './index.css';
 import CardLoader from '../../../components/cardLoader/cardLoader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faTag } from '@fortawesome/free-solid-svg-icons';
+import Rating from 'react-rating';
+import { faStar as farStar } from '@fortawesome/free-regular-svg-icons';
+import { faStar as fasStar } from '@fortawesome/free-solid-svg-icons';
 
 const ProductDetails = () => {
   const params = useParams();
@@ -30,7 +33,7 @@ const ProductDetails = () => {
   const [customer_id, setCustomerId] = useState(null);
   const [cart_id, setCartId] = useState(null);
   const [isInCart, setIsInCart] = useState(false);
-
+  const [userRating, setUserRating] = useState(0);
   const { cartitems } = useSelector((state) => state.cartitems);
 
   const base_url = import.meta.env.VITE_base_url;
@@ -38,7 +41,6 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch product details
         const response = await axiosInstance.get(`products/${params.id}/`);
         setProduct(response.data);
         setLoading(false);
@@ -94,6 +96,23 @@ const ProductDetails = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    const fetchUserRating = async () => {
+      if (customer_id && product) {
+        try {
+          const response = await axiosInstance.get(
+            `users/${customer_id}/ratings/${params.id}/`,
+          );
+          setUserRating(response.data.user_rating);
+        } catch (error) {
+          console.error('Error fetching user rating:', error);
+        }
+      }
+    };
+
+    fetchUserRating();
+  }, [customer_id, product]);
+
+  useEffect(() => {
     if (cart_id !== null) {
       const exist = cartitems.some(
         (item) => item.product_id === product?.id && item.cart_id === cart_id,
@@ -126,6 +145,44 @@ const ProductDetails = () => {
     }
   };
 
+  const handleRatingChange = async (value) => {
+    setUserRating(value);
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        let response;
+        const existingRating = await axiosInstance.get(
+          `users/${customer_id}/ratings/${params.id}/`,
+        );
+        if (existingRating.data) {
+          response = await axiosInstance.put(
+            `ratings/${existingRating.data.id}/`,
+            {
+              user: customer_id,
+              product: params.id,
+              user_rating: value,
+            },
+          );
+        } else {
+          response = await axiosInstance.post(`ratings/`, {
+            user: customer_id,
+            product: params.id,
+            user_rating: value,
+          });
+        }
+
+        if (response.status === 200 || response.status === 201) {
+          toast.success('Rating Updated Successfully 😃');
+        }
+      } catch (error) {
+        console.error('Error updating rating:', error);
+      }
+    } else {
+      console.log('Token does not exist');
+      // Redirect to login or handle the absence of token
+    }
+  };
+
   if (loading) return <CardLoader />;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -152,12 +209,21 @@ const ProductDetails = () => {
               <h4 className="title text-dark border-bottom pb-2 mb-4">
                 {product.name}
               </h4>
-              <div className="d-flex flex-row my-3">
-                <div className="text-warning mb-1 me-2">
-                  <span className="ms-1 fw-bold">
-                    Avg: {product.rating} Stars
-                  </span>
-                </div>
+              <div className="d-flex flex-row my-3 align-items-center">
+                <Rating
+                  emptySymbol={
+                    <FontAwesomeIcon icon={farStar} style={{ color: '#ccc' }} />
+                  }
+                  fullSymbol={
+                    <FontAwesomeIcon
+                      icon={fasStar}
+                      style={{ color: '#ffc107' }}
+                    />
+                  }
+                  initialRating={userRating}
+                  onClick={handleRatingChange}
+                />
+                <span className="ms-2">{`Avg: ${product.rating} Stars`}</span>
               </div>
               <div className="mb-4">
                 <span className="price">

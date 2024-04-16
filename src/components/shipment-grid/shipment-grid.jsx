@@ -8,11 +8,12 @@ import {
 import EditShipmentModal from '../shipment-edit-modal/shipment-edit-modal';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import "./shipment-grid.css";
-import ShipmentForm from "../shipment-form/shipment-form";
-import { toast } from "react-toastify";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import './shipment-grid.css';
+import ShipmentForm from '../shipment-form/shipment-form';
+import { toast } from 'react-toastify';
+import Spinner from '../spinner/spinner';
 
 const style = {
   position: 'absolute',
@@ -33,7 +34,7 @@ export default function DataTable() {
   const [selectedRowId, setSelectedRowId] = useState(null);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
-  const headerClassName = "custom-header";
+  const headerClassName = 'custom-header';
 
   useEffect(() => {
     dispatch(fetchShipment());
@@ -42,10 +43,10 @@ export default function DataTable() {
   const handleDelete = (id) => {
     dispatch(deleteShipment(id))
       .then(() => {
-        toast.error("The Shipment has been deleted");
+        toast.error('The Shipment has been deleted');
       })
       .catch((error) => {
-        console.error("Error deleting shipment:", error);
+        console.error('Error deleting shipment:', error);
       });
   };
 
@@ -58,8 +59,8 @@ export default function DataTable() {
   };
 
   const handleCloseEditModal = () => {
-    setOpenEditModal(false)
-  }
+    setOpenEditModal(false);
+  };
 
   const handleEdit = (id) => {
     const shipment = shipments.find((shipment) => shipment.id === id);
@@ -69,8 +70,8 @@ export default function DataTable() {
   };
 
   const editColumn = {
-    field: "edit",
-    headerName: "Edit",
+    field: 'edit',
+    headerName: 'Edit',
     headerClassName,
     width: 100,
     renderCell: (params) => (
@@ -86,8 +87,8 @@ export default function DataTable() {
   };
 
   const deleteColumn = {
-    field: "delete",
-    headerName: "Delete",
+    field: 'delete',
+    headerName: 'Delete',
     headerClassName,
     width: 100,
     renderCell: (params) => (
@@ -101,21 +102,21 @@ export default function DataTable() {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 70, headerClassName },
-    { field: "address", headerName: "Address", width: 200, headerClassName },
-    { field: "city", headerName: "City", width: 130, headerClassName },
-    { field: "state", headerName: "State", width: 130, headerClassName },
-    { field: "zip_code", headerName: "Zip Code", width: 130, headerClassName },
-    { field: "phone", headerName: "Phone", width: 130, headerClassName },
-    { field: "country", headerName: "Country", width: 130, headerClassName },
+    { field: 'id', headerName: 'ID', width: 70, headerClassName },
+    { field: 'address', headerName: 'Address', width: 200, headerClassName },
+    { field: 'city', headerName: 'City', width: 130, headerClassName },
+    { field: 'state', headerName: 'State', width: 130, headerClassName },
+    { field: 'zip_code', headerName: 'Zip Code', width: 130, headerClassName },
+    { field: 'phone', headerName: 'Phone', width: 130, headerClassName },
+    { field: 'country', headerName: 'Country', width: 130, headerClassName },
     editColumn,
     deleteColumn,
   ];
 
   return (
-    <div style={{ height: 400, width: "100%", position: "relative" }}>
+    <div style={{ height: 400, width: '100%', position: 'relative' }}>
       {loading ? (
-        <p>Loading...</p>
+        <Spinner />
       ) : error ? (
         <p>Error: {error}</p>
       ) : (
@@ -131,8 +132,8 @@ export default function DataTable() {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
               sx={{
-                border: "none",
-                boxShadow: "none",
+                border: 'none',
+                boxShadow: 'none',
               }}
             >
               <Box sx={style}>
@@ -146,8 +147,8 @@ export default function DataTable() {
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             sx={{
-              border: "none",
-              boxShadow: "none",
+              border: 'none',
+              boxShadow: 'none',
             }}
           >
             <Box sx={style}>

@@ -12,10 +12,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../../../components/spinner/spinner';
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const { cartitems } = useSelector((state) => state.cartitems);
+  const { cartitems, loading } = useSelector((state) => state.cartitems);
   const [cart_id, setCartId] = useState(null);
   const [cartitemsProducts, setCartItemsProducts] = useState([]);
   const navigate = useNavigate();
@@ -38,11 +39,9 @@ const Cart = () => {
           }
         } catch (error) {
           console.error('Error fetching or creating cart:', error);
-          // Handle the error condition, e.g., display a message to the user
         }
       } else {
         console.log('Token does not exist');
-        // Redirect to login or handle the absence of token
       }
     };
 
@@ -102,7 +101,6 @@ const Cart = () => {
         quantity: newQuantity,
         cart_id: cart_id,
       };
-      console.log('the form = ', formdata);
       dispatch(updatecartitemAction({ cartItemId, formdata }));
     } catch (error) {
       console.log('Error updating cart item quantity:', error);
@@ -129,7 +127,9 @@ const Cart = () => {
         <div className="col-md-8">
           {/* Product Details Section */}
           <div className="product-details">
-            {cartitemsProducts.length > 0 ? (
+            {loading ? (
+              <Spinner />
+            ) : cartitemsProducts.length > 0 ? (
               cartitemsProducts.map((cartItem) => (
                 <div className="cart-item" key={cartItem.id}>
                   {cartItem.productDetails && (

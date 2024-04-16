@@ -5,9 +5,11 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './productsSlider.css';
 import TopRatedCard from './TopRatedCard';
+import CardLoader from '../cardLoader/cardLoader';
 
 function ProductsSlider() {
   const [productsList, setProductsList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let params = {
@@ -20,11 +22,12 @@ function ProductsSlider() {
       })
       .then((res) => {
         console.log(res);
-
         setProductsList(res.data.results);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   }, []);
 
@@ -63,17 +66,35 @@ function ProductsSlider() {
     ],
   };
 
+  const renderLoaders = () => {
+    let loaders = [];
+    for (let i = 0; i < settings.slidesToShow; i++) {
+      loaders.push(
+        <div className="col mb-4" key={i}>
+          <CardLoader />
+        </div>,
+      );
+    }
+    return loaders;
+  };
+
   return (
     <div className="slider-container">
       <h2 className="text-center mb-4 mt-4">Top Rated Products</h2>
       <div className="slider-wrapper">
-        <Slider {...settings} className="slider-box-shadow">
-          {productsList.map((product) => (
-            <div className="col mb-4" key={product.id}>
-              <TopRatedCard product={product} />
-            </div>
-          ))}
-        </Slider>
+        {loading ? (
+          <Slider {...settings} className="slider-box-shadow">
+            {renderLoaders()}
+          </Slider>
+        ) : (
+          <Slider {...settings} className="slider-box-shadow">
+            {productsList.map((product) => (
+              <div className="col mb-4" key={product.id}>
+                <TopRatedCard product={product} />
+              </div>
+            ))}
+          </Slider>
+        )}
       </div>
     </div>
   );
